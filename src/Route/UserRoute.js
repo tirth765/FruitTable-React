@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from "../Component/./Header/Header";
+import Footer from "../Component/./Footer/Footer";
 import A404 from "../Container/404/A404";
 import Cart from "../Container/Cart/Cart";
 import Chakout from "../Container/Chackout/Chakout";
