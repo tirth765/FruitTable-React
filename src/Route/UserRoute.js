@@ -20,7 +20,7 @@ export default function UserRoute() {
 
       <Route path="/" element={<Home />} />
       <Route path="/Shop" element = {<Shop/>} />
-      <Route path="/Shop :id" element = {<ShopDetail/>} />
+      <Route path="/Shop/:id" element = {<ShopDetail/>} />
       <Route path="/Testimonial" element = {<Testimonial/>} />
       <Route path="/Contact" element = {<Contact/>} />
       <Route path="/Chakout" element = {<Chakout/>} />
