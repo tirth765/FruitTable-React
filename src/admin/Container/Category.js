@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { DataGrid } from '@mui/x-data-grid';
@@ -13,6 +12,10 @@ import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
+
+import { object, string } from 'yup';
+
+import { useFormik } from 'formik';
 
 
 export default function FormDialog() {
@@ -45,6 +48,26 @@ export default function FormDialog() {
         { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
     ];
 
+    let CategorySchema = object({
+        name: string().required(),
+        Description: string().required()
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            Description: ''
+        },
+        validationSchema: CategorySchema,
+        onSubmit: (values , {resetForm}) => {
+            alert(JSON.stringify(values, null, 2));
+            resetForm();
+            handleClose();
+        },
+    });
+
+    const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
+
     const paginationModel = { page: 0, pageSize: 5 };
 
 
@@ -55,56 +78,53 @@ export default function FormDialog() {
                 <Button variant="outlined" onClick={handleClickOpen} style={{ marginLeft: '89%' }}>
                     Add Category
                 </Button>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                        component: 'form',
-                        onSubmit: (event) => {
-                            event.preventDefault();
-                            const formData = new FormData(event.currentTarget);
-                            const formJson = Object.fromEntries(formData.entries());
-                            const email = formJson.email;
-                            console.log(email);
-                            handleClose();
-                        },
-                    }}
-                >
-                    <DialogTitle>Category</DialogTitle>
-                    <DialogContent>
+                <Dialog open={open} onClose={handleClose}>
 
-                        <TextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            label="name"
-                            type="name"
-                            fullWidth
-                            variant="standard"
-                        />
-                        <TextField
-                            autoFocus
-                            required
-                            margin="dense"
-                            id="Description"
-                            name="Description"
-                            label="Description"
-                            type="Description"
-                            fullWidth
-                            variant="standard"
-                        />
+                    <form onSubmit={handleSubmit}>
+                        <DialogTitle>Category</DialogTitle>
+                        <DialogContent>
 
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Category</Button>
-                    </DialogActions>
+                            <TextField
+                                margin="dense"
+                                id="name"
+                                name="name"
+                                label="name"
+                                type="name"
+                                fullWidth
+                                variant="standard"
+                                helperText={errors.name && touched.name ? errors.name : ''}
+                                onChange={handleChange}
+                                value={values.name}
+                                error={errors.name && touched.name} 
+                                onBlur={handleBlur}
+                            />
+                            <TextField
+                                margin="dense"
+                                id="Description"
+                                name="Description"
+                                label="Description"
+                                type="Description"
+                                fullWidth
+                                variant="standard"
+                                helperText={errors.Description  && touched.Description ? errors.Description : ''}
+                                onChange={handleChange}
+                                value={values.Description}
+                                error={errors.Description  && touched.Description} 
+                                onBlur={handleBlur}
+                            />
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button type="submit">Category</Button>
+                        </DialogActions>
+
+                    </form>
+
                 </Dialog>
             </React.Fragment>
 
-            <Paper sx={{ height: 400, width: '100%' }}>
+            {/* <Paper sx={{ height: 400, width: '100%' }}>
 
                 <DataGrid
                     rows={rows}
@@ -115,16 +135,16 @@ export default function FormDialog() {
                     sx={{ border: 0 }}
                 />
 
-            </Paper>
-            
-            <Stack direction="row" spacing={2}>
+            </Paper> */}
+
+            {/* <Stack direction="row" spacing={2}>
                 <Button variant="outlined" startIcon={<DeleteIcon />}>
                     Delete
                 </Button>
                 <Button variant="contained" endIcon={<SendIcon />}>
                     Send
                 </Button>
-            </Stack>
+            </Stack> */}
 
 
         </>
