@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -20,6 +20,7 @@ import { useFormik } from 'formik';
 
 export default function FormDialog() {
     const [open, setOpen] = React.useState(false);
+    const [catData, setcatData] = useState([]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -31,23 +32,42 @@ export default function FormDialog() {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'Name', width: 130 },
-        { field: 'lastName', headerName: 'Description', width: 130 },
+        { field: 'name', headerName: 'Name', width: 130 },
+        { field: 'Description', headerName: 'Description', width: 130 },
         { field: 'outlined', headerName: 'Action', width: 130 }
     ];
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
+    const getData = () => {
 
+      let localDataes = JSON.parse(localStorage.getItem("category"));
+      
+      setcatData(localDataes);
+    }
+
+    useEffect(() => {
+
+      getData();
+
+    }, []);
+      
+    
+
+    const localDataStore = (values) => {
+
+      let localData = JSON.parse(localStorage.getItem("category"));
+
+      console.log(values, localData);
+      
+      if(localData) {
+        localData.push({...values, id: Math.floor(Math.random() * 100000)})    
+        localStorage.setItem("category", JSON.stringify(localData));    
+      } else {
+        localStorage.setItem("category", JSON.stringify([{...values, id: Math.floor(Math.random() * 100000)}]));
+      }
+    }
+
+
+    
     let CategorySchema = object({
         name: string().required(),
         Description: string().required()
@@ -60,9 +80,9 @@ export default function FormDialog() {
         },
         validationSchema: CategorySchema,
         onSubmit: (values , {resetForm}) => {
-            alert(JSON.stringify(values, null, 2));
-            resetForm();
-            handleClose();
+          localDataStore(values);
+          resetForm();
+          handleClose();
         },
     });
 
@@ -124,10 +144,10 @@ export default function FormDialog() {
                 </Dialog>
             </React.Fragment>
 
-            {/* <Paper sx={{ height: 400, width: '100%' }}>
+            <Paper sx={{ height: 400, width: '100%' }}>
 
                 <DataGrid
-                    rows={rows}
+                    rows={catData}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10]}
@@ -135,7 +155,7 @@ export default function FormDialog() {
                     sx={{ border: 0 }}
                 />
 
-            </Paper> */}
+            </Paper>
 
             {/* <Stack direction="row" spacing={2}>
                 <Button variant="outlined" startIcon={<DeleteIcon />}>
