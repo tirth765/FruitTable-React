@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 
 import { object, string } from 'yup';
@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 import { bgcolor } from '@mui/system';
 
 export default function Contact() {
+    const [catData, setcatData] = useState([]);
 
   let CategorySchema = object({
     name: string().required(),
@@ -23,10 +24,37 @@ export default function Contact() {
     },
     validationSchema: CategorySchema,
     onSubmit: (values, { resetForm }) => {
-      alert(JSON.stringify(values, null, 3));
+      localDataStore(values);
       resetForm();
     },
   });
+
+  const getData = () => {
+  
+        let localDataes = JSON.parse(localStorage.getItem("category"));
+        
+        setcatData(localDataes);
+      }
+  
+      useEffect(() => {
+  
+        getData();
+  
+      }, []);
+
+      const localDataStore = (values) => {
+
+        let localData = JSON.parse(localStorage.getItem("category"));
+  
+        console.log(values, localData);
+        
+        if(localData) {
+          localData.push({...values, id: Math.floor(Math.random() * 100000)})    
+          localStorage.setItem("category", JSON.stringify(localData));    
+        } else {
+          localStorage.setItem("category", JSON.stringify([{...values, id: Math.floor(Math.random() * 100000)}]));
+        }
+      }
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
 
