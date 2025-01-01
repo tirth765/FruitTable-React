@@ -7,8 +7,17 @@ import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import { bgcolor } from '@mui/system';
 
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+
 export default function Contact() {
-    const [catData, setcatData] = useState([]);
+  const [catData, setcatData] = useState([]);
+    const [Update, setUpdate] = useState(false);
+  
 
   let CategorySchema = object({
     name: string().required(),
@@ -19,7 +28,7 @@ export default function Contact() {
   const formik = useFormik({
     initialValues: {
       name: '',
-      email:'',
+      email: '',
       Description: ''
     },
     validationSchema: CategorySchema,
@@ -30,33 +39,104 @@ export default function Contact() {
   });
 
   const getData = () => {
-  
-        let localDataes = JSON.parse(localStorage.getItem("category"));
-        
-        setcatData(localDataes);
+
+    let localDataes = JSON.parse(localStorage.getItem("Contact"));
+
+    setcatData(localDataes);
+  }
+
+  useEffect(() => {
+
+    getData();
+
+  }, []);
+
+  const columns = [
+    // { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 130 },
+    { field: 'email', headerName: 'Email', width: 130 },
+    { field: 'Description', headerName: 'Description', width: 130 },
+    {
+      headerName: 'Action', width: 130,
+      renderCell: (params) => {
+        return (
+          <>
+
+            <IconButton aria-label="edit" onClick={() => { handleEdit(params.row) }}>
+              <EditIcon />
+            </IconButton>
+
+            <IconButton aria-label="delete" onClick={() => { handleDelete(params.row.id) }}>
+              <DeleteIcon />
+            </IconButton>
+
+          </>
+        )
+
       }
-  
-      useEffect(() => {
-  
-        getData();
-  
-      }, []);
+    }
+  ];
 
-      const localDataStore = (values) => {
+  const handleDelete = (id) => {
 
-        let localData = JSON.parse(localStorage.getItem("category"));
-  
-        console.log(values, localData);
+    const localData = JSON.parse(localStorage.getItem("Contact"));
+
+    console.log(localData, id);
+
+
+    // --------------------- Method:- 1 ( findIndex ) --------------------
+
+    //   const index = localData.findIndex((v) => v.id === id)
+
+    //   console.log(index);
+
+    //  let data = localData.splice(index,1)
+
+    //   console.log(data);
+
+    //---------------------------------------------------------------------
+
+    // --------------------- Method:- 2 ( filter ) ------------------------
+
+    let fdata = localData.filter((v) => v.id !== id)
+
+    console.log(fdata);
         
-        if(localData) {
-          localData.push({...values, id: Math.floor(Math.random() * 100000)})    
-          localStorage.setItem("category", JSON.stringify(localData));    
-        } else {
-          localStorage.setItem("category", JSON.stringify([{...values, id: Math.floor(Math.random() * 100000)}]));
-        }
-      }
+    //---------------------------------------------------------------------
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
+
+    localStorage.setItem("Contact", JSON.stringify(fdata))
+
+    setcatData(fdata);
+
+  }
+
+  const handleEdit = (data) => {
+
+    console.log(data);
+
+    setValues(data);
+    setUpdate(true)
+
+  }
+
+  const paginationModel = { page: 0, pageSize: 5 };
+
+  const localDataStore = (values) => {
+
+    let localData = JSON.parse(localStorage.getItem("Contact"));
+
+    console.log(values, localData);
+
+    if (localData) {
+      localData.push({ ...values, id: Math.floor(Math.random() * 100000) })
+      localStorage.setItem("Contact", JSON.stringify(localData));
+    } else {
+      localStorage.setItem("Contact", JSON.stringify([{ ...values, id: Math.floor(Math.random() * 100000) }]));
+    }
+  }
+
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched, setValues,resetForm } = formik;
 
   return (
     <div>
@@ -103,33 +183,33 @@ export default function Contact() {
                     onChange={handleChange}
                     value={values.name}
                     error={errors.name && touched.name}
-                    onBlur={handleBlur} 
-                    type="text" 
-                    className="w-100 form-control border-0 py-3 mb-4" 
-                    placeholder="Your Name" name="name" 
-                    style={{backgroundColor:'white'}} />
+                    onBlur={handleBlur}
+                    type="text"
+                    className="w-100 form-control border-0 py-3 mb-4"
+                    placeholder="Your Name" name="name"
+                    style={{ backgroundColor: 'white' }} />
 
-                  <TextField 
+                  <TextField
                     helperText={errors.email && touched.email ? errors.email : ''}
                     onChange={handleChange}
                     value={values.email}
                     error={errors.email && touched.email}
-                    onBlur={handleBlur} 
-                    name="email" 
-                    className="w-100 form-control border-0 py-3 mb-4" 
-                    placeholder="Enter Your Email" 
-                    style={{backgroundColor:'white'}} />
-                    
-                    <TextField 
+                    onBlur={handleBlur}
+                    name="email"
+                    className="w-100 form-control border-0 py-3 mb-4"
+                    placeholder="Enter Your Email"
+                    style={{ backgroundColor: 'white' }} />
+
+                  <TextField
                     helperText={errors.Description && touched.Description ? errors.Description : ''}
                     onChange={handleChange}
                     value={values.Description}
                     error={errors.Description && touched.Description}
-                    onBlur={handleBlur} 
-                    name="Description" 
-                    className="w-100 form-control border-0 py-3 mb-4" 
-                    placeholder="Enter Your Description" 
-                    style={{backgroundColor:'white'}} />
+                    onBlur={handleBlur}
+                    name="Description"
+                    className="w-100 form-control border-0 py-3 mb-4"
+                    placeholder="Enter Your Description"
+                    style={{ backgroundColor: 'white' }} />
 
                   <button className="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
                 </form>
@@ -139,7 +219,18 @@ export default function Contact() {
 
 
 
+                <Paper sx={{ height: 400, width: '100%' }}>
 
+                  <DataGrid
+                    rows={catData}
+                    columns={columns}
+                    initialState={{ pagination: { paginationModel } }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                    sx={{ border: 0 }}
+                  />
+
+                </Paper>
 
 
 
