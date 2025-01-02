@@ -136,6 +136,25 @@ export default function FormDialog() {
     Description: string().required()
   });
 
+  const updateData = (data) => {
+    let localData = JSON.parse(localStorage.getItem("category"))
+
+    console.log(localData, data);
+
+   const index = localData.findIndex((v) => v.id == data.id)
+
+   localData[index] = data
+
+  console.log(localData);
+
+  localStorage.setItem("category", JSON.stringify(localData))
+
+  setcatData(localData)
+
+
+    
+  }
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -143,7 +162,13 @@ export default function FormDialog() {
     },
     validationSchema: CategorySchema,
     onSubmit: (values, { resetForm }) => {
-      localDataStore(values);
+
+      if(Update) {
+        updateData(values)
+      } else {
+        localDataStore(values);
+      }
+     
       resetForm();
       handleClose();
     },
@@ -158,9 +183,11 @@ export default function FormDialog() {
     <>
 
       <React.Fragment>
+
         <Button variant="outlined" onClick={handleClickOpen} style={{ marginLeft: '89%' }}>
           Add Category
-        </Button>
+        </Button> 
+
         <Dialog open={open} onClose={handleClose}>
 
           <form onSubmit={handleSubmit}>

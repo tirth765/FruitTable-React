@@ -25,6 +25,23 @@ export default function Contact() {
     Description: string().required()
   });
 
+  const updateData = (data) => {
+    const localData = JSON.parse(localStorage.getItem("Contact"));
+
+    console.log(data, localData);
+
+    const index = localData.findIndex((v) => v.id == data.id);
+
+    localData[index] = data
+
+    localStorage.setItem("Contact", JSON.stringify(localData));
+
+    setcatData(localData)
+
+    
+  }
+
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -32,8 +49,13 @@ export default function Contact() {
       Description: ''
     },
     validationSchema: CategorySchema,
-    onSubmit: (values, { resetForm }) => {
-      localDataStore(values);
+      onSubmit: (values, { resetForm }) => {
+        if(Update) {  
+          updateData(values);
+        } else {
+          localDataStore(values);
+        }
+
       resetForm();
     },
   });
@@ -84,26 +106,10 @@ export default function Contact() {
     console.log(localData, id);
 
 
-    // --------------------- Method:- 1 ( findIndex ) --------------------
-
-    //   const index = localData.findIndex((v) => v.id === id)
-
-    //   console.log(index);
-
-    //  let data = localData.splice(index,1)
-
-    //   console.log(data);
-
-    //---------------------------------------------------------------------
-
-    // --------------------- Method:- 2 ( filter ) ------------------------
-
     let fdata = localData.filter((v) => v.id !== id)
 
     console.log(fdata);
         
-    //---------------------------------------------------------------------
-
 
     localStorage.setItem("Contact", JSON.stringify(fdata))
 
