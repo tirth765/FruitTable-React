@@ -1,24 +1,33 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import { decrement, increment } from '../../redux/action/counter.action';
 import { Button } from '@mui/material';
+import { useSelector } from 'react-redux';
 
-export default function Counter() {
+export default function Counter(dispatch) {
 
   const handleIncrement = () => {
-    increment();
+    dispatch(increment());
   }
 
   const handleDecrement = () => {
-    decrement();
+    dispatch(decrement());
   }
+
+  const c = useSelector ((state => state.count))
+  console.log(c);
+  
+  
+  // const [state, dispatch] = useReducer(handleCounter, initializState);
+
 
   return (
     <>
 
-    <div>Counter</div>
-
+    {/* <div>Count: {state.coun}</div> */}
+    
+    <div>Counter:</div>
     <Button onclick={handleIncrement}>+</Button>
-    <span>0</span>
+    <span>{c.count}</span>
     <Button onclick={handleDecrement}>-</Button>
 
     </>
