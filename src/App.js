@@ -11,17 +11,17 @@ function App() {
   const store = createStore()
 
   return (
-   
-   
-   <Provider store={store}>
-    <Routes>
-      <Route path="/*" element={<UserRoute />} />
-      <Route element={<PrivateRoute />}>
-          <Route path="/admin/*" element={<AdminRoute/>}/>
+
+
+    <Provider store={store}>
+      <Routes>
+        <Route path="/*" element={<UserRoute />} />
+        <Route element={<PrivateRoute />}>
+        <Route path="/admin/*" element={<AdminRoute />} />
       </Route>
-    </Routes>
+      </Routes>
     </Provider>
-    
+
   );
 }
 

@@ -17,6 +17,9 @@ import { object, string } from 'yup';
 
 import { useFormik } from 'formik';
 
+import { useSelector } from 'react-redux';
+
+
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
@@ -57,7 +60,7 @@ export default function FormDialog() {
     let fdata = localData.filter((v) => v.id !== id)
 
     console.log(fdata);
-        
+
     //---------------------------------------------------------------------
 
 
@@ -141,18 +144,18 @@ export default function FormDialog() {
 
     console.log(localData, data);
 
-   const index = localData.findIndex((v) => v.id == data.id)
+    const index = localData.findIndex((v) => v.id == data.id)
 
-   localData[index] = data
+    localData[index] = data
 
-  console.log(localData);
+    console.log(localData);
 
-  localStorage.setItem("category", JSON.stringify(localData))
+    localStorage.setItem("category", JSON.stringify(localData))
 
-  setcatData(localData)
+    setcatData(localData)
 
 
-    
+
   }
 
   const formik = useFormik({
@@ -163,12 +166,12 @@ export default function FormDialog() {
     validationSchema: CategorySchema,
     onSubmit: (values, { resetForm }) => {
 
-      if(Update) {
+      if (Update) {
         updateData(values)
       } else {
         localDataStore(values);
       }
-     
+
       resetForm();
       handleClose();
     },
@@ -177,16 +180,18 @@ export default function FormDialog() {
   const { handleSubmit, handleChange, handleBlur, values, errors, touched, resetForm, setValues } = formik;
 
   const paginationModel = { page: 0, pageSize: 5 };
-
+  
+  const c = useSelector ((state => state.count))
+  console.log(c);
 
   return (
     <>
 
       <React.Fragment>
-
+      <h1>Category <span>{c.count}</span> </h1>
         <Button variant="outlined" onClick={handleClickOpen} style={{ marginLeft: '89%' }}>
           Add Category
-        </Button> 
+        </Button>
 
         <Dialog open={open} onClose={handleClose}>
 
