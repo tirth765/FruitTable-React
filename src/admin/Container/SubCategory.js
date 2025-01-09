@@ -16,11 +16,17 @@ import { number, object, string } from 'yup';
 
 import { useFormik } from 'formik';
 import { FormHelperText } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSubCategory } from '../../redux/Slice/subCategory';
 
+
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
 
 export default function SubCategory() {
   const [open, setOpen] = React.useState(false);
   const [Catdata, setCatData] = React.useState([]);
+  const dispatch = useDispatch();
 
   const getData = () => {
     const localData = JSON.parse(localStorage.getItem("category"))
@@ -30,8 +36,6 @@ export default function SubCategory() {
   useEffect(() => {
     getData();
   }, [])
-
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,7 +51,6 @@ export default function SubCategory() {
     Description: string().required()
   })
 
-
   const formik = useFormik({
     initialValues: {
       Category: '',
@@ -56,18 +59,33 @@ export default function SubCategory() {
     },
     validationSchema: SubCategorySchema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      handleSubCategorySlice({...values,id: Math.floor(Math.random() * 1000)});
     },
   });
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } = formik;
 
   console.log(values);
-  
+
+  const handleSubCategorySlice = (values) => {
+    dispatch(setSubCategory(values))
+  }
+
+  const subcatselector = useSelector(state => state.subCategory);
+
+  console.log(subcatselector);
+
+  const columns = [
+    { field: 'Category', headerName: 'Category', width: 130 },
+    { field: 'name', headerName: 'SubCategory Name', width: 230 },
+    { field: 'Description', headerName: 'SubCategory Description', width: 230 },
+  ];
+
+  const paginationModel = { page: 0, pageSize: 5 };
 
   return (
     <>
-      <div>SubCategory</div>
+      <div>SubCategory</div>  
       <React.Fragment>
         <Button variant="outlined" onClick={handleClickOpen}>
           Add SubCategory
@@ -143,6 +161,19 @@ export default function SubCategory() {
           </form>
 
         </Dialog>
+                <br />
+                <br />
+        <Paper sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={subcatselector.subCategory}
+        columns={columns}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection
+        sx={{ border: 0 }}
+      />
+    </Paper>
+
       </React.Fragment>
     </>
   );
