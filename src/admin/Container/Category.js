@@ -167,7 +167,7 @@ export default function FormDialog() {
     onSubmit: (values, { resetForm }) => {
 
       if (Update) {
-        updateData(values)
+        updateData(values);
       } else {
         localDataStore(values);
       }
