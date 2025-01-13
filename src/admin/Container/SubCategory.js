@@ -15,7 +15,7 @@ import { number, object, string } from 'yup';
 import { useFormik } from 'formik';
 import { FormHelperText } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteSubCategory, editSubCategory, setSubCategory } from '../../redux/Slice/subCategorySlice';
+import { deleteSubCategory, editSubCategory, getSubCategory, setSubCategory } from '../../redux/Slice/subCategorySlice';
 
 import Stack from '@mui/material/Stack';
 
@@ -35,11 +35,11 @@ export default function SubCategory() {
 
   useEffect(() => {
     getData();
+    dispatch(getSubCategory())
   }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
-    
   };
 
   const handleClose = () => {
@@ -62,10 +62,9 @@ export default function SubCategory() {
     },
     validationSchema: SubCategorySchema,
     onSubmit: (values, { resetForm }) => {
-      handleSubCategorySlice({ ...values, id: Math.floor(Math.random() * 1000) });
 
-      if(update) {
-        dispatch(editSubCategory())
+      if (update) {
+        dispatch(editSubCategory(values));
       } else {
         handleSubCategorySlice({ ...values, id: Math.floor(Math.random() * 1000) });
 
@@ -90,10 +89,10 @@ export default function SubCategory() {
 
   const handleEdit = (data) => {
     console.log(data);
-    
+
     setValues(data)
-    handleClickOpen();
     setUpdate(true)
+    handleClickOpen();
     // dispatch(editSubCategory())
   }
 
@@ -110,9 +109,9 @@ export default function SubCategory() {
 
         const dataIdToName = Catdata.find((v) => params.row.Category === v.id)
 
-        console.log(dataIdToName.name);
+        // console.log(dataIdToName.name);
 
-        return dataIdToName.name;
+        return dataIdToName?.name;
       }
     },
     { field: 'name', headerName: 'SubCategory Name', width: 230 },
@@ -190,7 +189,7 @@ export default function SubCategory() {
                 value={values.name}
                 onChange={handleChange}
                 helperText={errors.name && touched.name ? errors.name : ''}
-               
+
                 error={errors.name && touched.name}
                 onBlur={handleBlur}
               />

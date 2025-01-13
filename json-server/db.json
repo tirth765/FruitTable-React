@@ -1,4 +1,34 @@
 {
-   
-  
+  "subCategory": [
+    {
+      "id": 531,
+      "Category": 50861,
+      "name": "Harsh",
+      "Description": "a"
+    },
+    {
+      "id": 277,
+      "Category": 23905,
+      "name": "a",
+      "Description": "aaaa"
+    },
+    {
+      "id": 637,
+      "Category": 50861,
+      "name": "a",
+      "Description": "aa"
+    },
+    {
+      "id": 420,
+      "Category": 23905,
+      "name": "a",
+      "Description": "aaaa"
+    },
+    {
+      "id": 977,
+      "Category": 28632,
+      "name": "a",
+      "Description": "a"
+    }
+  ]
 }
