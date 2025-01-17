@@ -20,7 +20,6 @@ export default function Counter() {
   
   return (
     <>
-
     
     <div>Counter:</div>
     <Button onClick={handleIncrement}>+</Button>

@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from "../Component/./Header/Header";
-import Footer from "../Component/./Footer/Footer";
+import Header from "../Component/Header/Header";
+import Footer from "../Component/Footer/Footer";
 import A404 from "../Container/404/A404";
 import Cart from "../Container/Cart/Cart";
 import Chakout from "../Container/Chackout/Chakout";
@@ -10,6 +10,7 @@ import ShopDetail from "../Container/Shop-detail/ShopDetail";
 import Shop from "../Container/Shop/Shop";
 import Testimonial from "../Container/Testimonial/Testimonial";
 import { Route, Routes } from "react-router-dom";
+import MyProfile from '../Container/My-profile/MyProfile';
 
 export default function UserRoute() {
   return (
@@ -26,6 +27,7 @@ export default function UserRoute() {
       <Route path="/Chakout" element = {<Chakout/>} />
       <Route path="/Cart" element = {<Cart/>} />
       <Route path="/A404" element = {<A404/>} />
+      <Route path='/MyProfile' element = {<MyProfile/>} />
 
     </Routes>  
 
