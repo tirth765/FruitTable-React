@@ -17,21 +17,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
 import { array, date, mixed, number, object, string } from 'yup';
-import { MenuItem, Paper, Select } from '@mui/material';
+import { Box, MenuItem, Paper, Select, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyProfile, setMyProfile } from '../../redux/Slice/MyProfileSlice';
+import { deleteMyProfile, getMyProfile, setMyProfile } from '../../redux/Slice/MyProfileSlice';
 
 export default function MyProfile() {
   const [open, setOpen] = React.useState(false);
+  const [update, setUpdate] = React.useState(false);
+
   const dispatch = useDispatch();
-  const MyProfileselecter = useSelector(state => state.MyProfile);
- 
+
+  const MyProfileselecter = useSelector((state => state.myProfile));
+
   useEffect(() => {
     dispatch(getMyProfile())
   }, [])
-
-  console.log(MyProfileselecter);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,9 +40,11 @@ export default function MyProfile() {
 
   const handleClose = () => {
     setOpen(false);
+    resetForm()
+    setUpdate(false)
   };
 
-  const SubCategorySchema = object({
+  const MyProfileSchema = object({
     name: string()
       .required()
       .max(30, "only 30 character are allowed")
@@ -55,7 +58,7 @@ export default function MyProfile() {
       .test('address', "maximum 100 words", (value) => {
 
         let str = value.trim().split(" ").length;
-        console.log(value, str);
+        // console.log(value, str);
 
         if (str > 100) {
           return false
@@ -86,8 +89,10 @@ export default function MyProfile() {
     country: string()
       .required(),
     gender: string()
-    .required(),
+      .required(),
   })
+
+
 
   const formik = useFormik({
     initialValues: {
@@ -100,34 +105,77 @@ export default function MyProfile() {
       gender: '',
       hobby: []
     },
-    validationSchema: SubCategorySchema,
-    onSubmit: values => {
+    validationSchema: MyProfileSchema,
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
-      handleMyProfileSlice({ ...values, id: Math.floor(Math.random() * 1000) });
 
-      },
+      handleMyProfileSlice({ ...values, select_file: values.select_file });
+
+      resetForm()
+      handleClose()
+    },
   });
 
   const handleMyProfileSlice = (values) => {
+    console.log(values);
+
     dispatch(setMyProfile(values))
   }
 
-  const { handleChange, handleBlur, values, errors, touched, setFieldValue } = formik;
+  const handleDelete = (id) => {
+    dispatch(deleteMyProfile(id));
+  }
+
+  const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues } = formik;
 
   const columns = [
-  
-    { field: 'name', headerName: 'Name', width: 230 },
+    { field: 'name', headerName: 'Name', width: 130 },
     { field: 'age', headerName: 'age', width: 130 },
-    { field: 'address', headerName: 'address', width: 230 },
+    { field: 'address', headerName: 'address', width: 130 },
     { field: 'bod', headerName: 'bod', width: 130 },
+    {
+      field: 'select_file', headerName: 'Img', width: 130,
+      renderCell: (params) => <Box component="img"
+        sx={{
+          height: 56,
+          width: 56,
+        }}
+        src={"img/" + params.value}
+      />,
+    },
     { field: 'country', headerName: 'country', width: 130 },
     { field: 'gender', headerName: 'gender', width: 130 },
-    { field: 'hobby', headerName: 'hobby', width: 230 },
-  
+    { field: 'hobby', headerName: 'hobby', width: 130 },
+    {
+      headerName: 'Action', width: 180,
+      renderCell: (params) => {
+        return (
+          <>
+
+            <Stack direction="row" spacing={2}>
+              <Button variant="outlined" onClick={() => { handleEdit(params.row) }}>Edit</Button>
+              <Button variant="outlined" href="#outlined-buttons" onClick={() => { handleDelete(params.row.id) }}>
+                Delete
+              </Button>
+            </Stack>
+
+          </>
+        )
+
+      }
+    }
+
   ];
 
   const paginationModel = { page: 0, pageSize: 5 };
 
+  const handleEdit = (data) => {
+    console.log(data);
+
+    setValues(data)
+    setUpdate(true)
+    handleClickOpen();
+  }
 
   return (
 
@@ -216,19 +264,32 @@ export default function MyProfile() {
               </div>
               <br></br>
 
-             <h6>Select Your Country</h6>
-              <Select
-                variant="standard"
+              <h6>Select Your Country</h6>
+
+              {/* <select variant="standard"
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
+                value={values.country}
+                name="country"
+                onChange={handleChange}
+                onBlur={handleBlur}>
+                <option value='India' >India</option>
+                <option value='US' >US</option>
+                <option value='UK' >UK</option>
+              </select> */}
 
+              <Select
+               variant="standard"
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={values.country}
                 name="country"
                 onChange={handleChange}
                 onBlur={handleBlur}
               >
-                <MenuItem value={'in'} >india</MenuItem>
-                <MenuItem value={'us'} >US</MenuItem>
-                <MenuItem value={'uk'} >UK</MenuItem>
+                <MenuItem value={'India'} >India</MenuItem>
+                <MenuItem value={'US'} >US</MenuItem>
+                <MenuItem value={'UK'} >UK</MenuItem>
 
               </Select>
               <br></br>
@@ -239,10 +300,10 @@ export default function MyProfile() {
               <br></br><br></br>
               <h6>Select Your gender</h6>
               <input type='radio' name='gender' onChange={handleChange}
-                onBlur={handleBlur} value="male" /> <span>Male</span>
-  <br></br>
-                <input type='radio' name='gender' onChange={handleChange}
-                onBlur={handleBlur} value="female" /> <span>Female</span>
+                onBlur={handleBlur} value="male" checked={values.gender === 'male' ? true : false}/> <span>Male</span>
+              <br></br>
+              <input type='radio' name='gender' onChange={handleChange}
+                onBlur={handleBlur} value="female" checked={values.gender === 'female' ? true : false}/> <span>Female</span>
 
               <div style={{ color: 'red', fontSize: '13px' }} >
                 {errors.gender && touched.gender ? errors.gender : ''}
@@ -252,20 +313,20 @@ export default function MyProfile() {
 
               <h6>Select Your Hobby</h6>
               <input type='checkbox' value={'Music'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlur} checked={values.hobby.includes("Music") }
               />
               <span> Music </span>
               <br></br>
               <input type='checkbox' value={'Reading'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlur}checked={values.hobby.includes("Reading") }
               />
               <span> Reading</span><br></br>
               <input type='checkbox' value={'Sports'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlur} checked={values.hobby.includes("Sports") }
               />
               <span> Sports</span><br></br>
               <input type='checkbox' value={'Traveling'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlur} checked={values.hobby.includes("Traveling") }
               />
               <span>  Traveling</span><br></br>
 
@@ -287,7 +348,7 @@ export default function MyProfile() {
         <br />
         <Paper sx={{ height: 400, width: '100%' }}>
           <DataGrid
-            rows={MyProfile.subCategory}
+            rows={MyProfileselecter?.myProfile}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}

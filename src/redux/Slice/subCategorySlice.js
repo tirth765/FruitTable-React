@@ -51,13 +51,18 @@ export const getSubCategory = createAsyncThunk(
 export const deleteSubCategory = createAsyncThunk(
     'subCategory/deleteSubCategory',
     async (id) => {
-        const response = await axios.delete('http://localhost:8000/subCategory', id);
+        const response = await axios.delete('http://localhost:8000/subCategory/' + id);
         return id;
-    }
-)
-export const editSubCategory = createAsyncThunk(
+    })
 
-)
+export const editSubCategory = createAsyncThunk(
+    'subCategory/editSubCategory',
+    async (data) => {
+        const response = await axios.put('http://localhost:8000/subCategory/' + data.id, data);
+
+        return response.data;
+    })
+
 export const setSubCategory = createAsyncThunk(
     'subCategory/setSubCategory',
     async (data) => {
@@ -85,7 +90,17 @@ const subCategorySlice = createSlice({
         })
         builder.addCase(deleteSubCategory.fulfilled, (state, action) => {
             state.subCategory = state.subCategory.filter((v) => v.id !== action.payload)
-})
+        })
+        builder.addCase(editSubCategory.fulfilled, (state, action) => {
+            state.subCategory = state.subCategory.map((v) => {
+                if (v.id === action.payload?.id) {
+                    return action.payload
+                } else {
+                    return v
+                }
+            })
+        })
+
     }
 })
 

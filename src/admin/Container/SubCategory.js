@@ -93,7 +93,7 @@ export default function SubCategory() {
     setValues(data)
     setUpdate(true)
     handleClickOpen();
-    // dispatch(editSubCategory())
+    dispatch(editSubCategory(data))
   }
 
   const handleDelete = (id) => {

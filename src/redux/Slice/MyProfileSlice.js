@@ -5,7 +5,7 @@ import axios from "axios";
 export const getMyProfile = createAsyncThunk(
     'myProfile/getMyProfile',
     async () => {
-        const response = await axios.get('http://localhost:8000/subCategory');
+        const response = await axios.get('http://localhost:8000/myProfile');
         console.log(response.data);
         return response.data;
     }
@@ -14,15 +14,24 @@ export const getMyProfile = createAsyncThunk(
 export const setMyProfile = createAsyncThunk(
     'myProfile/setMyProfile',
     async (data) => {
-        const response = await axios.post('http://localhost:8000/subCategory', data);
+        const response = await axios.post('http://localhost:8000/myProfile', data);
         console.log(response.data);
         return response.data;
     }
 )
 
+export const deleteMyProfile = createAsyncThunk(
+    'myProfile/deleteMyProfile',
+    async (id) => {
+        const response = await axios.delete('http://localhost:8000/myProfile/' + id);
+        return id;
+    }
+)
+
+
 const initialState = {
     isLoding: false,
-    subCategory: [],
+    myProfile: [],
     error: null
 }
 
@@ -31,10 +40,13 @@ const MyProfileSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder.addCase(getMyProfile.fulfilled, (state, action) => {
-            state.MyProfile = action.payload
+            state.myProfile = action.payload
         })
         builder.addCase(setMyProfile.fulfilled, (state, action) => {
-            state.MyProfile = state.MyProfile.concat(action.payload)
+            state.myProfile = state.myProfile.concat(action.payload)
+        })
+         builder.addCase(deleteMyProfile.fulfilled, (state, action) => {
+            state.myProfile = state.myProfile.filter((v) => v.id !== action.payload)
         })
        
     }
