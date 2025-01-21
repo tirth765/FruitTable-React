@@ -28,6 +28,14 @@ export const deleteMyProfile = createAsyncThunk(
     }
 )
 
+export const editMyProfile = createAsyncThunk(
+    'myProfile/editMyProfile',
+    async (data) => {
+        const response = await axios.put('http://localhost:8000/myProfile/' + data.id, data);
+
+        return response.data;
+    })
+
 
 const initialState = {
     isLoding: false,
@@ -45,10 +53,19 @@ const MyProfileSlice = createSlice({
         builder.addCase(setMyProfile.fulfilled, (state, action) => {
             state.myProfile = state.myProfile.concat(action.payload)
         })
-         builder.addCase(deleteMyProfile.fulfilled, (state, action) => {
+        builder.addCase(deleteMyProfile.fulfilled, (state, action) => {
             state.myProfile = state.myProfile.filter((v) => v.id !== action.payload)
         })
-       
+        builder.addCase(editMyProfile.fulfilled, (state, action) => {
+            state.myProfile = state.myProfile.map((v) => {
+                if (v.id === action.payload?.id) {
+                    return action.payload
+                } else {
+                    return v
+                }
+            })
+        })
+
     }
 })
 

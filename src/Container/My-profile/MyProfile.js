@@ -20,7 +20,7 @@ import { array, date, mixed, number, object, string } from 'yup';
 import { Box, MenuItem, Paper, Select, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteMyProfile, getMyProfile, setMyProfile } from '../../redux/Slice/MyProfileSlice';
+import { deleteMyProfile, editMyProfile, getMyProfile, setMyProfile } from '../../redux/Slice/MyProfileSlice';
 
 export default function MyProfile() {
   const [open, setOpen] = React.useState(false);
@@ -74,14 +74,23 @@ export default function MyProfile() {
     select_file: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
-        return value && value.size <= 2000000;
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && value.size <= 2000000;
+        }
       })
-      .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
-        return value && (
-          value.type === "image/jpeg" ||
-          value.type === "image/png"
 
-        );
+      .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && (
+            value.type === "image/jpeg" ||
+            value.type === "image/png"
+          );
+        }
+
       }),
     hobby: array()
       .min(2)
@@ -109,7 +118,11 @@ export default function MyProfile() {
     onSubmit: (values, { resetForm }) => {
       console.log(values);
 
-      handleMyProfileSlice({ ...values, select_file: values.select_file });
+      if (update) {
+        dispatch(editMyProfile({ ...values, select_file: values?.select_file?.name ? values?.select_file?.name : values.select_file }));
+      } else {
+        handleMyProfileSlice({ ...values, select_file: values.select_file.name });
+      }
 
       resetForm()
       handleClose()
@@ -127,6 +140,9 @@ export default function MyProfile() {
   }
 
   const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues } = formik;
+
+  console.log(values?.select_file);
+
 
   const columns = [
     { field: 'name', headerName: 'Name', width: 130 },
@@ -206,6 +222,8 @@ export default function MyProfile() {
                 value={values.name}
                 error={errors.name && touched.name}
                 onBlur={handleBlur}
+
+
               />
               <TextField
                 margin="dense"
@@ -257,6 +275,11 @@ export default function MyProfile() {
                 onChange={(e) => { setFieldValue('select_file', e.target.files[0]) }}
                 onBlur={handleBlur}
               />
+
+              <img src={typeof values?.select_file === 'string' ? 'img/' + values?.select_file : 'img/' + values?.select_file?.name } width={"90px"} height={"90px"} />
+
+           
+
               <br></br>
 
               <div style={{ color: 'red', fontSize: '13px' }} >
@@ -279,7 +302,7 @@ export default function MyProfile() {
               </select> */}
 
               <Select
-               variant="standard"
+                variant="standard"
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
                 value={values.country}
@@ -300,10 +323,10 @@ export default function MyProfile() {
               <br></br><br></br>
               <h6>Select Your gender</h6>
               <input type='radio' name='gender' onChange={handleChange}
-                onBlur={handleBlur} value="male" checked={values.gender === 'male' ? true : false}/> <span>Male</span>
+                onBlur={handleBlur} value="male" checked={values.gender === 'male' ? true : false} /> <span>Male</span>
               <br></br>
               <input type='radio' name='gender' onChange={handleChange}
-                onBlur={handleBlur} value="female" checked={values.gender === 'female' ? true : false}/> <span>Female</span>
+                onBlur={handleBlur} value="female" checked={values.gender === 'female' ? true : false} /> <span>Female</span>
 
               <div style={{ color: 'red', fontSize: '13px' }} >
                 {errors.gender && touched.gender ? errors.gender : ''}
@@ -313,20 +336,20 @@ export default function MyProfile() {
 
               <h6>Select Your Hobby</h6>
               <input type='checkbox' value={'Music'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur} checked={values.hobby.includes("Music") }
+                onBlur={handleBlur} checked={values.hobby.includes("Music")}
               />
               <span> Music </span>
               <br></br>
               <input type='checkbox' value={'Reading'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur}checked={values.hobby.includes("Reading") }
+                onBlur={handleBlur} checked={values.hobby.includes("Reading")}
               />
               <span> Reading</span><br></br>
               <input type='checkbox' value={'Sports'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur} checked={values.hobby.includes("Sports") }
+                onBlur={handleBlur} checked={values.hobby.includes("Sports")}
               />
               <span> Sports</span><br></br>
               <input type='checkbox' value={'Traveling'} name='hobby' onChange={handleChange}
-                onBlur={handleBlur} checked={values.hobby.includes("Traveling") }
+                onBlur={handleBlur} checked={values.hobby.includes("Traveling")}
               />
               <span>  Traveling</span><br></br>
 
@@ -338,8 +361,11 @@ export default function MyProfile() {
               </div>
             </DialogContent>
             <DialogActions>
+            <Button onClick={resetForm} style={{marginRight:'53%'}}>reset Form</Button>
+
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit">Submit</Button>
+
             </DialogActions>
           </form>
         </Dialog>

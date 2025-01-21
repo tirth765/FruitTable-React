@@ -15,46 +15,47 @@
   ],
   "myProfile": [
     {
-      "id": "e48a",
-      "name": "my full name",
-      "age": "30",
-      "address": "full street address",
-      "bod": "2025-01-17",
-      "country": "US",
+      "id": "0171",
+      "name": "Tirth",
+      "age": "19",
+      "address": "109-110",
+      "bod": "2025-01-12",
+      "country": "India",
       "gender": "male",
       "hobby": [
-        "Music",
+        "Sports",
         "Reading"
       ],
-      "select_file": {}
+      "select_file": "best-product-5.jpg"
     },
     {
-      "id": "9ca9",
-      "name": "my full name",
-      "age": "30",
+      "id": "0ba3",
+      "name": "Harsh",
+      "age": "18",
       "address": "full street address",
-      "bod": "2025-01-08",
+      "bod": "2025-01-12",
       "country": "US",
-      "gender": "male",
-      "hobby": [
-        "Music",
-        "Reading"
-      ],
-      "select_file": {}
-    },
-    {
-      "id": "3ab7",
-      "name": "my full name",
-      "age": "30",
-      "address": "full street address",
-      "bod": "2025-01-10",
-      "country": "UK",
       "gender": "female",
       "hobby": [
+        "Traveling",
         "Music",
-        "Sports"
+        "Reading"
       ],
-      "select_file": {}
+      "select_file": "best-product-1.jpg"
+    },
+    {
+      "id": "2fd3",
+      "name": "Tirth",
+      "age": "18",
+      "address": "full street ",
+      "bod": "2025-01-09",
+      "country": "US",
+      "gender": "male",
+      "hobby": [
+        "Music",
+        "Reading"
+      ],
+      "select_file": "baner-1.png"
     }
   ]
 }
