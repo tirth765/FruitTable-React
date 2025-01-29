@@ -7,24 +7,25 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
+import { Box, Paper } from '@mui/material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { object, string } from 'yup';
+import { object, string ,mixed } from 'yup';
 
 import { useFormik } from 'formik';
 
-import { useSelector } from 'react-redux';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { CategorySlice, CreateCategory } from '../../redux/Slice/CategorySlice';
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [catData, setcatData] = useState([]);
   const [Update, setUpdate] = useState(false);
+
+  const dispatch = useDispatch()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -83,7 +84,17 @@ export default function FormDialog() {
   const columns = [
     // { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'Description', headerName: 'Description', width: 130 },
+    { field: 'description', headerName: 'description', width: 130 },
+    {
+      field: 'cat_img', headerName: 'Img', width: 130,
+      renderCell: (params) => <Box component="img"
+        sx={{
+          height: 56,
+          width: 56,
+        }}
+        src={"img/" + params.value}
+      />,
+    },
     {
       headerName: 'Action', width: 130,
       renderCell: (params) => {
@@ -119,24 +130,39 @@ export default function FormDialog() {
   }, []);
 
   const localDataStore = (values) => {
-
-    let localData = JSON.parse(localStorage.getItem("category"));
-
-    console.log(values, localData);
-
-    if (localData) {
-      localData.push({ ...values, id: Math.floor(Math.random() * 100000) })
-      localStorage.setItem("category", JSON.stringify(localData));
-      setcatData(localData)
-    } else {
-      localStorage.setItem("category", JSON.stringify([{ ...values, id: Math.floor(Math.random() * 100000) }]));
-      setcatData([{ ...values, id: Math.floor(Math.random() * 100000) }])
-    }
+    console.log(values);
+    
+    dispatch(CreateCategory(values))   
   }
 
   let CategorySchema = object({
-    name: string().required(),
-    Description: string().required()
+ name: string()
+      .required()
+      .max(30, "only 30 character are allowed")
+      .min(2, "character must be 2")
+      .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
+    description: string().required(),
+    cat_img: mixed()
+          .required("You need to provide a file")
+          .test("fileSize", "The file is too large", (value) => {
+            if (typeof value === 'string') {
+              return true;
+            } else if (typeof value === 'object') {
+              return value && value.size <= 2000000;
+            }
+          })
+    
+          .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
+            if (typeof value === 'string') {
+              return true;
+            } else if (typeof value === 'object') {
+              return value && (
+                value.type === "image/jpeg" ||
+                value.type === "image/png"
+              );
+            }
+    
+          }),
   });
 
   const updateData = (data) => {
@@ -161,7 +187,8 @@ export default function FormDialog() {
   const formik = useFormik({
     initialValues: {
       name: '',
-      Description: ''
+      description: '',
+      cat_img: ''
     },
     validationSchema: CategorySchema,
     onSubmit: (values, { resetForm }) => {
@@ -177,12 +204,13 @@ export default function FormDialog() {
     },
   });
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched, resetForm, setValues } = formik;
+  const { handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched, resetForm, setValues } = formik;
 
   const paginationModel = { page: 0, pageSize: 5 };
   
   const c = useSelector ((state => state.count))
-  console.log(c);
+  const Category = useSelector((state => state.Category))
+  // console.log(c);
 
   return (
     <>
@@ -195,7 +223,7 @@ export default function FormDialog() {
 
         <Dialog open={open} onClose={handleClose}>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} enctype="multipart/form-data">
             <DialogTitle>Category</DialogTitle>
             <DialogContent>
 
@@ -215,18 +243,29 @@ export default function FormDialog() {
               />
               <TextField
                 margin="dense"
-                id="Description"
-                name="Description"
-                label="Description"
-                type="Description"
+                id="description"
+                name="description"
+                label="description"
+                type="description"
                 fullWidth
                 variant="standard"
-                helperText={errors.Description && touched.Description ? errors.Description : ''}
+                helperText={errors.description && touched.description ? errors.description : ''}
                 onChange={handleChange}
-                value={values.Description}
-                error={errors.Description && touched.Description}
+                value={values.description}
+                error={errors.description && touched.description}
                 onBlur={handleBlur}
               />
+
+<br></br><br></br>
+
+<input type='file'
+  name='cat_img'
+  onChange={(e) => { setFieldValue('cat_img', e.target.files[0]) }}
+  onBlur={handleBlur}
+/>
+
+<img src={typeof values?.cat_img === 'string' ? '../img/' + values?.cat_img : '../img/' + values?.cat_img?.name } width={"90px"} height={"90px"} />
+
 
             </DialogContent>
             <DialogActions>
@@ -242,7 +281,9 @@ export default function FormDialog() {
       <Paper sx={{ height: 400, width: '100%' }}>
 
         <DataGrid
-          rows={catData}
+          rows={Category?.Category}
+           getRowId={(row) => row._id} 
+
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}

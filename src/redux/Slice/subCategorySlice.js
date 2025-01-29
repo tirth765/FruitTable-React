@@ -67,7 +67,7 @@ export const setSubCategory = createAsyncThunk(
     'subCategory/setSubCategory',
     async (data) => {
         const response = await axios.post('http://localhost:8000/subCategory', data);
-        console.log(response.data);
+        console.mathlog(response.data);
         return response.data;
     }
 )
