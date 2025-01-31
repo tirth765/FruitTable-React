@@ -13,12 +13,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { object, string ,mixed } from 'yup';
+import { object, string, mixed } from 'yup';
 
 import { useFormik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { CategorySlice, CreateCategory } from '../../redux/Slice/CategorySlice';
+import { CategorySlice, CreateCategory, deleteCategores, deleteCategory, getCategores, updateCategory } from '../../redux/Slice/CategorySlice';
+import { IMG_URL } from '../../Utils/Base';
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
@@ -38,46 +39,49 @@ export default function FormDialog() {
   };
 
   const handleDelete = (id) => {
+    dispatch(deleteCategory(id))
+    // const localData = JSON.parse(localStorage.getItem("category"));
 
-    const localData = JSON.parse(localStorage.getItem("category"));
-
-    console.log(localData, id);
-
-
-    // --------------------- Method:- 1 ( findIndex ) --------------------
-
-    //   const index = localData.findIndex((v) => v.id === id)
-
-    //   console.log(index);
-
-    //  let data = localData.splice(index,1)
-
-    //   console.log(data);
-
-    //---------------------------------------------------------------------
-
-    // --------------------- Method:- 2 ( filter ) ------------------------
-
-    let fdata = localData.filter((v) => v.id !== id)
-
-    console.log(fdata);
-
-    //---------------------------------------------------------------------
+    // console.log(localData, id);
 
 
-    localStorage.setItem("category", JSON.stringify(fdata))
+    // // --------------------- Method:- 1 ( findIndex ) --------------------
 
-    setcatData(fdata);
+    // //   const index = localData.findIndex((v) => v.id === id)
+
+    // //   console.log(index);
+
+    // //  let data = localData.splice(index,1)
+
+    // //   console.log(data);
+
+    // //---------------------------------------------------------------------
+
+    // // --------------------- Method:- 2 ( filter ) ------------------------
+
+    // let fdata = localData.filter((v) => v.id !== id)
+
+    // console.log(fdata);
+
+    // //---------------------------------------------------------------------
+
+
+    // localStorage.setItem("category", JSON.stringify(fdata))
+
+    // setcatData(fdata);
 
   }
 
   const handleEdit = (data) => {
 
+
+      
     console.log(data);
 
     setValues(data);
     handleClickOpen();
-    setUpdate(true)
+    dispatch(updateCategory(data))
+    // setUpdate(true)
 
   }
 
@@ -92,7 +96,7 @@ export default function FormDialog() {
           height: 56,
           width: 56,
         }}
-        src={"img/" + params.value}
+        src={IMG_URL + params.value}
       />,
     },
     {
@@ -101,11 +105,11 @@ export default function FormDialog() {
         return (
           <>
 
-            <IconButton aria-label="edit" onClick={() => { handleEdit(params.row) }}>
+            <IconButton aria-label="edit" onClick={() => { handleEdit(params.row  ) }}>
               <EditIcon />
             </IconButton>
 
-            <IconButton aria-label="delete" onClick={() => { handleDelete(params.row.id) }}>
+            <IconButton aria-label="delete" onClick={() => { handleDelete(params.row._id) }}>
               <DeleteIcon />
             </IconButton>
 
@@ -117,10 +121,7 @@ export default function FormDialog() {
   ];
 
   const getData = () => {
-
-    let localDataes = JSON.parse(localStorage.getItem("category"));
-
-    setcatData(localDataes);
+    dispatch(getCategores())
   }
 
   useEffect(() => {
@@ -131,38 +132,38 @@ export default function FormDialog() {
 
   const localDataStore = (values) => {
     console.log(values);
-    
-    dispatch(CreateCategory(values))   
+
+    dispatch(CreateCategory(values))
   }
 
   let CategorySchema = object({
- name: string()
+    name: string()
       .required()
       .max(30, "only 30 character are allowed")
       .min(2, "character must be 2")
       .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
     description: string().required(),
     cat_img: mixed()
-          .required("You need to provide a file")
-          .test("fileSize", "The file is too large", (value) => {
-            if (typeof value === 'string') {
-              return true;
-            } else if (typeof value === 'object') {
-              return value && value.size <= 2000000;
-            }
-          })
-    
-          .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
-            if (typeof value === 'string') {
-              return true;
-            } else if (typeof value === 'object') {
-              return value && (
-                value.type === "image/jpeg" ||
-                value.type === "image/png"
-              );
-            }
-    
-          }),
+      .required("You need to provide a file")
+      .test("fileSize", "The file is too large", (value) => {
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && value.size <= 2000000;
+        }
+      })
+
+      .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && (
+            value.type === "image/jpeg" ||
+            value.type === "image/png"
+          );
+        }
+
+      }),
   });
 
   const updateData = (data) => {
@@ -207,8 +208,8 @@ export default function FormDialog() {
   const { handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched, resetForm, setValues } = formik;
 
   const paginationModel = { page: 0, pageSize: 5 };
-  
-  const c = useSelector ((state => state.count))
+
+  const c = useSelector((state => state.count))
   const Category = useSelector((state => state.Category))
   // console.log(c);
 
@@ -216,7 +217,7 @@ export default function FormDialog() {
     <>
 
       <React.Fragment>
-      <h1>Category <span>{c.count}</span> </h1>
+        <h1>Category <span>{c.count}</span> </h1>
         <Button variant="outlined" onClick={handleClickOpen} style={{ marginLeft: '89%' }}>
           Add Category
         </Button>
@@ -256,15 +257,15 @@ export default function FormDialog() {
                 onBlur={handleBlur}
               />
 
-<br></br><br></br>
+              <br></br><br></br>
 
-<input type='file'
-  name='cat_img'
-  onChange={(e) => { setFieldValue('cat_img', e.target.files[0]) }}
-  onBlur={handleBlur}
-/>
+              <input type='file'
+                name='cat_img'
+                onChange={(e) => { setFieldValue('cat_img', e.target.files[0]) }}
+                onBlur={handleBlur}
+              />
 
-<img src={typeof values?.cat_img === 'string' ? '../img/' + values?.cat_img : '../img/' + values?.cat_img?.name } width={"90px"} height={"90px"} />
+              <img src={typeof values?.cat_img === 'string' ? IMG_URL + values?.cat_img : '../img/' + values?.cat_img?.name} width={"90px"} height={"90px"} />
 
 
             </DialogContent>
@@ -282,7 +283,7 @@ export default function FormDialog() {
 
         <DataGrid
           rows={Category?.Category}
-           getRowId={(row) => row._id} 
+          getRowId={(row) => row._id}
 
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
