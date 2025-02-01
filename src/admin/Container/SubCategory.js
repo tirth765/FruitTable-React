@@ -10,17 +10,18 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import { number, object, string } from 'yup';
+import { mixed, number, object, string } from 'yup';
 
 import { useFormik } from 'formik';
-import { FormHelperText } from '@mui/material';
+import { Box, FormHelperText } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteSubCategory, editSubCategory, getSubCategory, setSubCategory } from '../../redux/Slice/subCategorySlice';
+import { deleteSubCategory, updateSubCategory, getSubCategores, CreateSubCategory } from '../../redux/Slice/subCategorySlice';
 
 import Stack from '@mui/material/Stack';
 
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import { IMG_URL } from '../../Utils/Base';
 
 export default function SubCategory() {
   const [open, setOpen] = React.useState(false);
@@ -35,7 +36,7 @@ export default function SubCategory() {
 
   useEffect(() => {
     getData();
-    dispatch(getSubCategory())
+    dispatch(getSubCategores())
   }, [])
 
   const handleClickOpen = () => {
@@ -50,21 +51,47 @@ export default function SubCategory() {
 
   let SubCategorySchema = object({
     Category: number().required(),
-    name: string().required(),
-    Description: string().required()
+    name: string()
+      .required()
+      .max(30, "only 30 character are allowed")
+      .min(2, "character must be 2")
+      .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
+    Description: string().required(),
+    subcat_img: mixed()
+      .required("You need to provide a file")
+      .test("fileSize", "The file is too large", (value) => {
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && value.size <= 2000000;
+        }
+      })
+
+      .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
+        if (typeof value === 'string') {
+          return true;
+        } else if (typeof value === 'object') {
+          return value && (
+            value.type === "image/jpeg" ||
+            value.type === "image/png"
+          );
+        }
+
+      }),
   })
 
   const formik = useFormik({
     initialValues: {
       Category: '',
       name: '',
-      Description: ''
+      Description: '',
+      subcat_img: ''
     },
     validationSchema: SubCategorySchema,
     onSubmit: (values, { resetForm }) => {
 
       if (update) {
-        dispatch(editSubCategory(values));
+        dispatch(updateSubCategory(values));
       } else {
         handleSubCategorySlice({ ...values, id: Math.floor(Math.random() * 1000) });
 
@@ -75,12 +102,12 @@ export default function SubCategory() {
     },
   });
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched, resetForm, setValues } = formik;
+  const { handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched, resetForm, setValues } = formik;
 
   console.log(values);
 
   const handleSubCategorySlice = (values) => {
-    dispatch(setSubCategory(values))
+    dispatch(CreateSubCategory(values))
   }
 
   const subcatselector = useSelector(state => state.subCategory);
@@ -93,7 +120,7 @@ export default function SubCategory() {
     setValues(data)
     setUpdate(true)
     handleClickOpen();
-    dispatch(editSubCategory(data))
+    dispatch(updateSubCategory(data))
   }
 
   const handleDelete = (id) => {
@@ -116,6 +143,16 @@ export default function SubCategory() {
     },
     { field: 'name', headerName: 'SubCategory Name', width: 230 },
     { field: 'Description', headerName: 'SubCategory Description', width: 230 },
+    {
+      field: 'subcat_img', headerName: 'Img', width: 130,
+      renderCell: (params) => <Box component="img"
+        sx={{
+          height: 56,
+          width: 56,
+        }}
+        src={IMG_URL + params.value}
+      />,
+    },
     {
       headerName: 'Action', width: 180,
       renderCell: (params) => {
@@ -209,6 +246,16 @@ export default function SubCategory() {
                 error={errors.Description && touched.Description}
                 onBlur={handleBlur}
               />
+              <br></br><br></br>
+
+              <input type='file'
+                name='cat_img'
+                onChange={(e) => { setFieldValue('cat_img', e.target.files[0]) }}
+                onBlur={handleBlur}
+              />
+
+              <img src={typeof values?.cat_img === 'string' ? IMG_URL + values?.cat_img : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img) : null} width={"90px"} height={"90px"} />
+
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit" >{update ? 'Update' : 'Submit'}</Button>

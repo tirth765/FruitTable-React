@@ -63,8 +63,12 @@ export const updateCategory = createAsyncThunk(
     "Category/updateCategory",
         async (data) => {
             try {
-                const response = await axios.put("http://localhost:8000/api/v1/category/put-category/" + data.id, data)
-                console.log(response.data.data);
+                const response = await axios.put("http://localhost:8000/api/v1/category/put-category/" + data._id, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                      }
+                })
+                console.log( "UPDATERESPONSE", response.data.data);
                 
                 return response.data.data
             } catch (error) {
@@ -89,7 +93,7 @@ export const updateCategory = createAsyncThunk(
         })
         builder.addCase(updateCategory.fulfilled, (state, action) => {
             state.Category = state.Category.map((v) => {
-                if (v._id === action.payload?.id) {
+                if (v._id === action.payload?._id) {
                     return action.payload
                 } else {
                     return v

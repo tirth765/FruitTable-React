@@ -18,7 +18,7 @@ import { object, string, mixed } from 'yup';
 import { useFormik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { CategorySlice, CreateCategory, deleteCategores, deleteCategory, getCategores, updateCategory } from '../../redux/Slice/CategorySlice';
+import {  CreateCategory, deleteCategory, getCategores, updateCategory } from '../../redux/Slice/CategorySlice';
 import { IMG_URL } from '../../Utils/Base';
 
 export default function FormDialog() {
@@ -80,8 +80,7 @@ export default function FormDialog() {
 
     setValues(data);
     handleClickOpen();
-    dispatch(updateCategory(data))
-    // setUpdate(true)
+    setUpdate(true)
 
   }
 
@@ -167,22 +166,7 @@ export default function FormDialog() {
   });
 
   const updateData = (data) => {
-    let localData = JSON.parse(localStorage.getItem("category"))
-
-    console.log(localData, data);
-
-    const index = localData.findIndex((v) => v.id == data.id)
-
-    localData[index] = data
-
-    console.log(localData);
-
-    localStorage.setItem("category", JSON.stringify(localData))
-
-    setcatData(localData)
-
-
-
+    dispatch(updateCategory(data))
   }
 
   const formik = useFormik({
@@ -265,7 +249,7 @@ export default function FormDialog() {
                 onBlur={handleBlur}
               />
 
-              <img src={typeof values?.cat_img === 'string' ? IMG_URL + values?.cat_img : '../img/' + values?.cat_img?.name} width={"90px"} height={"90px"} />
+              <img src={typeof values?.cat_img === 'string' ? IMG_URL + values?.cat_img : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img): null } width={"90px"} height={"90px"} />
 
 
             </DialogContent>

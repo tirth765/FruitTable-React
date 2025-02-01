@@ -1,107 +1,105 @@
-// import { createSlice } from "@reduxjs/toolkit"
-
-
-
-// const initialState = {
-//     isLoding:false,
-//     subCategory: [],
-//     error:null
-// }
-
-// const subCategorySlice = createSlice({
-//     name:'SubCate',
-//     initialState, 
-//     getSubCategory: {
-
-//     },
-//     reducers: {
-//         setSubCategory:(state,action) => {
-//             state.subCategory = state.subCategory.concat(action.payload)
-//         },
-//         deleteSubCategory:(state,action) => {
-//             state.subCategory = state.subCategory.filter((v) => v.id !== action.payload)
-//         },
-//         editSubCategory:(state,action) => {
-//             state.subCategory = state.subCategory.map((v) => {
-//                 if( v.id === action.payload) {
-//                     return action.payload
-//                 } else {
-//                     return v
-//                 }
-//             })
-//         }
-//     }
-// })  
-
-// export const { setSubCategory, getSubCategory, deleteSubCategory, editSubCategory } = subCategorySlice.actions;
-// export default subCategorySlice.reducer;
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 
-export const getSubCategory = createAsyncThunk(
-    'subCategory/getSubCategory',
-    async () => {
-        const response = await axios.get('http://localhost:8000/subCategory');
-        console.log(response.data);
-        return response.data;
+const initialState = {
+    isLoding:false,
+    SubCategory: [],
+    error:null
+}
+
+export const CreateSubCategory = createAsyncThunk(
+    "SubCategory/CreateSubCategory",
+    async (data) => {
+        try {
+            console.log(data);
+        
+            const response = await axios.post('http://localhost:8000/api/v1/subCategory/post-subCategory', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+            });
+            console.log(response.data);
+            return response.data.data;
+        } catch (error) {
+            console.log(error);
+            
+        }
+      
     }
+)
+
+export const getSubCategores = createAsyncThunk(
+    "SubCategory/getSubCategores",
+
+    async () => {
+        try {
+            const response = await axios.get("http://localhost:8000/api/v1/subCategory/get-subCategores")
+            return response.data.data
+        } catch (error) {
+            console.log(error);
+            
+        }
+
+    }
+    
 )
 
 export const deleteSubCategory = createAsyncThunk(
-    'subCategory/deleteSubCategory',
-    async (id) => {
-        const response = await axios.delete('http://localhost:8000/subCategory/' + id);
-        return id;
-    })
-
-export const editSubCategory = createAsyncThunk(
-    'subCategory/editSubCategory',
-    async (data) => {
-        const response = await axios.put('http://localhost:8000/subCategory/' + data.id, data);
-
-        return response.data;
-    })
-
-export const setSubCategory = createAsyncThunk(
-    'subCategory/setSubCategory',
-    async (data) => {
-        const response = await axios.post('http://localhost:8000/subCategory', data);
-        console.mathlog(response.data);
-        return response.data;
+    "SubCategory/deleteSubCategory",
+        async (id) => {
+            try {
+                const response = await axios.delete("http://localhost:8000/api/v1/subCategory/delete-subCategory/" + id)
+                console.log(response.data.data);
+                
+                return response.data.data._id
+            } catch (error) {
+                console.log(error);
+                
+            }
     }
 )
 
-const initialState = {
-    isLoding: false,
-    subCategory: [],
-    error: null
-}
+export const updateSubCategory = createAsyncThunk(
+    "SubCategory/updateSubCategory",
+        async (data) => {
+            try {
+                const response = await axios.put("http://localhost:8000/api/v1/subCategory/put-subCategory/" + data._id, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                      }
+                })
+                console.log( "UPDATERESPONSE", response.data.data);
+                
+                return response.data.data
+            } catch (error) {
+                console.log(error);
+                
+            }
+    }
+)
 
-const subCategorySlice = createSlice({
-    name: 'subCategory',
+ const CategorySlice = createSlice({
+    name:"SubCategory",
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(getSubCategory.fulfilled, (state, action) => {
-            state.subCategory = action.payload
+        builder.addCase(CreateSubCategory.fulfilled, (state, action) => {
+            state.SubCategory = state.SubCategory.concat(action.payload)
         })
-        builder.addCase(setSubCategory.fulfilled, (state, action) => {
-            state.subCategory = state.subCategory.concat(action.payload)
+        builder.addCase(getSubCategores.fulfilled, (state, action) => {
+            state.SubCategory = action.payload 
         })
         builder.addCase(deleteSubCategory.fulfilled, (state, action) => {
-            state.subCategory = state.subCategory.filter((v) => v.id !== action.payload)
+            state.SubCategory = state.SubCategory.filter((v) => v._id !== action.payload)
         })
-        builder.addCase(editSubCategory.fulfilled, (state, action) => {
-            state.subCategory = state.subCategory.map((v) => {
-                if (v.id === action.payload?.id) {
+        builder.addCase(updateSubCategory.fulfilled, (state, action) => {
+            state.SubCategory = state.SubCategory.map((v) => {
+                if (v._id === action.payload?._id) {
                     return action.payload
                 } else {
                     return v
                 }
-            })
-        })
-
+            })        })
     }
 })
 
-export default subCategorySlice.reducer;
+export default CategorySlice.reducer;
