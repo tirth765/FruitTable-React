@@ -3,17 +3,17 @@ import axios from "axios";
 
 const initialState = {
     isLoding:false,
-    SubCategory: [],
+    Product: [],
     error:null
 }
 
-export const CreateSubCategory = createAsyncThunk(
-    "SubCategory/CreateSubCategory",
+export const CreateProduct = createAsyncThunk(
+    "Product/CreateProduct",
     async (data) => {
         try {
             console.log(data);
         
-            const response = await axios.post('http://localhost:8000/api/v1/subCategory/post-subCategory', data, {
+            const response = await axios.post('http://localhost:8000/api/v1/product/post-products', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                   }
@@ -28,12 +28,12 @@ export const CreateSubCategory = createAsyncThunk(
     }
 )
 
-export const getSubCategores = createAsyncThunk(
-    "SubCategory/getSubCategores",
+export const getProduct = createAsyncThunk(
+    "Product/getProduct",
 
     async () => {
         try {
-            const response = await axios.get("http://localhost:8000/api/v1/subCategory/get-subCategores")
+            const response = await axios.get("http://localhost:8000/api/v1/product/get-products")
             console.log("SubCategory", response.data.data);
             
             return response.data.data
@@ -46,11 +46,11 @@ export const getSubCategores = createAsyncThunk(
     
 )
 
-export const deleteSubCategory = createAsyncThunk(
-    "SubCategory/deleteSubCategory",
+export const deleteProduct = createAsyncThunk(
+    "Product/deleteProduct",
         async (id) => {
             try {
-                const response = await axios.delete("http://localhost:8000/api/v1/subCategory/delete-subCategory/" + id)
+                const response = await axios.delete("http://localhost:8000/api/v1/product/delete-products/" + id)
                 console.log(response.data.data);
                 
                 return response.data.data._id
@@ -61,11 +61,11 @@ export const deleteSubCategory = createAsyncThunk(
     }
 )
 
-export const updateSubCategory = createAsyncThunk(
-    "SubCategory/updateSubCategory",
+export const updateProduct = createAsyncThunk(
+    "Product/updateProduct",
         async (data) => {
             try {
-                const response = await axios.put("http://localhost:8000/api/v1/subCategory/put-subCategory/" + data._id, data, {
+                const response = await axios.put("http://localhost:8000/api/v1/product/put-products/" + data._id, data, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                       }
@@ -81,20 +81,20 @@ export const updateSubCategory = createAsyncThunk(
 )
 
  const CategorySlice = createSlice({
-    name:"SubCategory",
+    name:"Product",
     initialState,
     extraReducers: (builder) => {
-        builder.addCase(CreateSubCategory.fulfilled, (state, action) => {
-            state.SubCategory = state.SubCategory.concat(action.payload)
+        builder.addCase(CreateProduct.fulfilled, (state, action) => {
+            state.Product = state.Product.concat(action.payload)
         })
-        builder.addCase(getSubCategores.fulfilled, (state, action) => {
-            state.SubCategory = action.payload 
+        builder.addCase(getProduct.fulfilled, (state, action) => {
+            state.Product = action.payload 
         })
-        builder.addCase(deleteSubCategory.fulfilled, (state, action) => {
-            state.SubCategory = state.SubCategory.filter((v) => v._id !== action.payload)
+        builder.addCase(deleteProduct.fulfilled, (state, action) => {
+            state.Product = state.Product.filter((v) => v._id !== action.payload)
         })
-        builder.addCase(updateSubCategory.fulfilled, (state, action) => {
-            state.SubCategory = state.SubCategory.map((v) => {
+        builder.addCase(updateProduct.fulfilled, (state, action) => {
+            state.Product = state.Product.map((v) => {
                 if (v._id === action.payload?._id) {
                     return action.payload
                 } else {

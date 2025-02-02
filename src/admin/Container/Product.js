@@ -15,18 +15,14 @@ import { mixed, number, object, string } from "yup";
 import { useFormik } from "formik";
 import { Box, FormHelperText } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteSubCategory,
-  updateSubCategory,
-  getSubCategores,
-  CreateSubCategory,
-} from "../../redux/Slice/subCategorySlice";
+import { CreateProduct, deleteProduct, getProduct, updateProduct } from "../../redux/Slice/ProductSlice";
 
 import Stack from "@mui/material/Stack";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { IMG_URL } from "../../Utils/Base";
+import axios from "axios";
 
 export default function SubCategory() {
   const [open, setOpen] = React.useState(false);
@@ -35,13 +31,23 @@ export default function SubCategory() {
   const dispatch = useDispatch();
 
   const getData = () => {
-    const localData = JSON.parse(localStorage.getItem("category"));
-    setCatData(localData);
+    dispatch(getProduct());
+
+    const fetchData = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/product/get-products"
+      );
+      console.log("hi", response.data.data);
+      // localStorage.setItem("category", JSON.stringify(response.data.data));
+      setCatData(response.data.data);
+    };
+
+    fetchData(); // Call the async function
   };
 
   useEffect(() => {
     getData();
-    dispatch(getSubCategores());
+    dispatch(getProduct());
   }, []);
 
   const handleClickOpen = () => {
@@ -97,13 +103,13 @@ export default function SubCategory() {
       SubCategory: "",
       name: "",
       Description: "",
-        Price: "",
+      Price: "",
       subcat_img: "",
     },
     validationSchema: SubCategorySchema,
     onSubmit: (values, { resetForm }) => {
       if (update) {
-        dispatch(updateSubCategory(values));
+        dispatch(updateProduct(values));
       } else {
         handleSubCategorySlice({
           ...values,
@@ -131,7 +137,7 @@ export default function SubCategory() {
   console.log(values);
 
   const handleSubCategorySlice = (values) => {
-    dispatch(CreateSubCategory(values));
+    dispatch(CreateProduct(values));
   };
 
   const subcatselector = useSelector((state) => state.subCategory);
@@ -144,11 +150,11 @@ export default function SubCategory() {
     setValues(data);
     setUpdate(true);
     handleClickOpen();
-    dispatch(updateSubCategory(data));
+    dispatch(updateProduct(data));
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteSubCategory(id));
+    dispatch(deleteProduct(id));
   };
 
   const columns = [
@@ -340,11 +346,7 @@ export default function SubCategory() {
                 fullWidth
                 variant="standard"
                 onChange={handleChange}
-                helperText={
-                  errors.Price && touched.Price
-                    ? errors.Price
-                    : ""
-                }
+                helperText={errors.Price && touched.Price ? errors.Price : ""}
                 value={values.Price}
                 error={errors.Price && touched.Price}
                 onBlur={handleBlur}

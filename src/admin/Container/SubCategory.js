@@ -36,6 +36,8 @@ export default function SubCategory() {
   const dispatch = useDispatch();
 
   const getData = () => {
+        dispatch(getSubCategores())
+    
     const fetchData = async () => {
       const response = await axios.get(
         "http://localhost:8000/api/v1/category/list-categores"
@@ -240,7 +242,8 @@ export default function SubCategory() {
                 onChange={(e) => {
                   console.log("Selected Category ID:", e.target.value); // Debugging line
                   handleChange(e); // Call Formik's handleChange
-                }}                value={values.Category || ""} // Ensure default value doesn't break
+                }}
+                value={values.Category || ""} // Ensure default value doesn't break
                 error={Boolean(errors.Category && touched.Category)}
                 onBlur={handleBlur}
               >
@@ -248,9 +251,7 @@ export default function SubCategory() {
                   <em>None</em>
                 </MenuItem>
                 {Catdata?.map((v) => (
-                  <MenuItem 
-                    key={v.id} 
-                    value={Number(v.id)}>
+                  <MenuItem key={v.id} value={Number(v.id)}>
                     {v.name}
                   </MenuItem>
                 ))}
