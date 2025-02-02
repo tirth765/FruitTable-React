@@ -4,6 +4,7 @@ import Category from "../admin/Container/Category";
 import SubCategory from "../admin/Container/SubCategory";
 import Layout from "../admin/Component/Layout/Layout";
 import Counter from "../admin/Container/Counter";
+import Product from "../admin/Container/Product";
 
 
 export default function AdminRoute() {
@@ -13,6 +14,8 @@ export default function AdminRoute() {
         <Route path="/Category" element={<Category />} />
         <Route path="/SubCategory" element={<SubCategory />} />
         <Route path="/Counter" element={<Counter />} />
+        <Route path="/Product" element={<Product />} />
+
       </Routes>
     </Layout>
   );

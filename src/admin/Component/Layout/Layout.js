@@ -104,7 +104,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const listArray = [
     {label: 'Category', icon: <CategoryIcon /> , to: '/admin/Category'},
     {label: 'SubCategory', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/SubCategory'},
-    {label: 'Counter', icon: <AddCircleIcon /> , to: '/admin/Counter'}
+    {label: 'Counter', icon: <AddCircleIcon /> , to: '/admin/Counter'},
+    {label: 'Product', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/Product'}
 ]
 
 export default function Layout({ children }) {

@@ -27,7 +27,6 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { IMG_URL } from "../../Utils/Base";
-import axios from "axios";
 
 export default function SubCategory() {
   const [open, setOpen] = React.useState(false);
@@ -36,16 +35,8 @@ export default function SubCategory() {
   const dispatch = useDispatch();
 
   const getData = () => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/category/list-categores"
-      );
-      console.log("hi", response.data.data);
-      // localStorage.setItem("category", JSON.stringify(response.data.data));
-      setCatData(response.data.data);
-    };
-
-    fetchData(); // Call the async function
+    const localData = JSON.parse(localStorage.getItem("category"));
+    setCatData(localData);
   };
 
   useEffect(() => {
@@ -64,13 +55,16 @@ export default function SubCategory() {
   };
 
   let SubCategorySchema = object({
-    Category: string().required(),
+    Category: number().required(),
+    SubCategory: number().required(),
+
     name: string()
       .required()
       .max(30, "only 30 character are allowed")
       .min(2, "character must be 2")
       .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
     Description: string().required(),
+    Price: number().required(),
     subcat_img: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
@@ -100,8 +94,10 @@ export default function SubCategory() {
   const formik = useFormik({
     initialValues: {
       Category: "",
+      SubCategory: "",
       name: "",
       Description: "",
+        Price: "",
       subcat_img: "",
     },
     validationSchema: SubCategorySchema,
@@ -168,8 +164,25 @@ export default function SubCategory() {
         return dataIdToName?.name;
       },
     },
-    { field: "name", headerName: "SubCategory Name", width: 230 },
-    { field: "Description", headerName: "SubCategory Description", width: 230 },
+    {
+      field: "SubCategory",
+      headerName: "SubCategory",
+      width: 130,
+      renderCell: (params) => {
+        const dataIdToName = Catdata.find(
+          (v) => params.row.SubCategory === v.id
+        );
+
+        // console.log(dataIdToName.name);
+
+        return dataIdToName?.name;
+      },
+    },
+
+    { field: "name", headerName: "Name", width: 130 },
+    { field: "Description", headerName: "Description", width: 130 },
+    { field: "Price", headerName: "Price", width: 130 },
+
     {
       field: "subcat_img",
       headerName: "Img",
@@ -220,13 +233,13 @@ export default function SubCategory() {
 
   return (
     <>
-      <div>SubCategory</div>
+      <div>Product</div>
       <React.Fragment>
         <Button variant="outlined" onClick={handleClickOpen}>
-          Add SubCategory
+          Add Product
         </Button>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>SubCategory</DialogTitle>
+          <DialogTitle>Product</DialogTitle>
           <form onSubmit={handleSubmit}>
             <DialogContent>
               <InputLabel id="demo-simple-select-standard-label">
@@ -236,27 +249,50 @@ export default function SubCategory() {
                 variant="standard"
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
+                label="Category"
                 name="Category"
-                onChange={(e) => {
-                  console.log("Selected Category ID:", e.target.value); // Debugging line
-                  handleChange(e); // Call Formik's handleChange
-                }}                value={values.Category || ""} // Ensure default value doesn't break
-                error={Boolean(errors.Category && touched.Category)}
+                onChange={handleChange}
+                value={values.Category ? values.Category : ""}
+                error={errors.Category && touched.Category}
                 onBlur={handleBlur}
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
                 {Catdata?.map((v) => (
-                  <MenuItem 
-                    key={v.id} 
-                    value={Number(v.id)}>
-                    {v.name}
-                  </MenuItem>
+                  <MenuItem value={v.id}>{v.name}</MenuItem>
+                ))}
+              </Select>
+
+              <FormHelperText>
+                {errors.Category && touched.Category ? errors.Category : ""}
+              </FormHelperText>
+
+              <InputLabel id="demo-simple-select-standard-label">
+                SubCategory
+              </InputLabel>
+              <Select
+                variant="standard"
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                label="SubCategory"
+                name="SubCategory"
+                onChange={handleChange}
+                value={values.SubCategory ? values.SubCategory : ""}
+                error={errors.SubCategory && touched.SubCategory}
+                onBlur={handleBlur}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {Catdata?.map((v) => (
+                  <MenuItem value={v.id}>{v.name}</MenuItem>
                 ))}
               </Select>
               <FormHelperText>
-                {errors.Category && touched.Category ? errors.Category : ""}
+                {errors.SubCategory && touched.SubCategory
+                  ? errors.SubCategory
+                  : ""}
               </FormHelperText>
 
               <TextField
@@ -290,6 +326,27 @@ export default function SubCategory() {
                 }
                 value={values.Description}
                 error={errors.Description && touched.Description}
+                onBlur={handleBlur}
+              />
+              <br></br>
+              <br></br>
+
+              <TextField
+                margin="dense"
+                id="Price"
+                name="Price"
+                label="Price"
+                type="number"
+                fullWidth
+                variant="standard"
+                onChange={handleChange}
+                helperText={
+                  errors.Price && touched.Price
+                    ? errors.Price
+                    : ""
+                }
+                value={values.Price}
+                error={errors.Price && touched.Price}
                 onBlur={handleBlur}
               />
               <br></br>
