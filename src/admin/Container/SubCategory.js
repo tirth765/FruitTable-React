@@ -28,31 +28,19 @@ import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { IMG_URL } from "../../Utils/Base";
 import axios from "axios";
+import { getCategores } from "../../redux/Slice/CategorySlice";
 
 export default function SubCategory() {
   const [open, setOpen] = React.useState(false);
-  const [Catdata, setCatData] = React.useState([]);
   const [update, setUpdate] = React.useState(false);
   const dispatch = useDispatch();
 
   const getData = () => {
-        dispatch(getSubCategores())
-    
-    const fetchData = async () => {
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/category/list-categores"
-      );
-      console.log("hi", response.data.data);
-      // localStorage.setItem("category", JSON.stringify(response.data.data));
-      setCatData(response.data.data);
-    };
-
-    fetchData(); // Call the async function
+    dispatch(getSubCategores());
   };
 
   useEffect(() => {
     getData();
-    dispatch(getSubCategores());
   }, []);
 
   const handleClickOpen = () => {
@@ -72,7 +60,7 @@ export default function SubCategory() {
       .max(30, "only 30 character are allowed")
       .min(2, "character must be 2")
       .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
-    Description: string().required(),
+    description: string().required(),
     subcat_img: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
@@ -103,7 +91,7 @@ export default function SubCategory() {
     initialValues: {
       Category: "",
       name: "",
-      Description: "",
+      description: "",
       subcat_img: "",
     },
     validationSchema: SubCategorySchema,
@@ -131,7 +119,7 @@ export default function SubCategory() {
     setValues,
   } = formik;
 
-  console.log(values);
+  console.log(values, errors);
 
   const handleSubCategorySlice = (values) => {
     dispatch(CreateSubCategory(values));
@@ -140,6 +128,10 @@ export default function SubCategory() {
   const subcatselector = useSelector((state) => state.subCategory);
 
   console.log(subcatselector);
+
+  const categoryData = useSelector((state) => state.Category);
+
+  console.log(categoryData);
 
   const handleEdit = (data) => {
     console.log(data);
@@ -159,12 +151,21 @@ export default function SubCategory() {
       field: "Category",
       headerName: "Category",
       width: 130,
-      valueGetter: (value) => {
-        return Catdata.find(item => item._id === value)?.name;
-    }
+      valueGetter: (params) => {
+        const categoryId = params;
+        console.log(params);
+
+        const category = categoryData?.Category?.find(
+          (cat) => cat._id === categoryId
+        );
+
+        console.log("YESSSS", category);
+
+        return category ? category.name : "";
+      },
     },
     { field: "name", headerName: "SubCategory Name", width: 230 },
-    { field: "Description", headerName: "SubCategory Description", width: 230 },
+    { field: "description", headerName: "SubCategory description", width: 230 },
     {
       field: "subcat_img",
       headerName: "Img",
@@ -199,7 +200,7 @@ export default function SubCategory() {
                 variant="outlined"
                 href="#outlined-buttons"
                 onClick={() => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row._id);
                 }}
               >
                 Delete
@@ -243,11 +244,13 @@ export default function SubCategory() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {
-                                        Catdata.map((item) => {
-                                            return <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
-                                        })
-                                    }
+                {categoryData.Category?.map((v) => {
+                  return (
+                    <MenuItem key={v._id} value={v._id}>
+                      {v.name}
+                    </MenuItem>
+                  );
+                })}
               </Select>
               <FormHelperText>
                 {errors.Category && touched.Category ? errors.Category : ""}
@@ -270,20 +273,20 @@ export default function SubCategory() {
 
               <TextField
                 margin="dense"
-                id="Description"
-                name="Description"
+                id="description"
+                name="description"
                 label="Description"
-                type="Description"
+                type="name"
                 fullWidth
                 variant="standard"
                 onChange={handleChange}
                 helperText={
-                  errors.Description && touched.Description
-                    ? errors.Description
+                  errors.description && touched.description
+                    ? errors.description
                     : ""
                 }
-                value={values.Description}
-                error={errors.Description && touched.Description}
+                value={values.description}
+                error={errors.description && touched.description}
                 onBlur={handleBlur}
               />
               <br></br>
@@ -291,19 +294,19 @@ export default function SubCategory() {
 
               <input
                 type="file"
-                name="cat_img"
+                name="subcat_img"
                 onChange={(e) => {
-                  setFieldValue("cat_img", e.target.files[0]);
+                  setFieldValue("subcat_img", e.target.files[0]);
                 }}
                 onBlur={handleBlur}
               />
 
               <img
                 src={
-                  typeof values?.cat_img === "string"
-                    ? IMG_URL + values?.cat_img
-                    : typeof values?.cat_img === "object"
-                    ? URL.createObjectURL(values.cat_img)
+                  typeof values?.subcat_img === "string"
+                    ? IMG_URL + values?.subcat_img
+                    : typeof values?.subcat_img === "object"
+                    ? URL.createObjectURL(values.subcat_img)
                     : null
                 }
                 width={"90px"}
@@ -321,7 +324,8 @@ export default function SubCategory() {
         <br />
         <Paper sx={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={subcatselector.subCategory}
+            rows={subcatselector?.SubCategory}
+            getRowId={(row) => row._id}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}

@@ -34,7 +34,7 @@ export const getSubCategores = createAsyncThunk(
     async () => {
         try {
             const response = await axios.get("http://localhost:8000/api/v1/subCategory/get-subCategores")
-            console.log("SubCategory", response.data.data);
+            console.log("GETTTTTTTTTTTT",response.data.data);
             
             return response.data.data
         } catch (error) {
@@ -50,6 +50,8 @@ export const deleteSubCategory = createAsyncThunk(
     "SubCategory/deleteSubCategory",
         async (id) => {
             try {
+                console.log("idddddddddddd",id);
+                
                 const response = await axios.delete("http://localhost:8000/api/v1/subCategory/delete-subCategory/" + id)
                 console.log(response.data.data);
                 
