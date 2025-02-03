@@ -64,27 +64,15 @@ export default function SubCategory() {
     subcat_img: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
-        if (typeof value === "string") {
-          return true;
-        } else if (typeof value === "object") {
-          return value && value.size <= 2000000;
-        }
+        if (!value) return false;
+        if (typeof value === "string") return true; // Allow pre-existing string URLs
+        return value.size <= 2000000;
       })
-
-      .test(
-        "type",
-        "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc",
-        (value) => {
-          if (typeof value === "string") {
-            return true;
-          } else if (typeof value === "object") {
-            return (
-              value &&
-              (value.type === "image/jpeg" || value.type === "image/png")
-            );
-          }
-        }
-      ),
+      .test("type", "Only JPEG and PNG are allowed", (value) => {
+        if (!value) return false;
+        if (typeof value === "string") return true; // Allow pre-existing string URLs
+        return ["image/jpeg", "image/png"].includes(value.type);
+      }),
   });
 
   const formik = useFormik({
@@ -291,26 +279,29 @@ export default function SubCategory() {
               />
               <br></br>
               <br></br>
-
               <input
                 type="file"
                 name="subcat_img"
+                accept="image/*"
                 onChange={(e) => {
-                  setFieldValue("subcat_img", e.target.files[0]);
+                  if (e.target.files.length > 0) {
+                    setFieldValue("subcat_img", e.target.files[0]);
+                  }
                 }}
                 onBlur={handleBlur}
               />
 
               <img
                 src={
-                  typeof values?.subcat_img === "string"
-                    ? IMG_URL + values?.subcat_img
-                    : typeof values?.subcat_img === "object"
-                    ? URL.createObjectURL(values.subcat_img)
+                  values?.subcat_img
+                    ? typeof values?.subcat_img === "string"
+                      ? IMG_URL + values?.subcat_img
+                      : URL.createObjectURL(values.subcat_img)
                     : null
                 }
-                width={"90px"}
-                height={"90px"}
+                alt="Preview"
+                width="90"
+                height="90"
               />
 
               <DialogActions>
