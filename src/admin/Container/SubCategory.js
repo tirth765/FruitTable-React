@@ -111,10 +111,7 @@ export default function SubCategory() {
       if (update) {
         dispatch(updateSubCategory(values));
       } else {
-        handleSubCategorySlice({
-          ...values,
-          id: Math.floor(Math.random() * 1000),
-        });
+        handleSubCategorySlice(values);
       }
 
       resetForm();
@@ -162,13 +159,9 @@ export default function SubCategory() {
       field: "Category",
       headerName: "Category",
       width: 130,
-      renderCell: (params) => {
-        const dataIdToName = Catdata.find((v) => params.row.Category === v.id);
-
-        // console.log(dataIdToName.name);
-
-        return dataIdToName?.name;
-      },
+      valueGetter: (value) => {
+        return Catdata.find(item => item._id === value)?.name;
+    }
     },
     { field: "name", headerName: "SubCategory Name", width: 230 },
     { field: "Description", headerName: "SubCategory Description", width: 230 },
@@ -250,11 +243,11 @@ export default function SubCategory() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {Catdata?.map((v) => (
-                  <MenuItem key={v.id} value={Number(v.id)}>
-                    {v.name}
-                  </MenuItem>
-                ))}
+                {
+                                        Catdata.map((item) => {
+                                            return <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
+                                        })
+                                    }
               </Select>
               <FormHelperText>
                 {errors.Category && touched.Category ? errors.Category : ""}

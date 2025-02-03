@@ -11,14 +11,14 @@ export const CreateSubCategory = createAsyncThunk(
     "SubCategory/CreateSubCategory",
     async (data) => {
         try {
-            console.log(data);
+            console.log("DONE",data);
         
             const response = await axios.post('http://localhost:8000/api/v1/subCategory/post-subCategory', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                   }
             });
-            console.log(response.data);
+            console.log("YESDONE",response.data);
             return response.data.data;
         } catch (error) {
             console.log(error);
