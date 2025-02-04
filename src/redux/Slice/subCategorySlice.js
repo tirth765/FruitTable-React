@@ -31,10 +31,12 @@ export const CreateSubCategory = createAsyncThunk(
 export const getSubCategores = createAsyncThunk(
     "SubCategory/getSubCategores",
 
-    async () => {
+    async (value) => {
+        console.log("VAlues",value);
+        
         try {
             const response = await axios.get("http://localhost:8000/api/v1/subCategory/get-subCategores")
-            console.log("GETTTTTTTTTTTT",response.data.data);
+            // console.log("GETTTTTTTTTTTT",response.data.data);
             
             return response.data.data
         } catch (error) {
@@ -46,11 +48,32 @@ export const getSubCategores = createAsyncThunk(
     
 )
 
+
+// export const getSubCategores = createAsyncThunk(
+//     "SubCategory/getSubCategores",
+
+//     async (value) => {
+//         console.log("VAlues",value);
+        
+//         try {
+//             const response = await axios.get("http://localhost:8000/api/v1/subCategory/get-subCategores")
+//             // console.log("GETTTTTTTTTTTT",response.data.data);
+            
+//             return response.data.data
+//         } catch (error) {
+//             console.log(error);
+            
+//         }
+
+//     }
+    
+// )
+
 export const deleteSubCategory = createAsyncThunk(
     "SubCategory/deleteSubCategory",
         async (id) => {
             try {
-                console.log("idddddddddddd",id);
+                // console.log("idddddddddddd",id);
                 
                 const response = await axios.delete("http://localhost:8000/api/v1/subCategory/delete-subCategory/" + id)
                 console.log(response.data.data);
@@ -72,7 +95,7 @@ export const updateSubCategory = createAsyncThunk(
                         'Content-Type': 'multipart/form-data'
                       }
                 })
-                console.log( "UPDATERESPONSE", response.data.data);
+                // console.log( "UPDATERESPONSE", response.data.data);
                 
                 return response.data.data
             } catch (error) {
@@ -87,6 +110,8 @@ export const updateSubCategory = createAsyncThunk(
     initialState,
     extraReducers: (builder) => {
         builder.addCase(CreateSubCategory.fulfilled, (state, action) => {
+            console.log(action.payload);
+        
             state.SubCategory = state.SubCategory.concat(action.payload)
         })
         builder.addCase(getSubCategores.fulfilled, (state, action) => {

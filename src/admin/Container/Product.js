@@ -28,6 +28,7 @@ import {
   updateProduct,
   getProduct,
   CreateProduct,
+  getSubcat,
 } from "../../redux/Slice/ProductSlice";
 
 import { DataGrid } from "@mui/x-data-grid";
@@ -43,6 +44,7 @@ export default function SubCategory() {
 
   const getData = () => {
     dispatch(getProduct());
+    // dispatch(getSubcat())
   };
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function SubCategory() {
 
   let ProductSchema = object({
     Category: string().required(),
-    // SubCategory: string().required(),
+    SubCategory: string().required(),
     name: string()  
       .required()
       .max(30, "only 30 character are allowed")
@@ -96,7 +98,7 @@ export default function SubCategory() {
   const formik = useFormik({
     initialValues: {
       Category: "",
-      // SubCategory: "",
+      SubCategory: "",
       name: "",
       description: "",
       product_img: "",
@@ -138,11 +140,17 @@ export default function SubCategory() {
 
   const categoryData = useSelector((state) => state.Category);
 
-  console.log("gg",categoryData);
+  console.log("categoryData",categoryData);
 
-  // const SubCategoryData = useSelector((state) => state.SubCategory);
-
-  // console.log("TIIIIIIIIIIIIIII",SubCategoryData);
+  console.log(productselector.subcat);
+  
+  
+  const handleSubCategory = (cat_id) => {
+    
+    // console.log("SSSSSSSSSSSSS",cat_id);
+    
+    dispatch(getSubcat(cat_id));
+  }
 
   const handleEdit = (data) => {
     console.log(data);
@@ -164,7 +172,6 @@ export default function SubCategory() {
       width: 130,
       valueGetter: (params) => {
         const categoryId = params;
-        console.log("Bro",params);
 
         const category = categoryData?.Category?.find(
           (cat) => cat._id === categoryId
@@ -172,30 +179,29 @@ export default function SubCategory() {
 
 
 
-        console.log("YESSSS", category);
 
         return category ? category.name : "";
       },
     },
-    // {
-    //   field: "SubCategory",
-    //   headerName: "SubCategory",
-    //   width: 130,
-    //   valueGetter: (params) => {
-    //     const SubcategoryId = params;
-    //     console.log(params);
+    {
+      field: "SubCategory",
+      headerName: "SubCategory",
+      width: 130,
+      valueGetter: () => {
+        const SubcategoryId = productselector.Product;
+        console.log("hhhhay",productselector.Product);
 
-    //     const subcategory = SubCategoryData?.SubCategory?.find(
-    //       (cat) => cat._id === SubcategoryId
-    //     );
+        const subcategory = productselector?.subcat?.find(
+          (cat) => cat._id === SubcategoryId
+        );
 
         
 
-    //     console.log("Nooooooo", subcategory);
+        console.log("Nooooooo", subcategory);
 
-    //     return subcategory ? subcategory.name : "";
-    //   },
-    // },
+        return subcategory ? subcategory.name : "";
+      },
+    },
     { field: "name", headerName: "SubCategory Name", width: 230 },
     { field: "description", headerName: "SubCategory description", width: 230 },
     {
@@ -266,10 +272,12 @@ export default function SubCategory() {
                 id="demo-simple-select-standard"
                 name="Category"
                 onChange={(e) => {
-                  console.log("Selected Category ID:", e.target.value); // Debugging line
-                  handleChange(e); // Call Formik's handleChange
+                  console.log("Selected Category ID:", e); 
+                  handleChange(e); 
+                  handleSubCategory(e.target.value)
                 }}
-                value={values.Category || ""} // Ensure default value doesn't break
+
+                value={values.Category || ""} 
                 error={Boolean(errors.Category && touched.Category)}
                 onBlur={handleBlur}
               >
@@ -288,7 +296,7 @@ export default function SubCategory() {
                 {errors.Category && touched.Category ? errors.Category : ""}
               </FormHelperText>
 
-{/* 
+
               <InputLabel id="demo-simple-select-standard-label">
                 SubCategory
               </InputLabel>
@@ -309,7 +317,7 @@ export default function SubCategory() {
                   <em>None</em>
                 </MenuItem>
 
-                {SubCategoryData.SubCategory?.map((v) => {
+                {productselector.subcat?.map((v) => {
                   return (
                     <MenuItem key={v._id} value={v._id}>
                       {v.name}
@@ -319,7 +327,7 @@ export default function SubCategory() {
               </Select>
               <FormHelperText>
                 {errors.SubCategory && touched.SubCategory ? errors.SubCategory : ""}
-              </FormHelperText> */}
+              </FormHelperText>
 
 
               <TextField
