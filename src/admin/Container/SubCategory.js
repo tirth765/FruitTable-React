@@ -37,6 +37,7 @@ export default function SubCategory() {
 
   const getData = () => {
     dispatch(getSubCategores());
+    dispatch(getCategores())
   };
 
   useEffect(() => {
@@ -201,6 +202,7 @@ export default function SubCategory() {
   ];
 
   const paginationModel = { page: 0, pageSize: 5 };
+  console.log(categoryData.Category);
 
   return (
     <>

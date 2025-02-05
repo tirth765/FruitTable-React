@@ -15,12 +15,7 @@ import { mixed, number, object, string } from "yup";
 import { useFormik } from "formik";
 import { Box, FormHelperText } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteSubCategory,
-  updateSubCategory,
-  getSubCategores,
-  CreateSubCategory,
-} from "../../redux/Slice/subCategorySlice";
+import { getSubCategores } from "../../redux/Slice/subCategorySlice";
 
 import Stack from "@mui/material/Stack";
 import {
@@ -34,7 +29,6 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { IMG_URL } from "../../Utils/Base";
-import axios from "axios";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 
 export default function SubCategory() {
@@ -44,7 +38,8 @@ export default function SubCategory() {
 
   const getData = () => {
     dispatch(getProduct());
-    // dispatch(getSubcat())
+    dispatch(getSubCategores());
+    dispatch(getCategores());
   };
 
   useEffect(() => {
@@ -64,36 +59,37 @@ export default function SubCategory() {
   let ProductSchema = object({
     Category: string().required(),
     SubCategory: string().required(),
-    name: string()  
+    name: string()
       .required()
       .max(30, "only 30 character are allowed")
       .min(2, "character must be 2")
       .matches(/^[a-zA-Z ]*$/, "only character and space allowed"),
     description: string().required(),
+    price: number().required().min(10, "Price must be 10"),
     product_img: mixed()
-    .required("You need to provide a file")
-    .test("fileSize", "The file is too large", (value) => {
-      if (typeof value === "string") {
-        return true;
-      } else if (typeof value === "object") {
-        return value && value.size <= 2000000;
-      }
-    })
-    .test(
-      "type",
-      "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc",
-      (value) => {
+      .required("You need to provide a file")
+      .test("fileSize", "The file is too large", (value) => {
         if (typeof value === "string") {
           return true;
         } else if (typeof value === "object") {
-          return (
-            value &&
-            (value.type === "image/jpeg" || value.type === "image/png")
-          );
+          return value && value.size <= 2000000;
         }
-      }
-    ),
-});
+      })
+      .test(
+        "type",
+        "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc",
+        (value) => {
+          if (typeof value === "string") {
+            return true;
+          } else if (typeof value === "object") {
+            return (
+              value &&
+              (value.type === "image/jpeg" || value.type === "image/png")
+            );
+          }
+        }
+      ),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -101,6 +97,7 @@ export default function SubCategory() {
       SubCategory: "",
       name: "",
       description: "",
+      price: "",
       product_img: "",
     },
     validationSchema: ProductSchema,
@@ -136,21 +133,21 @@ export default function SubCategory() {
 
   const productselector = useSelector((state) => state.Product);
 
-  console.log(productselector);
+  // console.log("productselector",productselector);
 
   const categoryData = useSelector((state) => state.Category);
 
-  console.log("categoryData",categoryData);
+  // console.log("categoryData", categoryData);
 
-  console.log(productselector.subcat);
-  
-  
+  const subcategoryselector = useSelector((state) => state.subCategory);
+
+  console.log(subcategoryselector);
+
   const handleSubCategory = (cat_id) => {
-    
-    // console.log("SSSSSSSSSSSSS",cat_id);
-    
+    // console.log("subcategoryselector",cat_id);
+
     dispatch(getSubcat(cat_id));
-  }
+  };
 
   const handleEdit = (data) => {
     console.log(data);
@@ -169,7 +166,7 @@ export default function SubCategory() {
     {
       field: "Category",
       headerName: "Category",
-      width: 130,
+      width: 200,
       valueGetter: (params) => {
         const categoryId = params;
 
@@ -177,33 +174,29 @@ export default function SubCategory() {
           (cat) => cat._id === categoryId
         );
 
-
-
-
         return category ? category.name : "";
       },
     },
     {
       field: "SubCategory",
       headerName: "SubCategory",
-      width: 130,
-      valueGetter: () => {
-        const SubcategoryId = productselector.Product;
-        console.log("hhhhay",productselector.Product);
+      width: 200,
+      valueGetter: (params) => {
+        const SubcategoryId = params;
 
-        const subcategory = productselector?.subcat?.find(
-          (cat) => cat._id === SubcategoryId
+        const subcategory = subcategoryselector?.SubCategory.find(
+          (c) => c._id === SubcategoryId
         );
 
-        
-
-        console.log("Nooooooo", subcategory);
+        // console.log("Nooooooo", subcategory);
 
         return subcategory ? subcategory.name : "";
       },
     },
-    { field: "name", headerName: "SubCategory Name", width: 230 },
-    { field: "description", headerName: "SubCategory description", width: 230 },
+    { field: "name", headerName: "Name", width: 230 },
+    { field: "description", headerName: "Description", width: 230 },
+    { field: "price", headerName: "Price", width: 150 },
+
     {
       field: "product_img",
       headerName: "Img",
@@ -212,8 +205,8 @@ export default function SubCategory() {
         <Box
           component="img"
           sx={{
-            height: 56,
-            width: 56,
+            height: 53,
+            width: 53,
           }}
           src={IMG_URL + params.value}
         />
@@ -252,6 +245,7 @@ export default function SubCategory() {
 
   const paginationModel = { page: 0, pageSize: 5 };
 
+
   return (
     <>
       <div>Product</div>
@@ -272,12 +266,11 @@ export default function SubCategory() {
                 id="demo-simple-select-standard"
                 name="Category"
                 onChange={(e) => {
-                  console.log("Selected Category ID:", e); 
-                  handleChange(e); 
-                  handleSubCategory(e.target.value)
+                  console.log("Selected Category ID:", e);
+                  handleChange(e);
+                  handleSubCategory(e.target.value);
                 }}
-
-                value={values.Category || ""} 
+                value={values.Category || ""}
                 error={Boolean(errors.Category && touched.Category)}
                 onBlur={handleBlur}
               >
@@ -295,7 +288,6 @@ export default function SubCategory() {
               <FormHelperText>
                 {errors.Category && touched.Category ? errors.Category : ""}
               </FormHelperText>
-
 
               <InputLabel id="demo-simple-select-standard-label">
                 SubCategory
@@ -326,9 +318,10 @@ export default function SubCategory() {
                 })}
               </Select>
               <FormHelperText>
-                {errors.SubCategory && touched.SubCategory ? errors.SubCategory : ""}
+                {errors.SubCategory && touched.SubCategory
+                  ? errors.SubCategory
+                  : ""}
               </FormHelperText>
-
 
               <TextField
                 margin="dense"
@@ -363,6 +356,23 @@ export default function SubCategory() {
                 error={errors.description && touched.description}
                 onBlur={handleBlur}
               />
+              <br></br>
+
+              <TextField
+                margin="dense"
+                id="price"
+                name="price"
+                label="Price"
+                type="number"
+                fullWidth
+                variant="standard"
+                value={values.price}
+                onChange={handleChange}
+                helperText={errors.price && touched.price ? errors.price : ""}
+                error={errors.price && touched.price}
+                onBlur={handleBlur}
+              />
+
               <br></br>
               <br></br>
 
