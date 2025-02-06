@@ -87,7 +87,7 @@ export default function FormDialog() {
   const columns = [
     // { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'description', headerName: 'description', width: 130 },
+    { field: 'description', headerName: 'description', width: 330 },
     {
       field: 'cat_img', headerName: 'Img', width: 130,
       renderCell: (params) => <Box component="img"

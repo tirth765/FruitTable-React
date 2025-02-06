@@ -37,7 +37,7 @@ export default function SubCategory() {
 
   const getData = () => {
     dispatch(getSubCategores());
-    dispatch(getCategores())
+    dispatch(getCategores());
   };
 
   useEffect(() => {
@@ -153,8 +153,8 @@ export default function SubCategory() {
         return category ? category.name : "";
       },
     },
-    { field: "name", headerName: "SubCategory Name", width: 230 },
-    { field: "description", headerName: "SubCategory description", width: 230 },
+    { field: "name", headerName: "Name", width: 230 },
+    { field: "description", headerName: "Description", width: 350 },
     {
       field: "subcat_img",
       headerName: "Img",

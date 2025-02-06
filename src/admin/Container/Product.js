@@ -144,14 +144,14 @@ export default function SubCategory() {
   console.log(subcategoryselector);
 
   const handleSubCategory = (cat_id) => {
-    // console.log("subcategoryselector",cat_id);
+    console.log("subcategoryselector", cat_id);
 
     dispatch(getSubcat(cat_id));
   };
 
   const handleEdit = (data) => {
     console.log(data);
-
+    handleSubCategory(data.Category);
     setValues(data);
     setUpdate(true);
     handleClickOpen();
@@ -166,7 +166,7 @@ export default function SubCategory() {
     {
       field: "Category",
       headerName: "Category",
-      width: 200,
+      width: 150,
       valueGetter: (params) => {
         const categoryId = params;
 
@@ -180,7 +180,7 @@ export default function SubCategory() {
     {
       field: "SubCategory",
       headerName: "SubCategory",
-      width: 200,
+      width: 180,
       valueGetter: (params) => {
         const SubcategoryId = params;
 
@@ -193,8 +193,8 @@ export default function SubCategory() {
         return subcategory ? subcategory.name : "";
       },
     },
-    { field: "name", headerName: "Name", width: 230 },
-    { field: "description", headerName: "Description", width: 230 },
+    { field: "name", headerName: "Name", width: 190 },
+    { field: "description", headerName: "Description", width: 330 },
     { field: "price", headerName: "Price", width: 150 },
 
     {
@@ -243,8 +243,7 @@ export default function SubCategory() {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
-
+  const paginationModel = { page: 0, pageSize: 12 };
 
   return (
     <>
@@ -406,7 +405,7 @@ export default function SubCategory() {
         </Dialog>
         <br />
         <br />
-        <Paper sx={{ height: 400, width: "100%" }}>
+        <Paper sx={{ height: 733, width: "100%" }}>
           <DataGrid
             rows={productselector?.Product}
             getRowId={(row) => row._id}
