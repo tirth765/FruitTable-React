@@ -11,6 +11,7 @@ import Shop from "../Container/Shop/Shop";
 import Testimonial from "../Container/Testimonial/Testimonial";
 import { Route, Routes } from "react-router-dom";
 import MyProfile from '../Container/My-profile/MyProfile';
+import SubCategoryDisplay from '../Container/SubCategory/SubCategoryDisplay';
 
 export default function UserRoute() {
   return (
@@ -22,6 +23,7 @@ export default function UserRoute() {
       <Route path="/" element={<Home />} />
       <Route path="/Shop" element = {<Shop/>} />
       <Route path="/Shop/:id" element = {<ShopDetail/>} />
+      <Route path="/SubCategory/:id" element = {<SubCategoryDisplay/>} />
       <Route path="/Testimonial" element = {<Testimonial/>} />
       <Route path="/Contact" element = {<Contact/>} />
       <Route path="/Chakout" element = {<Chakout/>} />

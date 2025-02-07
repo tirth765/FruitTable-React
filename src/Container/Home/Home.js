@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 import { getProduct } from "../../redux/Slice/ProductSlice";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -644,7 +645,7 @@ const Home = () => {
             {categoryData.Category.map((v) => {
               return (
                 <div className="col-md-6 col-lg-4">
-                  <a href="#">
+                  <NavLink to={"/SubCategory/" + v._id}>
                     <div className="service-item bg-secondary rounded border border-secondary">
                       <img
                         src={"http://localhost:8000/" + v.cat_img}
@@ -658,7 +659,7 @@ const Home = () => {
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </NavLink>
                 </div>
               );
             })}
