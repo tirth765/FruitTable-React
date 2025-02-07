@@ -206,7 +206,7 @@ export default function SubCategory() {
 
   return (
     <>
-      <div>SubCategory</div>
+      <h1>SubCategory</h1>
       <React.Fragment>
         <Button variant="outlined" onClick={handleClickOpen}>
           Add SubCategory

@@ -20,6 +20,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import { NavLink } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 
 const drawerWidth = 240;
 
@@ -104,8 +105,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const listArray = [
     {label: 'Category', icon: <CategoryIcon /> , to: '/admin/Category'},
     {label: 'SubCategory', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/SubCategory'},
-    {label: 'Counter', icon: <AddCircleIcon /> , to: '/admin/Counter'},
-    {label: 'Product', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/Product'}
+    {label: 'Product', icon: <ProductionQuantityLimitsIcon /> , to: '/admin/Product'},
+    {label: 'Counter', icon: <AddCircleIcon /> , to: '/admin/Counter'}
+    
 ]
 
 export default function Layout({ children }) {

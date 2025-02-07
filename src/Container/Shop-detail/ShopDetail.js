@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 function ShopDetail(props) {
   const {id} = useParams()
   console.log(id);
+
+  
   
     return (
     <div>
