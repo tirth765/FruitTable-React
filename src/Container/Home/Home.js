@@ -642,7 +642,7 @@ const Home = () => {
       <div className="container-fluid service py-5">
         <div className="container py-5">
           <div className="row g-4 justify-content-center">
-            {categoryData.Category.map((v) => {
+            {categoryData.Category?.map((v) => {
               return (
                 <div className="col-md-6 col-lg-4">
                   <NavLink to={"/SubCategory/" + v._id}>
