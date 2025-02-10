@@ -1,10 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { getCategores } from "../../redux/Slice/CategorySlice";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
 
 function Shop() {
+  const [sort, setsort] = useState("");
+  const [Search, setSearch] = useState('');
+  const [Cat, setCat] = useState('');
+
+  const MAX = 1000;
+  const MIN = 0;
+  const marks = [
+    {
+      value: MIN,
+      label: "",
+    },
+    {
+      value: MAX,
+      label: "",
+    },
+  ];
+
+  const [val, setVal] = React.useState(MIN);
+
+  const handleChange = (_, newValue) => {
+    setVal(newValue);
+  };
+
   const dispatch = useDispatch();
 
   const productData = useSelector((state) => state.Product);
@@ -30,11 +56,57 @@ function Shop() {
   // const findProduct = productData.Product.filter((v) => v.SubCategory == id)
 
   // console.log(findProduct);
-  const CategoryData = categoryData.Category.find(
-    (c) => c._id === productData.Product[0].Category
-  );
+  // const CategoryDataName = categoryData.Category.find(
+  //   (c) => c._id === productData.Product[0]?.Category
+  // );
 
-  console.log(CategoryData);
+  // console.log(CategoryDataName);
+
+  const handleFillter = () => {
+    console.log(id, sort);
+
+    let fData = []
+
+    if (id) {
+      fData = [...productData.Product?.filter((v) => v.SubCategory == id)];
+    } else {
+      fData = [...productData.Product]
+    }
+
+    console.log(fData);
+    
+
+     fData = productData.Product.filter((v, i) => (
+      v.name.toLowerCase().includes(Search.toLowerCase()) ||
+      v.price.toString().includes(Search)
+    ))
+
+    console.log(fData);
+
+    if (sort === "a_z") {
+      fData = fData.sort((a, b) => a.name.localeCompare(b.name))
+    } else if (sort === "z_a") {
+      fData = fData.sort((a, b) => b.name.localeCompare(a.name))
+    } else if (sort === "l_h") {
+      fData = fData.sort((a, b) => a.price - b.price)
+    } else if (sort === "h_l") {
+      fData = fData.sort((a, b) => b.price - a.price)
+    }
+
+    console.log(fData);
+    
+
+  // if(Cat) {
+  //   return fData.filter((v) => v.category === Cat)
+  // }
+  //   console.log(fData);
+    
+    return fData;
+  }
+
+  const FinalData = handleFillter();
+
+  console.log(FinalData);
 
   return (
     <div className="container-fluid fruite py-5" style={{ marginTop: "50px" }}>
@@ -50,6 +122,7 @@ function Shop() {
                     className="form-control p-3"
                     placeholder="keywords"
                     aria-describedby="search-icon-1"
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <span id="search-icon-1" className="input-group-text p-3">
                     <i className="fa fa-search" />
@@ -65,11 +138,12 @@ function Shop() {
                     name="fruitlist"
                     className="border-0 form-select-sm bg-light me-3"
                     form="fruitform"
+                    onChange={(e) => setsort(e.target.value)}
                   >
-                    <option value="volvo">Nothing</option>
-                    <option value="saab">Popularity</option>
-                    <option value="opel">Organic</option>
-                    <option value="audi">Fantastic</option>
+                    <option value="l_h">Lower to High</option>
+                    <option value="h_l">High to Lower</option>
+                    <option value="a_z">a to z</option>
+                    <option value="z_a">z to a</option>
                   </select>
                 </div>
               </div>
@@ -90,7 +164,13 @@ function Shop() {
                                   <i className="fas fa-apple-alt me-2" />
                                   {v.name}
                                 </a>
-                                <span>{(3)}</span>
+                                <span>
+                                  {
+                                    productData.Product?.filter(
+                                      (c) => c.Category === v._id
+                                    )?.length
+                                  }
+                                </span>
                               </div>
                             </li>
                           );
@@ -98,29 +178,46 @@ function Shop() {
                       </ul>
                     </div>
                   </div>
+
                   <div className="col-lg-12">
-                    <div className="mb-3">
-                      <h4 className="mb-2">Price</h4>
-                      <input
-                        type="range"
-                        className="form-range w-100"
-                        id="rangeInput"
-                        name="rangeInput"
-                        min={0}
-                        max={500}
-                        defaultValue={0}
-                        oninput="amount.value=rangeInput.value"
+                    <Box sx={{ width: 250 }}>
+                      <h4>Price</h4>
+                      <Slider
+                        marks={marks}
+                        step={10}
+                        value={val}
+                        valueLabelDisplay="auto"
+                        min={MIN}
+                        max={MAX}
+                        onChange={handleChange}
+                        style={{ color: "green" }}
                       />
-                      <output
-                        id="amount"
-                        name="amount"
-                        min-velue={0}
-                        max-value={500}
-                        htmlFor="rangeInput"
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
                       >
-                        0
-                      </output>
-                    </div>
+                        <Typography
+                          variant="body2"
+                          onClick={() => setVal(MIN)}
+                          sx={{ cursor: "pointer" }}
+                        >
+                          ₹ {MIN} min
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          onClick={() => setVal(MAX)}
+                          sx={{ cursor: "pointer" }}
+                        >
+                          ₹ {MAX} max
+                        </Typography>
+                      </Box>
+
+                      <p style={{ marginTop: "10px", fontSize: "20px" }}>
+                        {val} ₹
+                      </p>
+                    </Box>
                   </div>
                   <div className="col-lg-12">
                     <div className="mb-3">
@@ -298,7 +395,7 @@ function Shop() {
 
               <div className="col-lg-9">
                 <div className="row g-4 justify-content-center">
-                  {productData.Product?.filter((v) => v.SubCategory == id)?.map(
+                  {FinalData.map(
                     (v) => {
                       return (
                         <div className="col-md-6 col-lg-6 col-xl-4">
@@ -328,7 +425,7 @@ function Shop() {
                               <p>{v.description.slice(0, 60)}...</p>
                               <div className="d-flex justify-content-between flex-lg-wrap">
                                 <p className="text-dark fs-5 fw-bold mb-0">
-                                  {v.price}
+                                  {v.price} ₹/kg
                                 </p>
                                 <NavLink to={"/Shop/5"}>
                                   <a

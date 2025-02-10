@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { NavLink } from "react-router-dom";
 
 const Home = () => {
+  const [Cat, setCat] = useState('');
+
   const dispatch = useDispatch();
 
   const categoryData = useSelector((state) => state.Category);
@@ -182,50 +184,23 @@ const Home = () => {
                       </span>
                     </a>
                   </li>
+
+                  {productData.Product.map((v, i) => (
                   <li className="nav-item">
                     <a
                       className="d-flex py-2 m-2 bg-light rounded-pill"
                       data-bs-toggle="pill"
                       href="#tab-2"
                     >
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Vegetables
-                      </span>
+      
+                         {/* {categoryData.Category.find(
+                           (c) => c._id === v.Category
+                        )?.name
+                        } */}
+                    
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a
-                      className="d-flex m-2 py-2 bg-light rounded-pill"
-                      data-bs-toggle="pill"
-                      href="#tab-3"
-                    >
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Fruits
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="d-flex m-2 py-2 bg-light rounded-pill"
-                      data-bs-toggle="pill"
-                      href="#tab-4"
-                    >
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Bread
-                      </span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="d-flex m-2 py-2 bg-light rounded-pill"
-                      data-bs-toggle="pill"
-                      href="#tab-5"
-                    >
-                      <span className="text-dark" style={{ width: 130 }}>
-                        Meat
-                      </span>
-                    </a>
-                  </li>
+                    ))}
                 </ul>
               </div>
             </div>

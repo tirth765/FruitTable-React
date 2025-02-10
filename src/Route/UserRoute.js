@@ -20,6 +20,7 @@ export default function UserRoute() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/Shop" element={<Shop />} />
         <Route path="/Shop/:id" element={<Shop />} />
         <Route path="/ShopDetail/:id" element={<ShopDetail />} />
         <Route path="/SubCategory/:id" element={<SubCategoryDisplay />} />
