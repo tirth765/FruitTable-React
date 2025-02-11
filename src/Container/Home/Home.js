@@ -5,7 +5,7 @@ import { getProduct } from "../../redux/Slice/ProductSlice";
 import { NavLink } from "react-router-dom";
 
 const Home = () => {
-  const [Cat, setCat] = useState('');
+  const [Cat, setCat] = useState("");
 
   const dispatch = useDispatch();
 
@@ -185,22 +185,19 @@ const Home = () => {
                     </a>
                   </li>
 
-                  {productData.Product.map((v, i) => (
-                  <li className="nav-item">
-                    <a
-                      className="d-flex py-2 m-2 bg-light rounded-pill"
-                      data-bs-toggle="pill"
-                      href="#tab-2"
-                    >
-      
-                         {/* {categoryData.Category.find(
-                           (c) => c._id === v.Category
-                        )?.name
-                        } */}
-                    
-                    </a>
-                  </li>
-                    ))}
+                  {categoryData.Category.map((v, i) => (
+                    <li className="nav-item" onClick={() => setCat(v)}>
+                      <a
+                        className="d-flex py-2 m-2 bg-light rounded-pill"
+                        data-bs-toggle="pill"
+                      >
+                        <span className="text-dark" style={{ width: 130 }}>
+                          {v.name}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+
                 </ul>
               </div>
             </div>

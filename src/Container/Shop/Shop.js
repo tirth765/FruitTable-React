@@ -9,8 +9,9 @@ import Typography from "@mui/material/Typography";
 
 function Shop() {
   const [sort, setsort] = useState("");
-  const [Search, setSearch] = useState('');
-  const [Cat, setCat] = useState('');
+  const [Search, setSearch] = useState("");
+  const [Cat, setCat] = useState("");
+  const [price, setPrice] = useState("");
 
   const MAX = 1000;
   const MIN = 0;
@@ -65,48 +66,61 @@ function Shop() {
   const handleFillter = () => {
     console.log(id, sort);
 
-    let fData = []
+    let fData = [];
+
+    fData = productData.Product.filter(
+      (s) =>
+        s.name.toLowerCase().includes(Search.toLowerCase()) ||
+        s.price.toString().includes(Search)
+    );
 
     if (id) {
-      fData = [...productData.Product?.filter((v) => v.SubCategory == id)];
+      fData = [...fData?.filter((v) => v.SubCategory == id)];
     } else {
-      fData = [...productData.Product]
+      fData = [...fData];
     }
 
     console.log(fData);
-    
 
-     fData = productData.Product.filter((v, i) => (
-      v.name.toLowerCase().includes(Search.toLowerCase()) ||
-      v.price.toString().includes(Search)
-    ))
+    console.log(fData);
 
     console.log(fData);
 
     if (sort === "a_z") {
-      fData = fData.sort((a, b) => a.name.localeCompare(b.name))
+      fData = fData.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sort === "z_a") {
-      fData = fData.sort((a, b) => b.name.localeCompare(a.name))
+      fData = fData.sort((a, b) => b.name.localeCompare(a.name));
     } else if (sort === "l_h") {
-      fData = fData.sort((a, b) => a.price - b.price)
+      fData = fData.sort((a, b) => a.price - b.price);
     } else if (sort === "h_l") {
-      fData = fData.sort((a, b) => b.price - a.price)
+      fData = fData.sort((a, b) => b.price - a.price);
     }
 
     console.log(fData);
-    
 
-  // if(Cat) {
-  //   return fData.filter((v) => v.category === Cat)
-  // }
-  //   console.log(fData);
-    
+    console.log(Cat);
+
+    if (Cat) {
+      return fData.filter((v) => v.Category === Cat._id);
+    }
+    console.log(fData);
+
     return fData;
-  }
+  };
 
   const FinalData = handleFillter();
 
   console.log(FinalData);
+
+  console.log("ok", val);
+
+  const prices = FinalData.filter((v) => 
+    v.price <= val
+  )
+
+  console.log(prices);
+
+  
 
   return (
     <div className="container-fluid fruite py-5" style={{ marginTop: "50px" }}>
@@ -151,15 +165,33 @@ function Shop() {
             <div className="row g-4">
               <div className="col-lg-3">
                 <div className="row g-4">
+
                   <div className="col-lg-12">
                     <div className="mb-3">
                       <h4>Categories</h4>
 
                       <ul className="list-unstyled fruite-categorie">
+                        <li>
+                          <div
+                            className="d-flex justify-content-between fruite-name"
+                            onClick={() => setCat("")}
+                            style={{fontSize:"18px"}}
+                          >
+                            <a href="#">
+                              <i className="fas fa-apple-alt me-2" />
+                              All Products
+                            </a>
+                          </div>
+                        </li>
+
                         {categoryData.Category?.map((v) => {
                           return (
                             <li>
-                              <div className="d-flex justify-content-between fruite-name">
+                              <div
+                                className="d-flex justify-content-between fruite-name"
+                                onClick={() => setCat(v)}
+                                style={{fontSize:"18px"}}
+                              >
                                 <a href="#">
                                   <i className="fas fa-apple-alt me-2" />
                                   {v.name}
@@ -178,6 +210,17 @@ function Shop() {
                       </ul>
                     </div>
                   </div>
+
+
+
+
+
+
+
+
+
+
+
 
                   <div className="col-lg-12">
                     <Box sx={{ width: 250 }}>
@@ -219,6 +262,22 @@ function Shop() {
                       </p>
                     </Box>
                   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   <div className="col-lg-12">
                     <div className="mb-3">
                       <h4>Additional</h4>
@@ -395,54 +454,52 @@ function Shop() {
 
               <div className="col-lg-9">
                 <div className="row g-4 justify-content-center">
-                  {FinalData.map(
-                    (v) => {
-                      return (
-                        <div className="col-md-6 col-lg-6 col-xl-4">
-                          <div className="rounded position-relative fruite-item">
-                            <div className="fruite-img">
-                              <img
-                                src={"http://localhost:8000/" + v.product_img}
-                                className="img-fluid w-100 rounded-top"
-                                alt
-                                style={{ height: "350px", objectFit: "cover" }}
-                              />
-                            </div>
-                            <div
-                              className="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: 10, left: 10 }}
-                            >
-                              <p style={{ height: "10px" }}>
-                                {
-                                  categoryData.Category?.find(
-                                    (c) => c._id === v.Category
-                                  )?.name
-                                }
+                  {FinalData.map((v) => {
+                    return (
+                      <div className="col-md-6 col-lg-6 col-xl-4">
+                        <div className="rounded position-relative fruite-item">
+                          <div className="fruite-img">
+                            <img
+                              src={"http://localhost:8000/" + v.product_img}
+                              className="img-fluid w-100 rounded-top"
+                              alt
+                              style={{ height: "350px", objectFit: "cover" }}
+                            />
+                          </div>
+                          <div
+                            className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                            style={{ top: 10, left: 10 }}
+                          >
+                            <p style={{ height: "10px" }}>
+                              {
+                                categoryData.Category?.find(
+                                  (c) => c._id === v.Category
+                                )?.name
+                              }
+                            </p>
+                          </div>
+                          <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                            <h4>{v.name}</h4>
+                            <p>{v.description.slice(0, 60)}...</p>
+                            <div className="d-flex justify-content-between flex-lg-wrap">
+                              <p className="text-dark fs-5 fw-bold mb-0">
+                                {v.price} ₹/kg
                               </p>
-                            </div>
-                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>{v.name}</h4>
-                              <p>{v.description.slice(0, 60)}...</p>
-                              <div className="d-flex justify-content-between flex-lg-wrap">
-                                <p className="text-dark fs-5 fw-bold mb-0">
-                                  {v.price} ₹/kg
-                                </p>
-                                <NavLink to={"/Shop/5"}>
-                                  <a
-                                    href="#"
-                                    className="btn border border-secondary rounded-pill px-3 text-primary"
-                                  >
-                                    <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
-                                    Add to cart
-                                  </a>
-                                </NavLink>
-                              </div>
+                              <NavLink to={"/Shop/5"}>
+                                <a
+                                  href="#"
+                                  className="btn border border-secondary rounded-pill px-3 text-primary"
+                                >
+                                  <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
+                                  Add to cart
+                                </a>
+                              </NavLink>
                             </div>
                           </div>
                         </div>
-                      );
-                    }
-                  )}
+                      </div>
+                    );
+                  })}
 
                   <div className="col-12">
                     <div className="pagination d-flex justify-content-center mt-5">
