@@ -225,7 +225,6 @@ const Home = () => {
                               </div>
                               <div className="p-4 border border-secondary border-top-0 rounded-bottom">
                                 <h4>{v.name}</h4>
-                                {/* <p>{v.description[]}</p> */}
                                 <div className="d-flex justify-content-between flex-lg-wrap">
                                   <p className="text-dark fs-5 fw-bold mb-0">
                                     $4.99 / kg

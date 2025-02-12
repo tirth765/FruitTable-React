@@ -96,13 +96,22 @@ function Shop() {
       fData = fData.sort((a, b) => b.price - a.price);
     }
 
-    console.log(fData);
+    console.log("sdxcasxa", fData);
 
     console.log(Cat);
 
     if (Cat) {
-      return fData.filter((v) => v.Category === Cat._id);
+      fData = fData.filter((v) => v.Category === Cat._id);
     }
+
+    console.log("werwerwe", fData);
+
+    console.log(val);
+
+    if (val > 0) {
+      fData = fData.filter((v) => v.price <= val);
+    }
+
     console.log(fData);
 
     return fData;
@@ -110,22 +119,12 @@ function Shop() {
 
   const FinalData = handleFillter();
 
-  console.log(FinalData);
-
-  console.log("ok", val);
-
-  const prices = FinalData.filter((v) => 
-    v.price <= val
-  )
-
-  console.log(prices);
-
-  
-
   return (
-    <div className="container-fluid fruite py-5" style={{ marginTop: "50px" }}>
+    <div className="container-fluid fruite py-5 " style={{ marginTop: "50px" }}>
       <div className="container py-5">
-        <h1 className="mb-4">Fresh fruits shop</h1>
+        <h1 className="text-center" style={{ marginBottom: "30px" }}>
+          Fresh fruits shop
+        </h1>
         <div className="row g-4">
           <div className="col-lg-12">
             <div className="row g-4">
@@ -165,7 +164,6 @@ function Shop() {
             <div className="row g-4">
               <div className="col-lg-3">
                 <div className="row g-4">
-
                   <div className="col-lg-12">
                     <div className="mb-3">
                       <h4>Categories</h4>
@@ -175,7 +173,7 @@ function Shop() {
                           <div
                             className="d-flex justify-content-between fruite-name"
                             onClick={() => setCat("")}
-                            style={{fontSize:"18px"}}
+                            style={{ fontSize: "18px" }}
                           >
                             <a href="#">
                               <i className="fas fa-apple-alt me-2" />
@@ -190,7 +188,7 @@ function Shop() {
                               <div
                                 className="d-flex justify-content-between fruite-name"
                                 onClick={() => setCat(v)}
-                                style={{fontSize:"18px"}}
+                                style={{ fontSize: "18px" }}
                               >
                                 <a href="#">
                                   <i className="fas fa-apple-alt me-2" />
@@ -210,18 +208,6 @@ function Shop() {
                       </ul>
                     </div>
                   </div>
-
-
-
-
-
-
-
-
-
-
-
-
                   <div className="col-lg-12">
                     <Box sx={{ width: 250 }}>
                       <h4>Price</h4>
@@ -263,171 +249,6 @@ function Shop() {
                     </Box>
                   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  <div className="col-lg-12">
-                    <div className="mb-3">
-                      <h4>Additional</h4>
-                      <div className="mb-2">
-                        <input
-                          type="radio"
-                          className="me-2"
-                          id="Categories-1"
-                          name="Categories-1"
-                          defaultValue="Beverages"
-                        />
-                        <label htmlFor="Categories-1"> Organic</label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          type="radio"
-                          className="me-2"
-                          id="Categories-2"
-                          name="Categories-1"
-                          defaultValue="Beverages"
-                        />
-                        <label htmlFor="Categories-2"> Fresh</label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          type="radio"
-                          className="me-2"
-                          id="Categories-3"
-                          name="Categories-1"
-                          defaultValue="Beverages"
-                        />
-                        <label htmlFor="Categories-3"> Sales</label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          type="radio"
-                          className="me-2"
-                          id="Categories-4"
-                          name="Categories-1"
-                          defaultValue="Beverages"
-                        />
-                        <label htmlFor="Categories-4"> Discount</label>
-                      </div>
-                      <div className="mb-2">
-                        <input
-                          type="radio"
-                          className="me-2"
-                          id="Categories-5"
-                          name="Categories-1"
-                          defaultValue="Beverages"
-                        />
-                        <label htmlFor="Categories-5"> Expired</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <h4 className="mb-3">Featured products</h4>
-                    <div className="d-flex align-items-center justify-content-start">
-                      <div
-                        className="rounded me-4"
-                        style={{ width: 100, height: 100 }}
-                      >
-                        <img
-                          src="../img/featur-1.jpg"
-                          className="img-fluid rounded"
-                          alt
-                        />
-                      </div>
-                      <div>
-                        <h6 className="mb-2">Big Banana</h6>
-                        <div className="d-flex mb-2">
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star" />
-                        </div>
-                        <div className="d-flex mb-2">
-                          <h5 className="fw-bold me-2">2.99 $</h5>
-                          <h5 className="text-danger text-decoration-line-through">
-                            4.11 $
-                          </h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-start">
-                      <div
-                        className="rounded me-4"
-                        style={{ width: 100, height: 100 }}
-                      >
-                        <img
-                          src="img/featur-2.jpg"
-                          className="img-fluid rounded"
-                          alt
-                        />
-                      </div>
-                      <div>
-                        <h6 className="mb-2">Big Banana</h6>
-                        <div className="d-flex mb-2">
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star" />
-                        </div>
-                        <div className="d-flex mb-2">
-                          <h5 className="fw-bold me-2">2.99 $</h5>
-                          <h5 className="text-danger text-decoration-line-through">
-                            4.11 $
-                          </h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-start">
-                      <div
-                        className="rounded me-4"
-                        style={{ width: 100, height: 100 }}
-                      >
-                        <img
-                          src="img/featur-3.jpg"
-                          className="img-fluid rounded"
-                          alt
-                        />
-                      </div>
-                      <div>
-                        <h6 className="mb-2">Big Banana</h6>
-                        <div className="d-flex mb-2">
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star text-secondary" />
-                          <i className="fa fa-star" />
-                        </div>
-                        <div className="d-flex mb-2">
-                          <h5 className="fw-bold me-2">2.99 $</h5>
-                          <h5 className="text-danger text-decoration-line-through">
-                            4.11 $
-                          </h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex justify-content-center my-4">
-                      <a
-                        href="#"
-                        className="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100"
-                      >
-                        Vew More
-                      </a>
-                    </div>
-                  </div>
                   <div className="col-lg-12">
                     <div className="position-relative">
                       <img
@@ -458,34 +279,34 @@ function Shop() {
                     return (
                       <div className="col-md-6 col-lg-6 col-xl-4">
                         <div className="rounded position-relative fruite-item">
-                          <div className="fruite-img">
-                            <img
-                              src={"http://localhost:8000/" + v.product_img}
-                              className="img-fluid w-100 rounded-top"
-                              alt
-                              style={{ height: "350px", objectFit: "cover" }}
-                            />
-                          </div>
-                          <div
-                            className="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                            style={{ top: 10, left: 10 }}
-                          >
-                            <p style={{ height: "10px" }}>
-                              {
-                                categoryData.Category?.find(
-                                  (c) => c._id === v.Category
-                                )?.name
-                              }
-                            </p>
-                          </div>
-                          <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                            <h4>{v.name}</h4>
-                            <p>{v.description.slice(0, 60)}...</p>
-                            <div className="d-flex justify-content-between flex-lg-wrap">
-                              <p className="text-dark fs-5 fw-bold mb-0">
-                                {v.price} ₹/kg
+                          <NavLink to={"/ShopDetail/" + v._id}>
+                            <div className="fruite-img">
+                              <img
+                                src={"http://localhost:8000/" + v.product_img}
+                                className="img-fluid w-100 rounded-top"
+                                alt
+                                style={{ height: "350px", objectFit: "cover" }}
+                              />
+                            </div>
+                            <div
+                              className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                              style={{ top: 10, left: 10 }}
+                            >
+                              <p style={{ height: "10px" }}>
+                                {
+                                  categoryData.Category?.find(
+                                    (c) => c._id === v.Category
+                                  )?.name
+                                }
                               </p>
-                              <NavLink to={"/Shop/5"}>
+                            </div>
+                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                              <h4>{v.name}</h4>
+                              <p>{v.description.slice(0, 60)}...</p>
+                              <div className="d-flex justify-content-between flex-lg-wrap">
+                                <p className="text-dark fs-5 fw-bold mb-0">
+                                  {v.price} ₹/kg
+                                </p>
                                 <a
                                   href="#"
                                   className="btn border border-secondary rounded-pill px-3 text-primary"
@@ -493,9 +314,9 @@ function Shop() {
                                   <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
                                   Add to cart
                                 </a>
-                              </NavLink>
+                              </div>
                             </div>
-                          </div>
+                          </NavLink>
                         </div>
                       </div>
                     );
