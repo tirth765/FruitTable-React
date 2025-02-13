@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 import { decrement, increment } from "../../redux/action/counter.action";
+import { addToCart } from "../../redux/Slice/CartSlice";
 
 function ShopDetail(props) {
   const dispatch = useDispatch();
@@ -39,8 +40,19 @@ function ShopDetail(props) {
     dispatch(decrement());
   };
 
+  const handleCart = (id) => {
+    console.log(id);
+
+    dispatch(addToCart(id));
+  };
+
   const c = useSelector((state) => state.count);
-  console.log(c);
+
+  // console.log(c);
+
+  const cart = useSelector((state) => state.cart);
+
+  console.log(cart);
 
   return (
     <div>
@@ -120,6 +132,7 @@ function ShopDetail(props) {
                   <a
                     href="#"
                     className="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
+                    onClick={() => handleCart(pdata._id)}
                   >
                     <i className="fa fa-shopping-bag me-2 text-primary" /> Add
                     to cart
@@ -604,8 +617,8 @@ function ShopDetail(props) {
                       href="#"
                       className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
                     >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
+                      <i className="fa fa-shopping-bag me-2 text-primary" />
+                      Add to cart
                     </a>
                   </div>
                 </div>
