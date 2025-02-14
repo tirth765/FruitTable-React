@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { getCategores } from "../../redux/Slice/CategorySlice";
-import { decrement, increment } from "../../redux/action/counter.action";
 import { addToCart } from "../../redux/Slice/CartSlice";
 
 function ShopDetail(props) {
   const dispatch = useDispatch();
+  const [count, setCount] = useState(1)
   const { id } = useParams();
   console.log(id);
 
@@ -32,23 +32,11 @@ function ShopDetail(props) {
 
   console.log(pdata);
 
-  const handleIncrement = () => {
-    dispatch(increment());
-  };
-
-  const handleDecrement = () => {
-    dispatch(decrement());
-  };
-
   const handleCart = (id) => {
     console.log(id);
 
-    dispatch(addToCart(id));
+    dispatch(addToCart({pId: id, Qty: count}));
   };
-
-  const c = useSelector((state) => state.count);
-
-  // console.log(c);
 
   const cart = useSelector((state) => state.cart);
 
@@ -105,14 +93,15 @@ function ShopDetail(props) {
                   >
                     <div className="input-group-btn">
                       <button
+                        disabled = {count > 1 ? false : true}
                         className="btn btn-sm btn-minus rounded-circle bg-light border"
-                        onClick={handleDecrement}
+                        onClick={() => setCount(count - 1)}
                       >
                         <i className="fa fa-minus" />
                       </button>
                     </div>
 
-                    <p style={{ margin: "4px" }}>{c.count}</p>
+                    <p style={{ margin: "4px" }}>{count}</p>
 
                     {/* <input
                       type="text"
@@ -123,7 +112,7 @@ function ShopDetail(props) {
                     <div className="input-group-btn">
                       <button
                         className="btn btn-sm btn-plus rounded-circle bg-light border"
-                        onClick={handleIncrement}
+                        onClick={() => setCount(count + 1)}
                       >
                         <i className="fa fa-plus" />
                       </button>

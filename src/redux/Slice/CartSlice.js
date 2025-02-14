@@ -9,18 +9,16 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart: (state, action) => {
-      console.log(action, "dsd");
+    addToCart: (state, action) => { 
+      console.log(action);
 
-      console.log(state.cart);
-
-      const findCart = state.cart.find((v) => v.pId === action.payload);
+      const findCart = state.cart.find((v) => v.pId === action.payload.pId);
       console.log(findCart);
 
       if (findCart) {
-        findCart.Qty++;
+        findCart.Qty = findCart.Qty + action.payload.Qty;
       } else {
-        state.cart.push({ pId: action.payload, Qty: 1 });
+        state.cart.push(action.payload);
       }
     },
   },
