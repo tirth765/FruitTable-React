@@ -1,13 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import MyProfile from "../../Container/My-profile/MyProfile";
 import { useSelector } from "react-redux";
 
 const Hero = () => {
-  const cart = useSelector((state) => state.cart);
+  const selecterCart = useSelector((state) => state.cart);
 
-  console.log(cart.cart.Qty);
+  
 
+  const total = selecterCart?.cart.reduce((acc, v, i) => acc + v.Qty, 0)
+
+  console.log(total);
   
 
   return (
@@ -117,7 +119,7 @@ const Hero = () => {
                     className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
                     style={{ top: "-5px", left: 15, height: 20, minWidth: 20 }}
                   >
-                    3
+                    {total}
                   </span>
                 </NavLink>
                 <NavLink to={"/MyProfile"} className="my-auto">
