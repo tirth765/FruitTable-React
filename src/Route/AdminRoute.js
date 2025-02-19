@@ -5,7 +5,7 @@ import SubCategory from "../admin/Container/SubCategory";
 import Layout from "../admin/Component/Layout/Layout";
 import Counter from "../admin/Container/Counter";
 import Product from "../admin/Container/Product";
-
+import Coupon from "../admin/Container/Coupon";
 
 export default function AdminRoute() {
   return (
@@ -15,6 +15,7 @@ export default function AdminRoute() {
         <Route path="/SubCategory" element={<SubCategory />} />
         <Route path="/Counter" element={<Counter />} />
         <Route path="/Product" element={<Product />} />
+        <Route path="/Coupon" element={<Coupon />} />
 
       </Routes>
     </Layout>

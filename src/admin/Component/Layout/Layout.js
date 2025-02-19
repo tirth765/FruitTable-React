@@ -21,6 +21,7 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import { NavLink } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 const drawerWidth = 240;
 
@@ -106,6 +107,7 @@ const listArray = [
     {label: 'Category', icon: <CategoryIcon /> , to: '/admin/Category'},
     {label: 'SubCategory', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/SubCategory'},
     {label: 'Product', icon: <ProductionQuantityLimitsIcon /> , to: '/admin/Product'},
+    {label: 'Coupon', icon: <LocalOfferIcon /> , to: '/admin/Coupon'},
     {label: 'Counter', icon: <AddCircleIcon /> , to: '/admin/Counter'}
     
 ]
