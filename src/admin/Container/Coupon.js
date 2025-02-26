@@ -115,6 +115,8 @@ export default function Coupon() {
       headerName: "Action",
       width: 180,
       renderCell: (params) => {
+        // console.log(params);
+        
         return (
           <>
             <Stack direction="row" spacing={2}>
@@ -130,7 +132,7 @@ export default function Coupon() {
                 variant="outlined"
                 href="#outlined-buttons"
                 onClick={() => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row._id);
                 }}
               >
                 Delete
@@ -252,7 +254,7 @@ export default function Coupon() {
 
         <Paper sx={{ height: 400, width: "100%" }}>
           <DataGrid
-            rows={Couponselecter?.coupon}
+            rows={Couponselecter?.coupon?.data}
             columns={columns}
             getRowId={(row) => row._id}
             initialState={{ pagination: { paginationModel } }}

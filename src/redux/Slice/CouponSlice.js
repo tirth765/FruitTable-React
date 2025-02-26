@@ -25,7 +25,8 @@ export const setCoupon = createAsyncThunk(
 export const deleteCoupon = createAsyncThunk(
     'coupon/deleteCoupon',
     async (id) => {
-        const response = await axios.delete('http://localhost:8000/api/v1/coupon/put-coupon/' + id);
+        console.log(id);
+        const response = await axios.delete('http://localhost:8000/api/v1/coupon/delete-coupon/' + id);
         return id;
     }
 )
@@ -33,7 +34,7 @@ export const deleteCoupon = createAsyncThunk(
 export const editCoupon = createAsyncThunk(
     'coupon/editCoupon',
     async (data) => {
-        const response = await axios.put('http://localhost:8000/api/v1/category/delete-category/' + data.id, data);
+        const response = await axios.put('http://localhost:8000/api/v1/category/put-category/' + data.id, data);
 
         return response.data;
     })
