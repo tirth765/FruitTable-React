@@ -12,6 +12,7 @@ import Testimonial from "../Container/Testimonial/Testimonial";
 import { Route, Routes } from "react-router-dom";
 import MyProfile from "../Container/My-profile/MyProfile";
 import SubCategoryDisplay from "../Container/SubCategory/SubCategoryDisplay";
+import Auth from "../Container/Auth/Auth";
 
 export default function UserRoute() {
   return (
@@ -30,6 +31,8 @@ export default function UserRoute() {
         <Route path="/Cart" element={<Cart />} />
         <Route path="/A404" element={<A404 />} />
         <Route path="/MyProfile" element={<MyProfile />} />
+        <Route path="/Auth" element={<Auth />} />
+
       </Routes>
 
       <Footer />

@@ -122,9 +122,16 @@ const Hero = () => {
                     {total}
                   </span>
                 </NavLink>
-                <NavLink to={"/MyProfile"} className="my-auto">
+
+                <NavLink to={"/Auth"} className="my-auto">
                   <i className="fas fa-user fa-2x" />
                 </NavLink>
+
+                {/* <NavLink to={"/MyProfile"} className="my-auto">
+                  <i className="fas fa-user fa-2x" />
+                </NavLink> */}
+
+
               </div>
             </div>
           </nav>
