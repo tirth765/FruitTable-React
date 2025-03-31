@@ -1,13 +1,11 @@
 import { Password } from "@mui/icons-material";
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import * as Yup from "yup";
 import { array, date, mixed, number, object, string } from 'yup';
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
 
-  // Define validation schemas for different form types
   const loginSchema = object().shape({
     email: string()
       .email("Invalid email address")
@@ -35,11 +33,7 @@ export default function MyProfile() {
       .required("Email is required"),
   });
 
-  // const handleSubmit = (values, { setSubmitting }) => {
-  //   console.log(values);
-  //   // Handle form submission here
-  //   setSubmitting(false);
-  // };
+ 
 
   const initialValues = {
     name: "",
