@@ -6,6 +6,7 @@ import CategorySlice from "../Slice/CategorySlice";
 import ProductSlice from "../Slice/ProductSlice";
 import cartSlice from "../Slice/CartSlice";
 import CouponSlice from "../Slice/CouponSlice";
+import AuthSlice from "../Slice/AuthSlice";
 
 
 export const rootReducer = combineReducers({
@@ -15,5 +16,6 @@ export const rootReducer = combineReducers({
   Category: CategorySlice,
   Product: ProductSlice,
   cart: cartSlice,
-  coupon: CouponSlice
+  coupon: CouponSlice,
+  auth: AuthSlice,
 });

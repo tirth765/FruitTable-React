@@ -1,43 +1,65 @@
 import { Password } from "@mui/icons-material";
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { array, date, mixed, number, object, string } from 'yup';
+import { userRegister } from "../../redux/Slice/AuthSlice";
+import { useDispatch } from "react-redux";
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
-     
-  const loginSchema = object().shape({
-    email: string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+
+  const dispatch = useDispatch(); 
+
+  let initialValues = {}, validationSchema = {}
+
+  if (type === 'login') {
+    validationSchema = {
+      email: string().email("Invalid email address").required("Email is required"),
+      password: string().required("Password is required")
+    }
+    initialValues = {
+      email: "",
+      password: ""
+    }
+  } else if (type === 'register') {
+    validationSchema = {
+      name: string().required("Name is required"),
+      email: string().email("Invalid email address").required("Email is required"),
+      password: string().required("Password is required")
+    }
+    initialValues = {
+      name: "",
+      email: "",
+      password: ""
+    }
+  } else {
+    validationSchema = {
+      email: string().email("Invalid email address").required("Email is required"),
+    }
+    initialValues = {
+      email: ""
+    }
+  }
+
+
+  const AuthSchema = object(validationSchema)
+
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    validationSchema: AuthSchema,
+    onSubmit: (values, { resetForm }) => {
+
+      dispatch(userRegister({...values, role: "user"}))
+
+      // resetForm()
+    },
   });
 
-  const registerSchema = object().shape({
-    name: string()
-      .required("Name is required")
-      .min(2, "Name must be at least 2 characters"),
-    email: string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
-  });
+  const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues, handleSubmit } = formik;
 
-  const passwordSchema = object().shape({
-    email: string()
-      .email("Invalid email address")
-      .required("Email is required"),
-  }); 
-
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-  };
+console.log(type);
 
   return (
     <div
@@ -48,130 +70,118 @@ export default function MyProfile() {
         {type === "login"
           ? "Login"
           : type === "password"
-          ? "Password"
-          : "Register"}
+            ? "Password"
+            : "Register"}
       </h2>
-      
-      <Formik
-        initialValues={initialValues}
-        validationSchema={
-          type === "login"
-            ? loginSchema
-            : type === "password"
-            ? passwordSchema
-            : registerSchema
-        }
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form id="auth-form">
-            {type === "register" && (
+
+      <form id="auth-form" onSubmit={handleSubmit}>
+
+        {
+          type === "login" || type === "password" ? "" :
+            <>
               <div className="mb-3" id="name-group">
                 <label htmlFor="name" className="form-label">
                   Name
                 </label>
-                <Field
+                <input
                   type="text"
                   className="form-control"
                   id="name"
                   name="name"
-                />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="text-danger"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values?.name}
                 />
               </div>
-            )}
+              <span>{errors.name && touched.name ? errors.name : ''}</span>
+            </>
+        }
 
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="email"
+            name="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            values={values?.email}
+          />
+        </div>
+        <span>{errors.email && touched.email ? errors.email : ''}</span>
+
+        {type !== "password" ?
+          <>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
+              <label htmlFor="password" className="form-label">
+                Password
               </label>
-              <Field
+              <input
                 type="text"
                 className="form-control"
-                id="email"
-                name="email"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-danger"
+                id="password"
+                name="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                values={values?.password}
               />
             </div>
+            <span>{errors.password && touched.password ? errors.password : ''}</span>
+          </>
+          : null}
 
-            {type !== "password" && (
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <Field
-                  type="text"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
-            )}
 
-            <button
-              type="submit"
-              className="btn btn-success w-100"
-              disabled={isSubmitting}
+        <button type="submit" className="btn btn-success w-100">
+          {type === "login"
+            ? "Login"
+            : type === "password"
+              ? "Submit"
+              : "Register"}
+        </button>
+
+        <div className="text-center mt-3">
+          {type === "login" ? (
+            <>
+              <a
+                href="#"
+                className="text-primary"
+                onClick={() => setType("password")}
+              >
+                Forgot Password
+              </a>
+              <br></br>
+              <a
+                href="#"
+                className="text-primary"
+                onClick={() => setType("register")}
+              >
+                Don't have an account? Register
+              </a>
+            </>
+          ) : type === "password" ? (
+            <a
+              href="#"
+              className="text-primary"
+              onClick={() => setType("login")}
             >
-              {type === "login"
-                ? "Login"
-                : type === "password"
-                ? "Submit"
-                : "Register"}
-            </button>
+              You have an account? Login
+            </a>
+          ) : (
+            <a
+              href="#"
+              className="text-primary"
+              onClick={() => setType("login")}
+            >
+              You have an account? Login
+            </a>
+          )}
+        </div>
+      </form>
 
-            <div className="text-center mt-3">
-              {type === "login" ? (
-                <>
-                  <a
-                    href="#"
-                    className="text-primary"
-                    onClick={() => setType("password")}
-                  >
-                    Forgot Password
-                  </a>
-                  <br></br>
-                  <a
-                    href="#"
-                    className="text-primary"
-                    onClick={() => setType("register")}
-                  >
-                    Don't have an account? Register
-                  </a>
-                </>
-              ) : type === "password" ? (
-                <a
-                  href="#"
-                  className="text-primary"
-                  onClick={() => setType("login")}
-                >
-                  You have an account? Login
-                </a>
-              ) : (
-                <a
-                  href="#"
-                  className="text-primary"
-                  onClick={() => setType("login")}
-                >
-                  You have an account? Login
-                </a>
-              )}
-            </div>
-          </Form>
-        )}
-      </Formik>
     </div>
   );
 }
