@@ -5,7 +5,7 @@ import { array, date, mixed, number, object, string } from 'yup';
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
-
+     
   const loginSchema = object().shape({
     email: string()
       .email("Invalid email address")
@@ -31,9 +31,7 @@ export default function MyProfile() {
     email: string()
       .email("Invalid email address")
       .required("Email is required"),
-  });
-
- 
+  }); 
 
   const initialValues = {
     name: "",
