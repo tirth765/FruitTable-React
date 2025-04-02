@@ -2,13 +2,18 @@ import { Password } from "@mui/icons-material";
 import React from "react";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { array, date, mixed, number, object, string } from 'yup';
-import { userRegister } from "../../redux/Slice/AuthSlice";
-import { useDispatch } from "react-redux";
+import { userLogin, userLogout, userRegister } from "../../redux/Slice/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
 
   const dispatch = useDispatch(); 
+
+  const auth = useSelector((state => state.auth));
+
+  console.log(auth);
 
   let initialValues = {}, validationSchema = {}
 
@@ -41,9 +46,12 @@ export default function MyProfile() {
     }
   }
 
-
   const AuthSchema = object(validationSchema)
 
+  const navigate = useNavigate();
+  if(auth.isValidate) {
+    navigate('/')
+  }
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -51,15 +59,16 @@ export default function MyProfile() {
     validationSchema: AuthSchema,
     onSubmit: (values, { resetForm }) => {
 
+    if(type === 'login') {
+      dispatch(userLogin(values))
+    } else if (type === "register") {
       dispatch(userRegister({...values, role: "user"}))
+    } 
 
-      // resetForm()
     },
   });
 
   const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues, handleSubmit } = formik;
-
-console.log(type);
 
   return (
     <div

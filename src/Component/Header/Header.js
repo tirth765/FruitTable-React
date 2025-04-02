@@ -1,19 +1,26 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../../redux/Slice/AuthSlice";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Hero = () => {
   const selecterCart = useSelector((state) => state.cart);
 
-  
-
-  const total = selecterCart?.cart.reduce((acc, v, i) => acc + v.Qty, 0)
-
+ 
+  const total = selecterCart?.cart.reduce((acc, v, i) => acc + v.Qty, 0);
   console.log(total);
-  
+
+  const auth = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(userLogout(auth.user._id));
+  };
+
+    const dispatch = useDispatch();
+
 
   return (
-
     <div>
       {/* Spinner Start */}
       {/* <div id="spinner" className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
@@ -123,14 +130,19 @@ const Hero = () => {
                   </span>
                 </NavLink>
 
-                <NavLink to={"/Auth"} className="my-auto">
-                  <i className="fas fa-user fa-2x" />
-                </NavLink>
+                {auth.isValidate ? (
+                  <a href="" onClick={handleLogout()}>
+                    <LogoutIcon />  
+                  </a>
+                ) : (
+                  <NavLink to={"/Auth"} className="my-auto">
+                    <i className="fas fa-user fa-2x" />
+                  </NavLink>
+                )}
 
                 {/* <NavLink to={"/MyProfile"} className="my-auto">
                   <i className="fas fa-user fa-2x" />
                 </NavLink> */}
-
 
               </div>
             </div>
