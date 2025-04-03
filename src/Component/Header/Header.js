@@ -2,22 +2,24 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/Slice/AuthSlice";
-import LogoutIcon from "@mui/icons-material/Logout";
 
 const Hero = () => {
   const selecterCart = useSelector((state) => state.cart);
 
- 
+  const dispatch = useDispatch();
+
   const total = selecterCart?.cart.reduce((acc, v, i) => acc + v.Qty, 0);
   console.log(total);
 
   const auth = useSelector((state) => state.auth);
 
+  console.log(auth);
+  
+
   const handleLogout = () => {
     dispatch(userLogout(auth.user._id));
   };
 
-    const dispatch = useDispatch();
 
 
   return (
@@ -131,8 +133,8 @@ const Hero = () => {
                 </NavLink>
 
                 {auth.isValidate ? (
-                  <a href="" onClick={handleLogout()}>
-                    <LogoutIcon />  
+                  <a href="#" onClick={handleLogout}>
+                    <i class="fas fa-sign-out-alt fa-3x"></i>
                   </a>
                 ) : (
                   <NavLink to={"/Auth"} className="my-auto">

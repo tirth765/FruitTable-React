@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Component/Header/Header";
 import Footer from "../Component/Footer/Footer";
 import A404 from "../Container/404/A404";
@@ -9,12 +9,43 @@ import Home from "../Container/Home/Home";
 import ShopDetail from "../Container/Shop-detail/ShopDetail";
 import Shop from "../Container/Shop/Shop";
 import Testimonial from "../Container/Testimonial/Testimonial";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import MyProfile from "../Container/My-profile/MyProfile";
 import SubCategoryDisplay from "../Container/SubCategory/SubCategoryDisplay";
 import Auth from "../Container/Auth/Auth";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "../redux/Slice/AuthSlice";
 
 export default function UserRoute() {
+    const [loading, isLoading] = useState(true)
+  
+    const auth = useSelector((state => state.auth));
+  
+    console.log("okokok", auth);
+  
+    const dispatch = useDispatch();
+  
+    const navigate = useNavigate()
+  
+    useEffect(() => { 
+      const checkAuthSelecter = async() => {
+        try {
+          await dispatch(checkAuth()) 
+        } catch (error) {
+          navigate("/")
+        } finally {
+          isLoading(false) 
+        }
+      }
+  
+      checkAuthSelecter()
+    }, [navigate, dispatch])
+    
+    if(loading) {
+      return(
+        <p>loading..................................................</p>
+      )
+    }
   return (
     <>
       <Header />
