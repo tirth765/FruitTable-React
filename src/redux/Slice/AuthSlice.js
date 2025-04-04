@@ -1,5 +1,4 @@
-import axios from "axios";
-import { BASE_URL } from "../../Utils/Base";
+import { axiosInstance } from "../../Utils/axiosInstance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -13,7 +12,7 @@ export const userRegister = createAsyncThunk (
     'auth/userRegister',
     
     async (data) => {
-        const response = await axios.post(BASE_URL + "users/register", data) 
+        const response = await axiosInstance.post("users/register", data) 
 
         console.log(response);
         
@@ -25,7 +24,7 @@ export const userLogin = createAsyncThunk (
 
     async (data) => {
 
-        const response = await axios.post(BASE_URL + "users/login", data, { withCredentials: true })
+        const response = await axiosInstance.post("users/login", data)
 
         console.log(response.data);
 
@@ -39,7 +38,7 @@ export const userLogout = createAsyncThunk (
     'auth/userLogout',
 
     async (id) => {
-        const response = await axios.post(BASE_URL + "users/logout", {_id: id}, { withCredentials: true })
+        const response = await axiosInstance.post("users/logout", {_id: id})
 
         console.log(response);
         
@@ -51,7 +50,7 @@ export const checkAuth = createAsyncThunk (
 
     async () => {
 
-        const response = await axios.get(BASE_URL + "users/checkAuth", { withCredentials: true })
+        const response = await axiosInstance.get("users/checkAuth")
 
         console.log(response.data);
 
