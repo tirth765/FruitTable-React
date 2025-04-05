@@ -48,9 +48,7 @@ export default function MyProfile() {
     enableReinitialize: true,
     validationSchema: AuthSchema,
     onSubmit: (values, { resetForm }) => {
-
-      dispatch(userRegister({...values, role: "user"}))
-
+      
     },
   });
 
