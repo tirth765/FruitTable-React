@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { NavLink } from "react-router-dom";
+import FruitChatBot from "../../Components/ChatBot/FruitChatBot";
 
 const Home = () => {
   const [Cat, setCat] = useState("");
@@ -206,42 +207,53 @@ const Home = () => {
                 <div className="row g-4">
                   <div className="col-lg-12">
                     <div className="row g-4">
+                     
                       {productData.Product.map((v) => {
-                        return (
-                          <div className="col-md-6 col-lg-4 col-xl-3">
-                            <div className="rounded position-relative fruite-item">
-                              <div className="fruite-img">
-                                <img
-                                  src={"http://localhost:8000/" + v.product_img}
-                                  className="img-fluid w-100 rounded-top"
-                                  alt
-                                />
-                              </div>
-                              <div
-                                className="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                style={{ top: 10, left: 10 }}
-                              >
-                                Fruits
-                              </div>
-                              <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                                <h4>{v.name}</h4>
-                                <div className="d-flex justify-content-between flex-lg-wrap">
-                                  <p className="text-dark fs-5 fw-bold mb-0">
-                                    $4.99 / kg
-                                  </p>
-                                  <a
-                                    href="#"
-                                    className="btn border border-secondary rounded-pill px-3 text-primary"
-                                  >
-                                    <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
-                                    Add to cart
-                                  </a>
-                                </div>
+                    return (
+                      <div className="col-md-6 col-lg-6 col-xl-4">
+                        <div className="rounded position-relative fruite-item">
+                          <NavLink to={"/ShopDetail/" + v._id}>
+                            <div className="fruite-img">
+                              <img
+                                src={"http://localhost:8000/" + v.product_img}
+                                className="img-fluid w-100 rounded-top"
+                                alt
+                                style={{ height: "350px", objectFit: "cover" }}
+                              />
+                            </div>
+                            <div
+                              className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                              style={{ top: 10, left: 10 }}
+                            >
+                              <p style={{ height: "10px" }}>
+                                {
+                                  categoryData.Category?.find(
+                                    (c) => c._id === v.Category
+                                  )?.name
+                                }
+                              </p>
+                            </div>
+                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                              <h4>{v.name}</h4>
+                              <p>{v.description.slice(0, 60)}...</p>
+                              <div className="d-flex justify-content-between flex-lg-wrap">
+                                <p className="text-dark fs-5 fw-bold mb-0">
+                                  {v.price} ₹/kg
+                                </p>
+                                <a
+                                  href="#"
+                                  className="btn border border-secondary rounded-pill px-3 text-primary"
+                                >
+                                  <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
+                                  Add to cart
+                                </a>
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          </NavLink>
+                        </div>
+                      </div>
+                    );
+                  })}
                     </div>
                   </div>
                 </div>
@@ -607,6 +619,21 @@ const Home = () => {
         </div>
       </div>
       {/* Fruits Shop End*/}
+
+      {/* Chatbot Section Start */}
+      <div className="container-fluid py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8">
+              {/* Any existing content for the left side */}
+            </div>
+            <div className="col-lg-4">
+              <FruitChatBot />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Chatbot Section End */}
 
       {/* Featurs Start */}
 
