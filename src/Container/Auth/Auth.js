@@ -41,9 +41,7 @@ export default function MyProfile() {
     }
   }
 
-
   const AuthSchema = object(validationSchema)
-
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -53,7 +51,6 @@ export default function MyProfile() {
 
       dispatch(userRegister({...values, role: "user"}))
 
-      // resetForm()
     },
   });
 
@@ -96,7 +93,6 @@ console.log(type);
               <span>{errors.name && touched.name ? errors.name : ''}</span>
             </>
         }
-
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

@@ -5,12 +5,9 @@ import { useSelector } from "react-redux";
 const Hero = () => {
   const selecterCart = useSelector((state) => state.cart);
 
-  
-
   const total = selecterCart?.cart.reduce((acc, v, i) => acc + v.Qty, 0)
 
   console.log(total);
-  
 
   return (
 
