@@ -15,6 +15,7 @@ import SubCategoryDisplay from "../Container/SubCategory/SubCategoryDisplay";
 import Auth from "../Container/Auth/Auth";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../redux/Slice/AuthSlice";
+import Payment from "../Container/Payment/Payment";
 
 export default function UserRoute() {
     const [loading, isLoading] = useState(true)
@@ -63,6 +64,7 @@ export default function UserRoute() {
         <Route path="/A404" element={<A404 />} />
         <Route path="/MyProfile" element={<MyProfile />} />
         <Route path="/Auth" element={<Auth />} />
+        <Route path="/payment" element={<Payment />} />
 
       </Routes>
 

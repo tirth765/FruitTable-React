@@ -38,20 +38,7 @@ const Home = () => {
               <h1 className="mb-5 display-3 text-primary">
                 Organic Veggies &amp; Fruits Foods
               </h1>
-              <div className="position-relative mx-auto">
-                <input
-                  className="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill"
-                  type="number"
-                  placeholder="Search"
-                />
-                <button
-                  type="submit"
-                  className="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100"
-                  style={{ top: 0, right: "25%" }}
-                >
-                  Submit Now
-                </button>
-              </div>
+              
             </div>
             <div className="col-md-12 col-lg-5">
               <div
@@ -210,15 +197,15 @@ const Home = () => {
                      
                       {productData.Product.map((v) => {
                     return (
-                      <div className="col-md-6 col-lg-6 col-xl-4">
-                        <div className="rounded position-relative fruite-item">
+                      <div className="col-md-6 col-lg-4 col-xl-3">
+                        <div className="rounded position-relative fruite-item" style={{ maxWidth: '300px', margin: '0 auto' }}>
                           <NavLink to={"/ShopDetail/" + v._id}>
                             <div className="fruite-img">
                               <img
                                 src={"http://localhost:8000/" + v.product_img}
                                 className="img-fluid w-100 rounded-top"
                                 alt
-                                style={{ height: "350px", objectFit: "cover" }}
+                                style={{ height: "250px", objectFit: "cover" }}
                               />
                             </div>
                             <div
@@ -233,19 +220,20 @@ const Home = () => {
                                 }
                               </p>
                             </div>
-                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>{v.name}</h4>
-                              <p>{v.description.slice(0, 60)}...</p>
-                              <div className="d-flex justify-content-between flex-lg-wrap">
-                                <p className="text-dark fs-5 fw-bold mb-0">
+                            <div className="p-3 border border-secondary border-top-0 rounded-bottom">
+                              <h5 className="fw-bold mb-2 fs-4">{v.name}</h5>
+                              {/* <p className="small mb-2">{v.description.slice(0, 40)}...</p> */}
+                              <div className="d-flex justify-content-between align-items-center">
+                                <p className="text-dark fw-bold mb-0 fs-5">
                                   {v.price} ₹/kg
                                 </p>
+                                
                                 <a
                                   href="#"
-                                  className="btn border border-secondary rounded-pill px-3 text-primary"
+                                  className="btn border border-secondary rounded-pill px-2 py-1 text-primary"
+                                  style={{ fontSize: '16px' }}
                                 >
-                                  <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
-                                  Add to cart
+                                  <i className="fa fa-shopping-bag me-1 text-primary" /> Add to cart
                                 </a>
                               </div>
                             </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { getCategores } from "../../redux/Slice/CategorySlice";
@@ -27,6 +27,11 @@ function ShopDetail(props) {
   useEffect(() => {
     getData();
   }, []);
+
+  // Add scroll to top effect when product ID changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   const pdata = productData.Product?.find((v) => v._id === id);
 
@@ -353,267 +358,57 @@ function ShopDetail(props) {
               </div>
             </div>
           </div>
-          <h1 className="fw-bold mb-0">Related products</h1>
-          <div className="vesitable">
-            <div className="owl-carousel vegetable-carousel justify-content-center">
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-6.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Parsely</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
+          {/* Related Products Section Start */}
+          <div className="container-fluid py-5" >
+            <div className="container">
+              <div className="text-center mb-5">
+                <h1 className="fw-bold">Related Products</h1>
               </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-1.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Parsely</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-3.png"
-                    className="img-fluid w-100 rounded-top bg-light"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Banana</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-4.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Bell Papper</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-5.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Potatoes</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-6.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Parsely</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-5.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Potatoes</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" /> Add
-                      to cart
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="border border-primary rounded position-relative vesitable-item">
-                <div className="vesitable-img">
-                  <img
-                    src="img/vegetable-item-6.jpg"
-                    className="img-fluid w-100 rounded-top"
-                    alt
-                  />
-                </div>
-                <div
-                  className="text-white bg-primary px-3 py-1 rounded position-absolute"
-                  style={{ top: 10, right: 10 }}
-                >
-                  Vegetable
-                </div>
-                <div className="p-4 pb-0 rounded-bottom">
-                  <h4>Parsely</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit sed
-                    do eiusmod te incididunt
-                  </p>
-                  <div className="d-flex justify-content-between flex-lg-wrap">
-                    <p className="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                    <a
-                      href="#"
-                      className="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"
-                    >
-                      <i className="fa fa-shopping-bag me-2 text-primary" />
-                      Add to cart
-                    </a>
-                  </div>
-                </div>
+              <div className="row g-4">
+                {productData.Product?.filter((v) => v.Category === pdata?.Category && v._id !== pdata?._id)
+                  .slice(0, 4)
+                  .map((relatedProduct) => (
+                    <div className="col-md-6 col-lg-3" key={relatedProduct._id}>
+                      <NavLink  to={"/ShopDetail/" + relatedProduct._id} style={{ textDecoration: 'none', color: 'inherit' }} >
+                        <div className="border border-primary rounded position-relative h-100">
+                          <div className="position-relative overflow-hidden">
+                            <img
+                              src={"http://localhost:8000/" + relatedProduct.product_img}
+                              className="img-fluid w-100 rounded-top"
+                              alt={relatedProduct.name}
+                              style={{ height: "250px", objectFit: "cover" }}
+                            />
+                            <div
+                              className="text-white bg-primary px-3 py-1 rounded position-absolute"
+                              style={{ top: 10, right: 10 }}
+                            >
+                              {categoryData.Category?.find((c) => c._id === relatedProduct.Category)?.name}
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <h5 className="fw-bold mb-3">{relatedProduct.name}</h5>
+                            <p className="mb-3">{relatedProduct.description.slice(0, 60)}...</p>
+                            <div className="d-flex justify-content-between">
+                              <p className="text-dark fs-5 fw-bold mb-0">{relatedProduct.price} ₹/kg</p>
+                              <button
+                                className="btn border border-secondary rounded-pill px-3 py-1 text-primary"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleCart(relatedProduct._id);
+                                }}
+                              >
+                                <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </NavLink>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
+          {/* Related Products Section End */}
         </div>
       </div>
       {/* Single Product End */}

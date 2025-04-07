@@ -16,8 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export default function Contact() {
   const [catData, setcatData] = useState([]);
-    const [Update, setUpdate] = useState(false);
-  
+  const [Update, setUpdate] = useState(false);
+
 
   let CategorySchema = object({
     name: string().required(),
@@ -38,23 +38,23 @@ export default function Contact() {
 
     setcatData(localData)
 
-    
+
   }
 
 
   const formik = useFormik({
-    initialValues: {
+    initialValues: {  
       name: '',
       email: '',
       Description: ''
     },
     validationSchema: CategorySchema,
-      onSubmit: (values, { resetForm }) => {
-        if(Update) {  
-          updateData(values);
-        } else {
-          localDataStore(values);
-        }
+    onSubmit: (values, { resetForm }) => {
+      if (Update) {
+        updateData(values);
+      } else {
+        localDataStore(values);
+      }
 
       resetForm();
     },
@@ -109,7 +109,7 @@ export default function Contact() {
     let fdata = localData.filter((v) => v.id !== id)
 
     console.log(fdata);
-        
+
 
     localStorage.setItem("Contact", JSON.stringify(fdata))
 
@@ -142,7 +142,7 @@ export default function Contact() {
     }
   }
 
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched, setValues,resetForm } = formik;
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched, setValues, resetForm } = formik;
 
   return (
     <div>
@@ -258,21 +258,21 @@ export default function Contact() {
                   <i className="fas fa-map-marker-alt fa-2x text-primary me-4" />
                   <div>
                     <h4>Address</h4>
-                    <p className="mb-2">123 Street New York.USA</p>
+                    <p className="mb-2">109-110,Shivam Heights,Bhagalpur,BR</p>
                   </div>
                 </div>
                 <div className="d-flex p-4 rounded mb-4 bg-white">
                   <i className="fas fa-envelope fa-2x text-primary me-4" />
                   <div>
                     <h4>Mail Us</h4>
-                    <p className="mb-2">info@example.com</p>
+                    <p className="mb-2">tirth.patel6521@gmail.com</p>
                   </div>
                 </div>
                 <div className="d-flex p-4 rounded bg-white">
                   <i className="fa fa-phone-alt fa-2x text-primary me-4" />
                   <div>
                     <h4>Telephone</h4>
-                    <p className="mb-2">(+012) 3456 7890</p>
+                    <p className="mb-2">(+91) 63523 59713</p>
                   </div>
                 </div>
               </div>

@@ -2,10 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment, remove } from "../../redux/Slice/CartSlice";
 import { Padding } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartselecter = useSelector((state) => state.cart);
+  const navigate = useNavigate();
 
   console.log(cartselecter);
 
@@ -172,6 +174,7 @@ export default function Cart() {
                 <button
                   className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
                   type="button"
+                  onClick={() => navigate('/payment')}
                 >
                   Proceed Checkout
                 </button>
