@@ -7,7 +7,7 @@ import ProductSlice from "../Slice/ProductSlice";
 import cartSlice from "../Slice/CartSlice";
 import CouponSlice from "../Slice/CouponSlice";
 import AuthSlice from "../Slice/AuthSlice";
-
+import alertSlice from "../Slice/alertSlice";
 
 export const rootReducer = combineReducers({
   count: handleCounter,
@@ -18,4 +18,5 @@ export const rootReducer = combineReducers({
   cart: cartSlice,
   coupon: CouponSlice,
   auth: AuthSlice,
+  alert: alertSlice
 });

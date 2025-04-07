@@ -8,11 +8,32 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
+
+axiosInstance.interceptors.response.use(function (response) {
+  return response;
+
+}, async function (error) {
+  try {
+
+    if (error.response && error.response.status === 401) {
+
+      console.log("req for token");
+      
+
+      await axios.get(BASE_URL + "users/generateNewTokens", { withCredentials: true })
+
+      return axiosInstance(error.config)
+    }
+  } catch (error) {
+    console.log("error in req token");
+    
+    return Promise.reject(error);
+  }
+  return Promise.reject(error);
+});
