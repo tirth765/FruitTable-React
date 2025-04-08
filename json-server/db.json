@@ -57,5 +57,137 @@
       ],
       "select_file": "baner-1.png"
     }
-  ]
+  ],
+  "fruits": [
+    {
+      "id": "1",
+      "name": "Apple",
+      "category": "Pome Fruit",
+      "scientificName": "Malus domestica",
+      "nutrition": {
+        "calories": 52,
+        "carbohydrates": 14,
+        "fiber": 2.4,
+        "vitamins": ["C", "B6", "K"],
+        "minerals": ["Potassium", "Manganese"]
+      },
+      "benefits": [
+        "Rich in antioxidants",
+        "Supports heart health",
+        "Aids digestion",
+        "May help with weight loss"
+      ],
+      "varieties": ["Red Delicious", "Granny Smith", "Fuji", "Gala", "Honeycrisp"]
+    },
+    {
+      "id": "2",
+      "name": "Banana",
+      "category": "Tropical Fruit",
+      "scientificName": "Musa acuminata",
+      "nutrition": {
+        "calories": 89,
+        "carbohydrates": 23,
+        "fiber": 2.6,
+        "vitamins": ["B6", "C", "B12"],
+        "minerals": ["Potassium", "Magnesium"]
+      },
+      "benefits": [
+        "Rich in potassium",
+        "Good for heart health",
+        "Natural energy booster",
+        "Supports digestive health"
+      ],
+      "varieties": ["Cavendish", "Lady Finger", "Red Banana", "Plantain"]
+    }
+  ],
+  "vegetables": [
+    {
+      "id": "1",
+      "name": "Carrot",
+      "category": "Root Vegetable",
+      "scientificName": "Daucus carota",
+      "nutrition": {
+        "calories": 41,
+        "carbohydrates": 10,
+        "fiber": 2.8,
+        "vitamins": ["A", "K", "C"],
+        "minerals": ["Potassium", "Calcium"]
+      },
+      "benefits": [
+        "Rich in beta-carotene",
+        "Supports eye health",
+        "Good for skin health",
+        "May reduce cancer risk"
+      ],
+      "varieties": ["Nantes", "Imperator", "Chantenay", "Danvers"]
+    },
+    {
+      "id": "2",
+      "name": "Spinach",
+      "category": "Leafy Green",
+      "scientificName": "Spinacia oleracea",
+      "nutrition": {
+        "calories": 23,
+        "carbohydrates": 3.6,
+        "fiber": 2.2,
+        "vitamins": ["A", "C", "K", "B9"],
+        "minerals": ["Iron", "Calcium", "Magnesium"]
+      },
+      "benefits": [
+        "Rich in iron",
+        "Supports bone health",
+        "Boosts immunity",
+        "Good for heart health"
+      ],
+      "varieties": ["Savoy", "Flat-leaf", "Semi-savoy"]
+    }
+  ],
+  "juiceBenefits": {
+    "fruitJuices": [
+      {
+        "name": "Orange Juice",
+        "benefits": [
+          "Rich in Vitamin C",
+          "Boosts immunity",
+          "Supports heart health",
+          "May prevent kidney stones"
+        ]
+      },
+      {
+        "name": "Apple Juice",
+        "benefits": [
+          "Rich in antioxidants",
+          "Supports brain health",
+          "May reduce cholesterol",
+          "Good for heart health"
+        ]
+      }
+    ],
+    "vegetableJuices": [
+      {
+        "name": "Carrot Juice",
+        "benefits": [
+          "Rich in beta-carotene",
+          "Supports eye health",
+          "Boosts immunity",
+          "Good for skin health"
+        ]
+      },
+      {
+        "name": "Spinach Juice",
+        "benefits": [
+          "Rich in iron",
+          "Supports bone health",
+          "Boosts energy levels",
+          "Good for digestion"
+        ]
+      }
+    ]
+  },
+  "statistics": {
+    "totalFruitTypes": 2000,
+    "totalVegetableTypes": 1000,
+    "mostCommonFruits": ["Apple", "Banana", "Orange", "Mango", "Grapes"],
+    "mostCommonVegetables": ["Potato", "Tomato", "Onion", "Carrot", "Cabbage"]
+  }
 }

@@ -98,7 +98,7 @@ function Shop() {
 
     console.log("sdxcasxa", fData);
 
-    console.log("Cat", Cat);
+    console.log(Cat);
 
     if (Cat) {
       fData = fData.filter((v) => v.Category === Cat._id);
@@ -164,7 +164,50 @@ function Shop() {
             <div className="row g-4">
               <div className="col-lg-3">
                 <div className="row g-4">
-                  
+                  <div className="col-lg-12">
+                    <div className="mb-3">
+                      <h4>Categories</h4>
+
+                      <ul className="list-unstyled fruite-categorie">
+                        <li>
+                          <div
+                            className="d-flex justify-content-between fruite-name"
+                            onClick={() => setCat("")}
+                            style={{ fontSize: "18px" }}
+                          >
+                            <a href="#">
+                              <i className="fas fa-apple-alt me-2" />
+                              All Products
+                            </a>
+                          </div>
+                        </li>
+
+                        {categoryData.Category?.map((v) => {
+                          return (
+                            <li>
+                              <div
+                                className="d-flex justify-content-between fruite-name"
+                                onClick={() => setCat(v)}
+                                style={{ fontSize: "18px" }}
+                              >
+                                <a href="#">
+                                  <i className="fas fa-apple-alt me-2" />
+                                  {v.name}
+                                </a>
+                                <span>
+                                  {
+                                    productData.Product?.filter(
+                                      (c) => c.Category === v._id
+                                    )?.length
+                                  }
+                                </span>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
                   <div className="col-lg-12">
                     <Box sx={{ width: 250 }}>
                       <h4>Price</h4>
