@@ -9,7 +9,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   const auth = useSelector((state => state.auth));
 
@@ -49,7 +49,7 @@ export default function MyProfile() {
   const AuthSchema = object(validationSchema)
 
   const navigate = useNavigate();
-  if(auth.isValidate) {
+  if (auth.isValidate) {
     navigate('/')
   }
 
@@ -59,16 +59,24 @@ export default function MyProfile() {
     validationSchema: AuthSchema,
     onSubmit: (values, { resetForm }) => {
 
-    if(type === 'login') {
-      dispatch(userLogin(values))
-    } else if (type === "register") {
-      dispatch(userRegister({...values, role: "user"}))
-    } 
+      if (type === 'login') {
+        dispatch(userLogin(values))
+      } else if (type === "register") {
+        dispatch(userRegister({ ...values, role: "user" }))
+      }
 
     },
   });
 
   const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues, handleSubmit } = formik;
+
+  const handleGoogleLogin = () => {
+    try {
+      window.location.href = "http://localhost:8000/api/v1/users/google"
+    } catch (error) {
+      console.log("error",error);
+    }
+  }
 
   return (
     <div
@@ -189,7 +197,13 @@ export default function MyProfile() {
             </a>
           )}
         </div>
+
+        <br></br> 
+
       </form>
+      <button onClick={handleGoogleLogin} type="submit" className="btn btn-success w-100">
+        Sign in with Google
+        </button>
 
     </div>
   );
