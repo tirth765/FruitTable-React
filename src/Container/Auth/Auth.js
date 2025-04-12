@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
+  const [userMail, setUserEmail] = ""
 
   const dispatch = useDispatch();
 
@@ -37,7 +38,15 @@ export default function MyProfile() {
       email: "",
       password: ""
     }
-  } else {
+  } else if (type === 'OTP') {
+    validationSchema = {
+      otp: string().required("OTP is required")
+    }
+    initialValues = {
+      otp: ""
+    }
+  }
+  else {
     validationSchema = {
       email: string().email("Invalid email address").required("Email is required"),
     }
@@ -57,12 +66,24 @@ export default function MyProfile() {
     initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: AuthSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
 
       if (type === 'login') {
         dispatch(userLogin(values))
       } else if (type === "register") {
-        dispatch(userRegister({ ...values, role: "user" }))
+        const res = await dispatch(userRegister({ ...values, role: "user" }))
+
+        console.log(res.requestStatus);
+
+        
+        if(res.type === "auth/userRegister/fulfilled") {
+          setType("OTP")
+          setUserEmail(values.email)
+        }
+        
+      }
+      else if(type === "OTP") {
+        console.log(values);
       }
 
     },
@@ -74,7 +95,7 @@ export default function MyProfile() {
     try {
       window.location.href = "http://localhost:8000/api/v1/users/google"
     } catch (error) {
-      console.log("error",error);
+      console.log("error", error);
     }
   }
 
@@ -84,17 +105,17 @@ export default function MyProfile() {
       style={{ width: 350, margin: "auto", marginTop: 200 }}
     >
       <h2 className="text-center" id="form-title">
-        {type === "login"
-          ? "Login"
-          : type === "password"
-            ? "Password"
-            : "Register"}
+        {
+          type === "login" ? "Login": 
+          type === "password" ? "Password" : 
+          type === "OTP" ? "Varify OTP" :
+               "Register"}
       </h2>
 
       <form id="auth-form" onSubmit={handleSubmit}>
 
         {
-          type === "login" || type === "password" ? "" :
+          type === "register"? 
             <>
               <div className="mb-3" id="name-group">
                 <label htmlFor="name" className="form-label">
@@ -111,27 +132,32 @@ export default function MyProfile() {
                 />
               </div>
               <span>{errors.name && touched.name ? errors.name : ''}</span>
-            </>
+            </> : null
         }
 
 
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="email"
-            name="email"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            values={values?.email}
-          />
-        </div>
-        <span>{errors.email && touched.email ? errors.email : ''}</span>
+        {
+          type !== "OTP" ? <>
+          <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    values={values?.email}
+                  />
+                </div>
+                <span>{errors.email && touched.email ? errors.email : ''}</span>
+          </> : null
+        }
+       
 
-        {type !== "password" ?
+        {type === "register" || type === "login" ?
           <>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
@@ -151,12 +177,33 @@ export default function MyProfile() {
           </>
           : null}
 
+        {type === "OTP" ?
+          <>
+            <div className="mb-3">
+              <label htmlFor="otp" className="form-label">
+                Enter OTP
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="otp"
+                name="otp"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                values={values?.otp}
+              />
+            </div>
+            <span>{errors.otp && touched.otp ? errors.otp : ''}</span>
+          </>
+          : null}
+
 
         <button type="submit" className="btn btn-success w-100">
           {type === "login"
             ? "Login"
             : type === "password"
-              ? "Submit"
+              ? "Submit": 
+              type === "OTP" ? "Varify OTP"
               : "Register"}
         </button>
 
@@ -198,12 +245,12 @@ export default function MyProfile() {
           )}
         </div>
 
-        <br></br> 
+        <br></br>
 
       </form>
       <button onClick={handleGoogleLogin} type="submit" className="btn btn-success w-100">
         Sign in with Google
-        </button>
+      </button>
 
     </div>
   );
