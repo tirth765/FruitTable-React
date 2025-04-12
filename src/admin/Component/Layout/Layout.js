@@ -102,7 +102,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     ],
   }),
 );
-
 const listArray = [
     {label: 'Category', icon: <CategoryIcon /> , to: '/admin/Category'},
     {label: 'SubCategory', icon: <AutoAwesomeMosaicIcon /> , to: '/admin/SubCategory'},
