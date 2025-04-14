@@ -1,14 +1,14 @@
 import { Password } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { array, date, mixed, number, object, string } from 'yup';
-import { userLogin, userLogout, userRegister } from "../../redux/Slice/AuthSlice";
+import { checkOTP, userLogin, userLogout, userRegister } from "../../redux/Slice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function MyProfile() {
   const [type, setType] = React.useState("login");
-  const [userMail, setUserEmail] = ""
+  const [userEmail, setUserEmail] = React.useState("")
 
   const dispatch = useDispatch();
 
@@ -62,6 +62,8 @@ export default function MyProfile() {
     navigate('/')
   }
 
+  
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
@@ -75,19 +77,43 @@ export default function MyProfile() {
 
         console.log(res.requestStatus);
 
-        
-        if(res.type === "auth/userRegister/fulfilled") {
+        if (res.type === "auth/userRegister/fulfilled") {
           setType("OTP")
           setUserEmail(values.email)
+
         }
-        
+
       }
-      else if(type === "OTP") {
+      else if (type === "OTP") {
         console.log(values);
+
+        const res = await dispatch(checkOTP({ otp: values.otp , email: userEmail }))
+
+        console.log(res.requestStatus);
+
+        if (res.type === "auth/checkOTP/fulfilled") {
+          setType("login")
+          setUserEmail("")
+
+        }
+
       }
 
-    },
+      resetForm()
+    }
+    
   });
+
+  useEffect(() => {
+    const finalEmail = localStorage.getItem("userEmail")
+
+    if (finalEmail) {
+      setType("OTP")
+      setUserEmail(finalEmail)
+    }
+
+    localStorage.removeItem("userEmail")
+  }, []);
 
   const { handleChange, handleBlur, values, errors, resetForm, touched, setFieldValue, setValues, handleSubmit } = formik;
 
@@ -106,16 +132,16 @@ export default function MyProfile() {
     >
       <h2 className="text-center" id="form-title">
         {
-          type === "login" ? "Login": 
-          type === "password" ? "Password" : 
-          type === "OTP" ? "Varify OTP" :
-               "Register"}
+          type === "login" ? "Login" :
+            type === "password" ? "Password" :
+              type === "OTP" ? "Varify OTP" :
+                "Register"}
       </h2>
 
       <form id="auth-form" onSubmit={handleSubmit}>
 
         {
-          type === "register"? 
+          type === "register" ?
             <>
               <div className="mb-3" id="name-group">
                 <label htmlFor="name" className="form-label">
@@ -138,24 +164,24 @@ export default function MyProfile() {
 
         {
           type !== "OTP" ? <>
-          <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    values={values?.email}
-                  />
-                </div>
-                <span>{errors.email && touched.email ? errors.email : ''}</span>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="email"
+                name="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                values={values?.email}
+              />
+            </div>
+            <span>{errors.email && touched.email ? errors.email : ''}</span>
           </> : null
         }
-       
+
 
         {type === "register" || type === "login" ?
           <>
@@ -202,9 +228,9 @@ export default function MyProfile() {
           {type === "login"
             ? "Login"
             : type === "password"
-              ? "Submit": 
+              ? "Submit" :
               type === "OTP" ? "Varify OTP"
-              : "Register"}
+                : "Register"}
         </button>
 
         <div className="text-center mt-3">

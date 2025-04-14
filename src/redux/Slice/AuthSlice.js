@@ -15,7 +15,7 @@ export const userRegister = createAsyncThunk (
         const response = await axiosInstance.post("users/register", data) 
 
         console.log(response);
-        
+        localStorage.setItem("userEmail", data.email)
     }
 )
 
@@ -60,6 +60,17 @@ export const checkAuth = createAsyncThunk (
     }
 )
 
+export const checkOTP = createAsyncThunk (
+    'auth/checkOTP',
+
+    async (data) => {
+
+        const response = await axiosInstance.post("users/OTPVarification", data)
+
+        console.log(response.data);
+    }
+)
+
 const AuthSlice = createSlice({
     name:"auth",
     initialState,
@@ -82,6 +93,12 @@ const AuthSlice = createSlice({
             state.isValidate = true;
             state.error = null;
         })
+        // builder.addCase(checkOTP.fulfilled, (state, action) => {
+        //     state.isLoading = false;
+        //     state.user = action.payload;
+        //     state.isValidate = true;
+        //     state.error = null;
+        // })
     }
 })
 
