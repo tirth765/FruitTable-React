@@ -84,6 +84,9 @@ const Hero = () => {
                 <NavLink to={"/Shop"} className="nav-item nav-link">
                   Shop
                 </NavLink>
+                <NavLink to={"/chat"} className="nav-item nav-link">
+                  Chat
+                </NavLink>
                 <a href="shop-detail.html" className="nav-item nav-link">
                   Shop Detail
                 </a>
