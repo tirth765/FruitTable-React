@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/Slice/AuthSlice";
+// import { createContext } from "react";
+import { ThemeContext } from "../../Context/ThemeContext";
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 const Hero = () => {
   const selecterCart = useSelector((state) => state.cart);
@@ -20,6 +24,14 @@ const Hero = () => {
     dispatch(userLogout(auth.user._id));
   };
 
+const theme = useContext(ThemeContext)
+
+console.log(theme);
+
+const handleToggle = () => {
+  
+  theme.themeToggle(theme.theme)
+}
 
 
   return (
@@ -118,6 +130,7 @@ const Hero = () => {
                 </NavLink>
               </div>
               <div className="d-flex m-3 me-0">
+                <button onClick={() => handleToggle()}>{theme.theme === 'light'? <LightModeIcon /> :  <DarkModeIcon />  }</button>
                 <button
                   className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
                   data-bs-toggle="modal"
