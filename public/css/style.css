@@ -495,3 +495,18 @@
 }
 /*** Footer End ***/
 
+.light {
+    background-color: white !important;
+    color: black !important;
+}
+
+.dark {
+    background-color: black !important;
+    color: white !important;
+}
+
+/* .lightLogo {
+    background-color: white;
+    border: none;
+    width: 50px;
+} */

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 import { getProduct } from "../../redux/Slice/ProductSlice";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../../Context/ThemeContext";
+import { colors } from "@mui/material";
 
 const Home = () => {
   const [Cat, setCat] = useState("");
@@ -26,8 +28,12 @@ const Home = () => {
     getData();
   }, []);
 
+  const theme = useContext(ThemeContext)
+  
+  console.log(theme);
+
   return (
-    <div>
+    <div className={`${theme.theme}`}>
       {/* Hero Start */}
       <div className="container-fluid py-5 mb-5 hero-header">
         <div className="container py-5">
@@ -163,12 +169,12 @@ const Home = () => {
       </div>
       {/* Featurs Section End */}
       {/* Fruits Shop Start*/}
-      <div className="container-fluid fruite py-5">
+      <div className="container-fluid fruite py-5" >
         <div className="container py-5">
           <div className="tab-class text-center">
             <div className="row g-4">
               <div className="col-lg-4 text-start">
-                <h1>Our Organic Products</h1>
+                <h1 style={{color: theme.theme === "light" ? 'black' : "white"}}>Our Organic Products</h1>
               </div>
 
               <div className="col-lg-8 text-end">
@@ -191,7 +197,7 @@ const Home = () => {
                         className="d-flex py-2 m-2 bg-light rounded-pill"
                         data-bs-toggle="pill"
                       >
-                        <span className="text-dark" style={{ width: 130 }}>
+                        <span className="text-dark" style={{color: theme.theme === "light" ? 'white' : "black", width: 130}}>
                           {v.name}
                         </span>
                       </a>
@@ -223,17 +229,17 @@ const Home = () => {
                               >
                                 Fruits
                               </div>
-                              <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                                <h4>{v.name}</h4>
+                              <div className={theme.theme === "light" ? "p-4 border border-secondary border-top-0 rounded-bottom" : "p-4 border-top-0 rounded-bottom"}>
+                                <h4 style={{color: theme.theme === "light" ? 'black' : "white"}}>{v.name}</h4>
                                 <div className="d-flex justify-content-between flex-lg-wrap">
-                                  <p className="text-dark fs-5 fw-bold mb-0">
-                                    $4.99 / kg
+                                  <p className={theme.theme === "light" ? "text-dark fs-5 fw-bold mb-0" : "fs-5 fw-bold mb-0"} style={{color: theme.theme === "light" ? 'black' : "white"}}>
+                                  {v.price} ₹
                                   </p>
                                   <a
                                     href="#"
-                                    className="btn border border-secondary rounded-pill px-3 text-primary"
+                                    className={theme.theme === "light" ? "btn border border-secondary rounded-pill px-3 text-primary": "btn border rounded-pill px-3 text-primary"}
                                   >
-                                    <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
+                                    <i className="fa fa-shopping-bag me-2 text-primary" />
                                     Add to cart
                                   </a>
                                 </div>
