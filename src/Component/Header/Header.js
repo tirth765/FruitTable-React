@@ -7,7 +7,7 @@ import { ThemeContext } from "../../Context/ThemeContext";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
-const Hero = () => {
+const Header = () => {
   const selecterCart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
@@ -209,4 +209,4 @@ const handleToggle = () => {
   );
 };
 
-export default Hero;
+export default Header;

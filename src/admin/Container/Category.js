@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  CreateCategory, deleteCategory, getCategores, updateCategory } from '../../redux/Slice/CategorySlice';
 import { IMG_URL } from '../../Utils/Base';
 
-export default function FormDialog() {
+export default function Category() {
   const [open, setOpen] = React.useState(false);
   const [catData, setcatData] = useState([]);
   const [Update, setUpdate] = useState(false);
