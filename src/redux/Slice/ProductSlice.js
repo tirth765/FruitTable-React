@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosInstance } from "../../Utils/axiosInstance";
 
 const initialState = {
   isLoding: false,
@@ -14,8 +15,8 @@ export const CreateProduct = createAsyncThunk(
     try {
       console.log("post", data);
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/product/post-product",
+      const response = await axiosInstance.post(
+        "product/post-product",
         data,
         {
           headers: {
@@ -38,8 +39,8 @@ export const getProduct = createAsyncThunk(
 
   async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/product/get-products"
+      const response = await axiosInstance.get(
+        "product/get-products"
       );
       console.log("Productget", response.data.data);
 
@@ -57,8 +58,8 @@ export const getSubcat = createAsyncThunk(
     console.log("id", cat_id);
 
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/v1/product/get-subcat/" + cat_id
+      const response = await axioaxiosInstances.get(
+        "product/get-subcat/" + cat_id
       );
       console.log("SubCategoryget", response.data.data);
 
@@ -75,8 +76,8 @@ export const deleteProduct = createAsyncThunk(
     console.log("idddddddd", id);
 
     try {
-      const response = await axios.delete(
-        "http://localhost:8000/api/v1/product/delete-product/" + id
+      const response = await axiosInstance.delete(
+        "product/delete-product/" + id
       );
       console.log(response.data.data);
 
@@ -93,8 +94,8 @@ export const updateProduct = createAsyncThunk(
     try {
       console.log(data);
 
-      const response = await axios.put(
-        "http://localhost:8000/api/v1/product/put-product/" + data._id,
+      const response = await axiosInstance.put(
+        "product/put-product/" + data._id,
         data,
         {
           headers: {
