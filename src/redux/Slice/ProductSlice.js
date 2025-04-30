@@ -58,7 +58,7 @@ export const getSubcat = createAsyncThunk(
     console.log("id", cat_id);
 
     try {
-      const response = await axioaxiosInstances.get(
+      const response = await axiosInstance.get(
         "product/get-subcat/" + cat_id
       );
       console.log("SubCategoryget", response.data.data);
