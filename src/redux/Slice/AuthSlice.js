@@ -65,7 +65,9 @@ export const checkOTP = createAsyncThunk (
 
     async (data) => {
 
-        const response = await axiosInstance.post("users/OTPVarification", data)
+        // const response = await axiosInstance.post("users/OTPVarification", data)
+        
+        const response = await axiosInstance.post("users/OTPVarificationEmail", data)
 
         console.log(response.data);
     }
