@@ -73,8 +73,6 @@ export default function Category() {
   }
 
   const handleEdit = (data) => {
-
-
       
     console.log(data);
 
