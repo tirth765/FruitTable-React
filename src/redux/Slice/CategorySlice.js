@@ -62,8 +62,10 @@ export const deleteCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
     "Category/updateCategory",
         async (data) => {
+            console.log("data",data);
+            
             try {
-                const response = await axiosInstance.put("category/put-category/" + data._id, data, {
+                const response = await axiosInstance.put("category/put-category/" + data._id, {name: data.name, description: data.description, cat_img: data.cat_img}, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                       }

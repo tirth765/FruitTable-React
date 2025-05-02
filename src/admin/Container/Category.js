@@ -145,7 +145,7 @@ export default function Category() {
       .test("fileSize", "The file is too large", (value) => {
         if (typeof value === 'string') {
           return true;
-        } else if (typeof value === 'object') {
+        } else if (typeof value.url === 'object') {
           return value && value.size <= 2000000;
         }
       })
@@ -153,7 +153,7 @@ export default function Category() {
       .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
         if (typeof value === 'string') {
           return true;
-        } else if (typeof value === 'object') {
+        } else if (typeof value.url === 'object') {
           return value && (
             value.type === "image/jpeg" ||
             value.type === "image/png"
@@ -176,8 +176,10 @@ export default function Category() {
     validationSchema: CategorySchema,
     onSubmit: (values, { resetForm }) => {
 
+      console.log("values",values.category , values.description, values.cat_img);
+      
       if (Update) {
-        updateData(values);
+        updateData({_id: values._id, name: values.name, description: values.description, cat_img: values.cat_img  });
       } else {
         localDataStore(values);
       }
@@ -247,7 +249,7 @@ export default function Category() {
                 onBlur={handleBlur}
               />
 
-              <img src={typeof values?.cat_img === 'string' ? IMG_URL + values?.cat_img : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img): null } width={"90px"} height={"90px"} />
+              <img src={typeof values?.cat_img?.url === 'string' ? values?.cat_img?.url : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img): null } width={"90px"} height={"90px"} />
 
 
             </DialogContent>
