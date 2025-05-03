@@ -66,12 +66,12 @@ export default function SubCategory() {
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
         if (!value) return false;
-        if (typeof value === "string") return true; // Allow pre-existing string URLs
+        if (typeof value === "string" || typeof value.url ==='string') return true; // Allow pre-existing string URLs
         return value.size <= 2000000;
       })
       .test("type", "Only JPEG and PNG are allowed", (value) => {
         if (!value) return false;
-        if (typeof value === "string") return true; // Allow pre-existing string URLs
+        if (typeof value === "string" || typeof value.url ==='string') return true; 
         return ["image/jpeg", "image/png"].includes(value.type);
       }),
   });
@@ -86,7 +86,7 @@ export default function SubCategory() {
     validationSchema: SubCategorySchema,
     onSubmit: (values, { resetForm }) => {
       if (update) {
-        dispatch(updateSubCategory(values));
+        dispatch(updateSubCategory({_id: values._id, Category: values.Category, name: values.name, description: values.description, subcat_img: values.subcat_img  }));
       } else {
         handleSubCategorySlice(values);
       }
