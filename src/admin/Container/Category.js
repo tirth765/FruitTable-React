@@ -143,17 +143,17 @@ export default function Category() {
     cat_img: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || typeof value.url === "string") {
           return true;
-        } else if (typeof value.url === 'object') {
+        } else if (typeof value === 'object') {
           return value && value.size <= 2000000;
         }
       })
 
       .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || typeof value.url === "string") {
           return true;
-        } else if (typeof value.url === 'object') {
+        } else if (typeof value === 'object') {
           return value && (
             value.type === "image/jpeg" ||
             value.type === "image/png"
