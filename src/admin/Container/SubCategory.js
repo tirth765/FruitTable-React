@@ -166,7 +166,7 @@ export default function SubCategory() {
             height: 56,
             width: 56,
           }}
-          src={IMG_URL + params.value}
+          src={params.value.url}
         />
       ),
     },
