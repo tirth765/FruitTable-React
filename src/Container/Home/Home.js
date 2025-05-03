@@ -992,11 +992,11 @@ const Home = () => {
               to generate Lorem Ipsum which looks reasonable.
             </p>
           </div>
-          <div className="row g-4">
-            <div className="col-lg-6 col-xl-4">
-              <div className="p-4 rounded bg-light">
-                <div className="row align-items-center">
-                  <div className="col-6">
+          <div className="row g-4" >
+            <div className="col-lg-6 col-xl-4" >
+              <div className="p-4 rounded bg-light" >
+                <div className="row align-items-center" >
+                  <div className="col-6" >
                     <img
                       src="img/best-product-1.jpg"
                       className="img-fluid rounded-circle w-100"
@@ -1312,11 +1312,11 @@ const Home = () => {
       </div>
       {/* Bestsaler Product End */}
       {/* Fact Start */}
-      <div className="container-fluid py-5">
-        <div className="container">
-          <div className="bg-light p-5 rounded">
-            <div className="row g-4 justify-content-center">
-              <div className="col-md-6 col-lg-6 col-xl-3">
+      <div className="container-fluid py-5" >
+        <div className="container" >
+          <div className="bg-light p-5 rounded" >
+            <div className="row g-4 justify-content-center" >
+              <div className="col-md-6 col-lg-6 col-xl-3" >
                 <div className="counter bg-white rounded p-5">
                   <i className="fa fa-users text-secondary" />
                   <h4>satisfied customers</h4>

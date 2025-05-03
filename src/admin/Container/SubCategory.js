@@ -295,10 +295,10 @@ export default function SubCategory() {
 
               <img
                 src={
-                  values?.subcat_img
-                    ? typeof values?.subcat_img === "string"
-                      ? IMG_URL + values?.subcat_img
-                      : URL.createObjectURL(values.subcat_img)
+                 typeof values?.subcat_img?.url === 'string'
+                    ? values?.subcat_img?.url
+                      : typeof  values?.subcat_img === 'object'
+                      ? URL.createObjectURL(values.subcat_img)
                     : null
                 }
                 alt="Preview"
