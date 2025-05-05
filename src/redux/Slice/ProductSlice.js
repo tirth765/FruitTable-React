@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { axiosInstance } from "../../Utils/axiosInstance";
 
 const initialState = {
@@ -96,7 +95,7 @@ export const updateProduct = createAsyncThunk(
 
       const response = await axiosInstance.put(
         "product/put-product/" + data._id,
-        data,
+        { Category: data.Category, SubCategory: data.SubCategory, name: data.name, description: data.description, price: data.price, product_img: data.product_img  },
         {
           headers: {
             "Content-Type": "multipart/form-data",

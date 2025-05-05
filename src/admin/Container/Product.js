@@ -28,7 +28,6 @@ import {
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { IMG_URL } from "../../Utils/Base";
 import { getCategores } from "../../redux/Slice/CategorySlice";
 
 export default function SubCategory() {
@@ -69,7 +68,7 @@ export default function SubCategory() {
     product_img: mixed()
       .required("You need to provide a file")
       .test("fileSize", "The file is too large", (value) => {
-        if (typeof value === "string") {
+        if (typeof value === "string" || typeof value.url === "string") {
           return true;
         } else if (typeof value === "object") {
           return value && value.size <= 2000000;
@@ -79,7 +78,7 @@ export default function SubCategory() {
         "type",
         "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc",
         (value) => {
-          if (typeof value === "string") {
+          if (typeof value === "string" || typeof value.url === "string") {
             return true;
           } else if (typeof value === "object") {
             return (
@@ -103,7 +102,7 @@ export default function SubCategory() {
     validationSchema: ProductSchema,
     onSubmit: (values, { resetForm }) => {
       if (update) {
-        dispatch(updateProduct(values));
+        dispatch(updateProduct({_id: values._id, Category: values.Category, SubCategory: values.SubCategory, name: values.name, description: values.description, price: values.price, product_img: values.product_img  }));
       } else {
         handleProductSlice(values);
       }
@@ -208,7 +207,7 @@ export default function SubCategory() {
             height: 53,
             width: 53,
           }}
-          src={IMG_URL + params.value}
+          src={params?.value?.url}
         />
       ),
     },
@@ -386,11 +385,11 @@ export default function SubCategory() {
 
               <img
                 src={
-                  typeof values?.product_img === "string"
-                    ? IMG_URL + values?.product_img
+                  typeof values?.product_img.url === "string"
+                    ? values?.product_img.url
                     : typeof values?.product_img === "object"
-                    ? URL.createObjectURL(values.product_img)
-                    : null
+                      ? URL.createObjectURL(values.product_img)
+                      : null
                 }
                 width={"90px"}
                 height={"90px"}
