@@ -394,7 +394,7 @@ export default function SubCategory() {
                 height={"90px"}
               />
               <FormHelperText>
-                {errors.product_img && touched.product_img ? errors.product_img : ""}
+                {errors.product_img && touched.product_img ? <span> {errors.product_img} </span>  : ""}
               </FormHelperText>
 
               <DialogActions>
