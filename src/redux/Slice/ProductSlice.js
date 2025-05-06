@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../Utils/axiosInstance";
+import { setAlert } from "./alertSlice";
+import { Message } from "@mui/icons-material";
 
 const initialState = {
   isLoding: false,
@@ -30,6 +32,7 @@ export const CreateProduct = createAsyncThunk(
     } catch (error) {
       console.log(error);
 
+      dispatch(setAlert({ variant: "error", message: error.response.data.message }))
       return rejectWithValue(error)
     }
   }
@@ -120,10 +123,17 @@ const CategorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(CreateProduct.fulfilled, (state, action) => {
       state.Product = state.Product.concat(action.payload);
+      state.isLoading = false;
+      state.user = action.payload;
+      state.isValidate = true;
+      state.error = null;
     });
-    // builder.addCase(CreateProduct.rejected, (state, action) => {
-    //   state.Product = state.Product.concat(action.payload);
-    // });
+    builder.addCase(CreateProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+      state.isValidate = false;
+      state.error = null;
+    });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.Product = action.payload;
     });
