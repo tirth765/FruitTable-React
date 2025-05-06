@@ -252,9 +252,8 @@ export default function Category() {
 
               <img src={typeof values?.cat_img?.url === 'string' ? values?.cat_img?.url : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img): null } width={"90px"} height={"90px"} />
 
-              <FormHelperText>
+             
                 {errors.cat_img && touched.cat_img ? <span style={{color: "red"}}> {errors.cat_img} </span>  : ""}
-              </FormHelperText>
 
             </DialogContent>
             <DialogActions>
