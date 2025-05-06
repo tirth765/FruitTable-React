@@ -283,7 +283,7 @@ export default function SubCategory() {
                 })}
               </Select>
               <FormHelperText>
-                {errors.Category && touched.Category ? errors.Category : ""}
+                {errors.Category && touched.Category ?<span style={{color: red}}> {errors.Category} </span>  : ""}
               </FormHelperText>
 
               <InputLabel id="demo-simple-select-standard-label">
@@ -316,7 +316,7 @@ export default function SubCategory() {
               </Select>
               <FormHelperText>
                 {errors.SubCategory && touched.SubCategory
-                  ? errors.SubCategory
+                  ? <span style={{color: red}}> {errors.SubCategory} </span> 
                   : ""}
               </FormHelperText>
 
@@ -394,7 +394,7 @@ export default function SubCategory() {
                 height={"90px"}
               />
               <FormHelperText>
-                {errors.product_img && touched.product_img ? <span> {errors.product_img} </span>  : ""}
+                {errors.product_img && touched.product_img ? <span style={{color: red}}> {errors.product_img} </span>  : ""}
               </FormHelperText>
 
               <DialogActions>
