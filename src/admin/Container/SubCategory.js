@@ -306,9 +306,9 @@ export default function SubCategory() {
                 height="90"
               />
               <FormHelperText>
-                {errors.subcat_img && touched.subcat_img ? <span style={{color: "red"}}> {errors.subcat_img} </span>  : ""}
+                {errors.subcat_img && touched.subcat_img ? <p style={{color: "red"}}> {errors.subcat_img} </p>  : ""}
               </FormHelperText>
-              
+
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit">{update ? "Update" : "Submit"}</Button>
