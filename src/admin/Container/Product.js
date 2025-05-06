@@ -74,19 +74,19 @@ export default function SubCategory() {
           return value && value.size <= 2000000;
         }
       })
-      // .test(
-      //   "type",
-      //   "Only the following formats are accepted: .jpeg, .jpg, .png",
-      //   (value) => {
-      //     if (typeof value === "string" || typeof value.url === "string") {
-      //       return true;
-      //     } else if (typeof value === "object") {
-      //       return  value && (
-      //         value.type === "image/jpeg" || value.type === "image/png" || value.type === "image/jpg" 
-      //       );
-      //     }
-      //   }
-      // ),
+      .test(
+        "type",
+        "Only the following formats are accepted: .jpeg, .jpg, .png",
+        (value) => {
+          if (typeof value === "string" || typeof value.url === "string") {
+            return true;
+          } else if (typeof value === "object") {
+            return  value && (
+              value.type === "image/jpeg" || value.type === "image/png" || value.type === "image/jpg" 
+            );
+          }
+        }
+      ),
   });
 
   const formik = useFormik({
@@ -393,6 +393,9 @@ export default function SubCategory() {
                 width={"90px"}
                 height={"90px"}
               />
+              <FormHelperText>
+                {errors.product_img && touched.product_img ? errors.product_img : ""}
+              </FormHelperText>
 
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
