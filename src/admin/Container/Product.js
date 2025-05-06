@@ -82,7 +82,7 @@ export default function SubCategory() {
             return true;
           } else if (typeof value === "object") {
             return  value && (
-              value.type === "image/jpeg" || value.type === "image/png"
+              value.type === "image/jpeg" || value.type === "image/png" 
             );
           }
         }
