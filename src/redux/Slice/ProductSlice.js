@@ -121,6 +121,9 @@ const CategorySlice = createSlice({
     builder.addCase(CreateProduct.fulfilled, (state, action) => {
       state.Product = state.Product.concat(action.payload);
     });
+    // builder.addCase(CreateProduct.rejected, (state, action) => {
+    //   state.Product = state.Product.concat(action.payload);
+    // });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.Product = action.payload;
     });
