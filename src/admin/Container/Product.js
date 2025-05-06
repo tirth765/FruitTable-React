@@ -81,9 +81,8 @@ export default function SubCategory() {
           if (typeof value === "string" || typeof value.url === "string") {
             return true;
           } else if (typeof value === "object") {
-            return (
-              value &&
-              (value.type === "image/jpeg" || value.type === "image/png")
+            return  value && (
+              value.type === "image/jpeg" || value.type === "image/png"
             );
           }
         }
