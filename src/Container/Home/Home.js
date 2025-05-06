@@ -218,7 +218,7 @@ const Home = () => {
                             <div className="rounded position-relative fruite-item">
                               <div className="fruite-img">
                                 <img
-                                  src={"http://localhost:8000/" + v.product_img}
+                                  src={"http://localhost:8000/" + v.product_img.url}
                                   className="img-fluid w-100 rounded-top"
                                   alt
                                 />
