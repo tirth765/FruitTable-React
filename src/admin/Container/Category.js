@@ -150,12 +150,13 @@ export default function Category() {
         }
       })
 
-      .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
+      .test("type", "Only JPEG, PNG, JPG are allowed", (value) => {
         if (typeof value === 'string' || typeof value.url === "string") {
           return true;
         } else if (typeof value === 'object') {
           return value && (
             value.type === "image/jpeg" ||
+            value.type === "image/jpg" ||
             value.type === "image/png"
           );
         }
@@ -251,6 +252,9 @@ export default function Category() {
 
               <img src={typeof values?.cat_img?.url === 'string' ? values?.cat_img?.url : typeof values?.cat_img === 'object' ? URL.createObjectURL(values.cat_img): null } width={"90px"} height={"90px"} />
 
+              <FormHelperText>
+                {errors.cat_img && touched.cat_img ? <span style={{color: "red"}}> {errors.cat_img} </span>  : ""}
+              </FormHelperText>
 
             </DialogContent>
             <DialogActions>

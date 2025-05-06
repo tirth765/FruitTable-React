@@ -69,10 +69,10 @@ export default function SubCategory() {
         if (typeof value === "string" || typeof value.url ==='string') return true; // Allow pre-existing string URLs
         return value.size <= 2000000;
       })
-      .test("type", "Only JPEG and PNG are allowed", (value) => {
+      .test("type", "Only JPEG, PNG, JPG are allowed", (value) => {
         if (!value) return false;
         if (typeof value === "string" || typeof value.url ==='string') return true; 
-        return ["image/jpeg", "image/png"].includes(value.type);
+        return ["image/jpeg", "image/png", "image/jpg"].includes(value.type);
       }),
   });
 
@@ -243,7 +243,7 @@ export default function SubCategory() {
                 })}
               </Select>
               <FormHelperText>
-                {errors.Category && touched.Category ? errors.Category : ""}
+                {errors.Category && touched.Category ? <span style={{color:"red"}}> {errors.Category} </span> : ""}
               </FormHelperText>
 
               <TextField
@@ -305,7 +305,10 @@ export default function SubCategory() {
                 width="90"
                 height="90"
               />
-
+              <FormHelperText>
+                {errors.subcat_img && touched.subcat_img ? <span style={{color: "red"}}> {errors.subcat_img} </span>  : ""}
+              </FormHelperText>
+              
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit">{update ? "Update" : "Submit"}</Button>
