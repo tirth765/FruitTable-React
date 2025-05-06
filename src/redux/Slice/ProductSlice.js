@@ -10,7 +10,7 @@ const initialState = {
 
 export const CreateProduct = createAsyncThunk(
   "Product/CreateProduct",
-  async (data) => {
+  async (data, {dispatch, rejectWithValue}) => {
     try {
       console.log("post", data);
 
@@ -29,6 +29,8 @@ export const CreateProduct = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       console.log(error);
+
+      return rejectWithValue(error)
     }
   }
 );
