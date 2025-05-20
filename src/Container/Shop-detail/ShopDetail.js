@@ -59,7 +59,7 @@ function ShopDetail(props) {
                   <div className="border rounded">
                     <a href="#">
                       <img
-                        src={"http://localhost:8000/" + pdata?.product_img}
+                        src={pdata?.product_img.url}
                         className="img-fluid rounded"
                         alt="Image"
                       />

@@ -18,7 +18,6 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
 
   console.log(auth);
-  
 
   const handleLogout = () => {
     dispatch(userLogout(auth.user._id));
@@ -129,7 +128,7 @@ const handleToggle = () => {
                 </NavLink>
               </div>
               <div className="d-flex m-3 me-0">
-                <a onClick={() => handleToggle()} style={{marginTop: 4.5}} className="me-4">{theme.theme === 'light'? <LightModeIcon className="lightLogo"/> :  <DarkModeIcon className="darkLogo"/>  }</a>
+                <a onClick={() => handleToggle()} style={{marginTop: 4.5}} className="me-4">{theme.theme === 'light'?  <DarkModeIcon className="darkLogo"/> : <LightModeIcon className="lightLogo"/>   }</a>
                 {/* <button
                   className="btn-search btn btn-md-square rounded-circle me-4"
                   data-bs-toggle="modal"

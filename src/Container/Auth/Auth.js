@@ -2,7 +2,7 @@ import { Password } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { array, date, mixed, number, object, string } from 'yup';
-import { checkOTP, userLogin, userLogout, userRegister } from "../../redux/Slice/AuthSlice";
+import { checkForgotOTP, checkOTP, CreateNewPassword, ForgotPassword, NewPassword, userLogin, userLogout, userRegister } from "../../redux/Slice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -45,13 +45,21 @@ export default function MyProfile() {
     initialValues = {
       otp: ""
     }
-  }
-  else {
+  } else if(type === "password") {
     validationSchema = {
       email: string().email("Invalid email address").required("Email is required"),
     }
     initialValues = {
       email: ""
+    }
+  } else if(type === "ChangePassword") {
+    validationSchema = {
+      password: string().required("Password is required"),
+      ConformPassword:  string().required("Password is required")
+    }
+    initialValues = {
+      password: "",
+      ConformPassword: ""
     }
   }
 
@@ -80,23 +88,65 @@ export default function MyProfile() {
         if (res.type === "auth/userRegister/fulfilled") {
           setType("OTP")
           setUserEmail(values.email)
-
         }
 
-      }
-      else if (type === "OTP") {
-        console.log(values);
+      } else if (type === "OTP") {
+        console.log(values);  
 
-        const res = await dispatch(checkOTP({ otp: values.otp , email: userEmail }))
+          const res = await dispatch(checkOTP({ otp: values.otp , email: userEmail }))
+
+          if (res.type === "auth/checkOTP/fulfilled") {
+            setType("login")
+            setUserEmail("")
+          }
+
+        console.log("DONE");
+
+      } else if (type === "password") {
+
+        console.log("ForgotPassword",values);
+        
+        const res = await dispatch(ForgotPassword({email: values.email}))
 
         console.log(res.requestStatus);
 
-        if (res.type === "auth/checkOTP/fulfilled") {
-          setType("login")
-          setUserEmail("")
-
+        if (res.type === "auth/ForgotPassword/fulfilled") {
+          setType("OTP2")
+          setUserEmail(values.email)
         }
 
+      } else if ( type === "ChangePassword") {
+        console.log("FINALY", values);
+        
+        console.log("ChangePassword=userEmail1", userEmail);
+        
+        const res = await dispatch(CreateNewPassword({ email: userEmail, ConformPassword: values.ConformPassword , password: values.password }))
+
+        console.log("DDDDDDDDDDDDD");
+        
+        if (res.type === "auth/CreateNewPassword/fulfilled") {
+          console.log("LOGINNNNSSSS");
+          
+          setType("login")
+          setUserEmail("")
+        }
+
+      } else if (type === "OTP2" ) {
+        console.log(values);
+        
+        const res = await dispatch (checkForgotOTP ({otp: values.otp, email: userEmail}))
+
+        console.log("checkForgotOTP=userEmail", userEmail);
+
+        if(res.type === "auth/checkForgotOTP/fulfilled") {
+
+          console.log("DO IT!");
+          
+          setType("ChangePassword")
+        }
+
+        console.log("DONE2");
+        
       }
 
       resetForm()
@@ -135,6 +185,8 @@ export default function MyProfile() {
           type === "login" ? "Login" :
             type === "password" ? "Password" :
               type === "OTP" ? "Varify OTP" :
+              type === "OTP2" ? "Varify OTP" :
+              type === "ChangePassword" ? "Create New Password" :
                 "Register"}
       </h2>
 
@@ -163,7 +215,7 @@ export default function MyProfile() {
 
 
         {
-          type !== "OTP" ? <>
+          type !== "OTP" && type !== "ChangePassword" && type !== "OTP2" ? <>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email
@@ -183,7 +235,7 @@ export default function MyProfile() {
         }
 
 
-        {type === "register" || type === "login" ?
+        {type === "register" || type === "login" || type === "ChangePassword" ?
           <>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
@@ -203,7 +255,27 @@ export default function MyProfile() {
           </>
           : null}
 
-        {type === "OTP" ?
+      {type === "ChangePassword" ?
+          <>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+              Conform  Password
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="ConformPassword"
+                name="ConformPassword"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                values={values?.ConformPassword}
+              />
+            </div>
+            <span>{errors.ConformPassword && touched.ConformPassword ? errors.ConformPassword : ''}</span>
+          </>
+          : null}
+
+        {type === "OTP" || type === "OTP2"?
           <>
             <div className="mb-3">
               <label htmlFor="otp" className="form-label">
@@ -229,7 +301,9 @@ export default function MyProfile() {
             ? "Login"
             : type === "password"
               ? "Submit" :
-              type === "OTP" ? "Varify OTP"
+              type === "OTP" ? "Varify OTP" : 
+              type === "OTP2" ? "Varify OTP" :
+              type === "ChangePassword" ? "Change Password"
                 : "Register"}
         </button>
 

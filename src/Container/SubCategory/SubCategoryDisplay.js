@@ -37,7 +37,7 @@ const SubCategoryDisplay = () => {
                     <NavLink to={"/Shop/" + v._id}>
                       <div className="service-item bg-secondary rounded border border-secondary">
                         <img
-                          src={"http://localhost:8000/" + v.subcat_img}
+                          src={v.subcat_img.url}
                           className="img-fluid rounded-top w-100"
                           alt="subcat_img"
                           style={{ height: "350px", objectFit: "cover" }}

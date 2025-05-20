@@ -282,7 +282,7 @@ function Shop() {
                           <NavLink to={"/ShopDetail/" + v._id}>
                             <div className="fruite-img">
                               <img
-                                src={"http://localhost:8000/" + v.product_img}
+                                src={ v.product_img.url }
                                 className="img-fluid w-100 rounded-top"
                                 alt
                                 style={{ height: "350px", objectFit: "cover" }}

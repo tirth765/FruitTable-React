@@ -197,7 +197,7 @@ const Home = () => {
                         className="d-flex py-2 m-2 bg-light rounded-pill"
                         data-bs-toggle="pill"
                       >
-                        <span className="text-dark" style={{color: theme.theme === "light" ? 'white' : "black", width: 130}}>
+                        <span className="text-dark" style={{color: theme.theme === "light" ? "balck" : "white", width: 130}}>
                           {v.name}
                         </span>
                       </a>
@@ -233,7 +233,7 @@ const Home = () => {
                                 <h4 style={{color: theme.theme === "light" ? 'black' : "white"}}>{v.name}</h4>
                                 <div className="d-flex justify-content-between flex-lg-wrap">
                                   <p className={theme.theme === "light" ? "text-dark fs-5 fw-bold mb-0" : "fs-5 fw-bold mb-0"} style={{color: theme.theme === "light" ? 'black' : "white"}}>
-                                  {v.price} ₹
+                                  {v.price} ₹ /kg
                                   </p>
                                   <a
                                     href="#"
@@ -625,7 +625,7 @@ const Home = () => {
                   <NavLink to={"/SubCategory/" + v._id}>
                     <div className="service-item bg-secondary rounded border border-secondary">
                       <img
-                        src={"http://localhost:8000/" + v.cat_img}
+                        src={ v.cat_img.url }
                         className="img-fluid rounded-top w-100"
                         alt
                       />

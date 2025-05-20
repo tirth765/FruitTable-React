@@ -30,9 +30,11 @@ export const CreateProduct = createAsyncThunk(
 
       return response.data.data;
     } catch (error) {
-      console.log(error);
+      console.log("fefryy",error);
 
-      dispatch(setAlert({ variant: "error", message: error.response.data.message }))
+      // dispatch(setAlert({ variant: "error", message: error.response.data.message }))
+
+      alert("Error")
       return rejectWithValue(error)
     }
   }

@@ -71,7 +71,7 @@ export default function Cart() {
                     <th scope="row">
                       <div className="d-flex align-items-center">
                         <img
-                          src={"http://localhost:8000/" + v.product_img}
+                          src={v.product_img.url}
                           className="img-fluid me-5 rounded-circle"
                           style={{ width: 80, height: 80 }}
                           alt
