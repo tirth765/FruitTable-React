@@ -191,7 +191,7 @@ const Home = () => {
                     </a>
                   </li>
 
-                  {categoryData.Category.map((v, i) => (
+                  {categoryData?.Category?.map((v, i) => (
                     <li className="nav-item" onClick={() => setCat(v)}>
                       <a
                         className="d-flex py-2 m-2 bg-light rounded-pill"
@@ -212,7 +212,7 @@ const Home = () => {
                 <div className="row g-4">
                   <div className="col-lg-12">
                     <div className="row g-4">
-                      {productData.Product.map((v) => {
+                      {productData?.Product?.map((v) => {
                         return (
                           <div className="col-md-6 col-lg-4 col-xl-3">
                             <div className="rounded position-relative fruite-item">
@@ -619,7 +619,7 @@ const Home = () => {
       <div className="container-fluid service py-5">
         <div className="container py-5">
           <div className="row g-4 justify-content-center">
-            {categoryData.Category?.map((v) => {
+            {categoryData?.Category?.map((v) => {
               return (
                 <div className="col-md-6 col-lg-4">
                   <NavLink to={"/SubCategory/" + v._id}>
